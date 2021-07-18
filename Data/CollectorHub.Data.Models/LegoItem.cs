@@ -1,5 +1,7 @@
 ﻿namespace CollectorHub.Data.Models
 {
+    using System.Collections.Generic;
+
     using CollectorHub.Data.Common.Models;
 
     public class LegoItem : BaseDeletableModel<int>
@@ -11,6 +13,7 @@
 
         public LegoItem()
         {
+            this.Collections = new HashSet<LegoCollectionLegoItem>();
         }
 
         public string SwNumber { get; set; } // maybe not needed sw0002 => only 0002
@@ -39,6 +42,6 @@
 
         public int CollectionId { get; set; }
 
-        public LegoCollection Collection { get; set; }
+        public virtual ICollection<LegoCollectionLegoItem> Collections { get; set; }
     }
 }

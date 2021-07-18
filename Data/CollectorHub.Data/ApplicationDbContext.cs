@@ -29,6 +29,10 @@
 
         public DbSet<LegoCollection> LegoCollections { get; set; }
 
+        public DbSet<PremiumHWCar> PremiumHWCars { get; set; }
+
+        public DbSet<PremiumHWSerie> PremiumHWSeries { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

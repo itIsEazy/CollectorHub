@@ -1,6 +1,7 @@
 ﻿namespace CollectorHub.Data.Models
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     using CollectorHub.Data.Common.Models;
 
@@ -8,8 +9,16 @@
     {
         public LegoCollection()
         {
+            this.Items = new HashSet<LegoCollectionLegoItem>();
         }
 
-        public List<LegoItem> Items { get; set; }
+        [Required]
+        public string Name { get; set; }
+
+        public string UserId { get; set; }
+
+        public ApplicationUser User { get; set; }
+
+        public ICollection<LegoCollectionLegoItem> Items { get; set; }
     }
 }

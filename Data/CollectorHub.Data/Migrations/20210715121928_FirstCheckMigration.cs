@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace CollectorHub.Data.Migrations
+﻿namespace CollectorHub.Data.Migrations
 {
+    using System;
+
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class FirstCheckMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
