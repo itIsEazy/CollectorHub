@@ -115,10 +115,12 @@
 
             string html = await CallSiteReturnHTML(FandFPremiumLink);
 
+            string htmlForAllCars = html.Replace("\n", string.Empty);
+
             sb.AppendLine("Fast and Furious Premium Link Called");
 
             List<PremiumHWSerie> allPremiumHWSeries = CollectYearAndNames(html);
-            List<PremiumHWCarDTO> allCars = CollectInfoForCars(html);
+            List<PremiumHWCarDTO> allCars = CollectInfoForCars(htmlForAllCars);
 
             int indexer = 0;
             foreach (var serie in allPremiumHWSeries)
@@ -140,12 +142,14 @@
         {
             List<PremiumHWCarDTO> allCars = new List<PremiumHWCarDTO>();
 
-            string tdInfoPattern = @"<td>.*\n<\/td>";
+            string tdInfoPattern = @"<td>.*?<\/td>";
             var mathes = GetMatchesFrom(html, tdInfoPattern);
 
             List<string> clearInformation = ClearTheInfoForCars(mathes);
 
             PremiumHWCarDTO currCar = new PremiumHWCarDTO();
+            PremiumHWCarDTO lastCar = new PremiumHWCarDTO();
+            lastCar.ToyId = "this is id to not dail null ref except";
 
             int counter = 1; // counts ++ until last model column
             foreach (var item in clearInformation)
@@ -203,7 +207,13 @@
                 if (counter == 10)
                 {
                     currCar.PhotoCardLink = item;
-                    allCars.Add(currCar);
+
+                    if (currCar.ToyId != lastCar.ToyId)
+                    {
+                        allCars.Add(currCar);
+                    }
+
+                    lastCar = currCar;
                     currCar = new PremiumHWCarDTO();
                 }
 
@@ -215,12 +225,19 @@
 
         public static List<string> ClearTheInfoForCars(MatchCollection mathes)
         {
+            int counter = 0;
+
             List<string> resultList = new List<string>();
 
             string httpsPattern = @"https:.*?.(png|JPG|jpg|PNG)";
 
             foreach (Match match in mathes)
             {
+                if (counter == 200)
+                {
+                    Console.WriteLine();
+                }
+
                 string infoRow = string.Empty;
 
                 if (match.ToString().Contains("https:"))
@@ -249,6 +266,8 @@
                 }
 
                 resultList.Add(infoRow);
+
+                counter++;
             }
 
             return resultList;
