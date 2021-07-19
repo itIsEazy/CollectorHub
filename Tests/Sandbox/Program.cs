@@ -74,7 +74,6 @@
             public ICollection<PremiumHWCarDTO> Cars { get; set; }
         }
 
-
         public static async Task<int> Main(string[] args)
         {
             Console.WriteLine(await CallForHotWHeels());
