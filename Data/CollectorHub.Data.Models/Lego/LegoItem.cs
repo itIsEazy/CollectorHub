@@ -3,6 +3,7 @@
     using System.Collections.Generic;
 
     using CollectorHub.Data.Common.Models;
+    using CollectorHub.Data.Models.Lego;
 
     public class LegoItem : BaseDeletableModel<int>
     {

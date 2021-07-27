@@ -1,7 +1,16 @@
-﻿namespace CollectorHub.Data.Models
+﻿namespace CollectorHub.Data.Models.HotWheels
 {
-    public class PremiumHWCar
+    using System.Collections.Generic;
+
+    using CollectorHub.Data.Models.Common;
+
+    public class PremiumHWCar : Item
     {
+        public PremiumHWCar()
+        {
+            this.Collections = new HashSet<PremiumHWCollection>();
+        }
+
         public int Id { get; set; }
 
         public string Col { get; set; }
@@ -28,5 +37,6 @@
 
         public PremiumHWSerie Serie { get; set; }
 
+        public IEnumerable<PremiumHWCollection> Collections { get; set; }
     }
 }

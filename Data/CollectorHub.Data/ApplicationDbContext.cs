@@ -8,6 +8,8 @@
 
     using CollectorHub.Data.Common.Models;
     using CollectorHub.Data.Models;
+    using CollectorHub.Data.Models.HotWheels;
+    using CollectorHub.Data.Models.Lego;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +34,8 @@
         public DbSet<PremiumHWCar> PremiumHWCars { get; set; }
 
         public DbSet<PremiumHWSerie> PremiumHWSeries { get; set; }
+
+        public DbSet<PremiumHWCollection> PremiumHWCollections { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

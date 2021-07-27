@@ -76,7 +76,11 @@
 
         public static async Task<int> Main(string[] args)
         {
-            Console.WriteLine(await CallForHotWHeels());
+
+            ClearSomeIgNames();
+
+
+            // Console.WriteLine(await CallForHotWHeels());
             return 0;
 
             Console.WriteLine($"{typeof(Program).Namespace} ({string.Join(" ", args)}) starts working...");
@@ -99,6 +103,39 @@
                 return Parser.Default.ParseArguments<SandboxOptions>(args).MapResult(
                     opts => SandboxCode(opts, serviceProvider).GetAwaiter().GetResult(),
                     _ => 255);
+            }
+        }
+
+        public static void ClearSomeIgNames()
+        {
+            List<string> names = new List<string>();
+
+            int counter = 1;
+            while (true)
+            {
+                string input = Console.ReadLine();
+
+                if (counter == 2)
+                {
+                    names.Add(input);
+                    counter = 1;
+                    continue;
+                }
+
+                if (input.Contains("Снимката на профила на"))
+                {
+                    counter = 2;
+                }
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    break;
+                }
+            }
+
+            foreach (var name in names)
+            {
+                Console.WriteLine(name);
             }
         }
 

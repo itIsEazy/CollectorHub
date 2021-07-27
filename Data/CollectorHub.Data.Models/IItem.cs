@@ -4,12 +4,8 @@
 
     public interface IItem
     {
+        public decimal PriceNow { get; set; }
+
         public decimal PriceBoughted { get; set; }
-
-        public decimal Profit { get; set; }
-
-        public int CollectionId { get; set; }
-
-        public abstract ICollection Collection { get; set; }
     }
 }

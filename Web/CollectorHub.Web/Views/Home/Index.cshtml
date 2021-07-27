@@ -1,9 +1,14 @@
 ﻿@using CollectorHub.Common
+@model CollectorHub.Web.ViewModels.Home.HotWheelsInfoViewModel
 @{
     this.ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Currently available in database :</p>
+    <ul class="list-group">
+        <li class="list-group-item bg-info">Total Hot Wheels Cars : @Model.TotalHotWheelsCarsCount</li>
+        <li class="list-group-item bg-info">Total Hot Wheels Series : @Model.TotalHotWheelsSeriesCount</li>
+    </ul>
 </div>

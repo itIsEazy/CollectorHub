@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using CollectorHub.Data.Seeding.HotWheels;
+
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
@@ -27,6 +29,7 @@
                           {
                               new RolesSeeder(),
                               new SettingsSeeder(),
+                              new FastAndFuriousPremiumSeeder(),
                           };
 
             foreach (var seeder in seeders)

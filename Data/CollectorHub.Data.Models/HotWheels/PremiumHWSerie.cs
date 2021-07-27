@@ -1,4 +1,4 @@
-﻿namespace CollectorHub.Data.Models
+﻿namespace CollectorHub.Data.Models.HotWheels
 {
     using System.Collections.Generic;
 
