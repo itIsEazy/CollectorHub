@@ -36,4 +36,8 @@
     <ProjectReference Include="..\CollectorHub.Web.Infrastructure\CollectorHub.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\CollectorHub.Web.ViewModels\CollectorHub.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Administration\Views\Dashboard\" />
+  </ItemGroup>
 </Project>

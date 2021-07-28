@@ -8,7 +8,6 @@
     using CollectorHub.Data.Models;
     using CollectorHub.Data.Repositories;
     using CollectorHub.Data.Seeding;
-    using CollectorHub.Services.Data;
     using CollectorHub.Services.Mapping;
     using CollectorHub.Services.Messaging;
     using CollectorHub.Web.ViewModels;
@@ -64,7 +63,6 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

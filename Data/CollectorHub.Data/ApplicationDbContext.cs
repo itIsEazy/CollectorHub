@@ -25,8 +25,6 @@
         {
         }
 
-        public DbSet<Setting> Settings { get; set; }
-
         public DbSet<LegoItem> LegoItems { get; set; }
 
         public DbSet<LegoCollection> LegoCollections { get; set; }
