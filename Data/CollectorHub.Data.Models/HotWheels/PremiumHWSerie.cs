@@ -18,6 +18,5 @@
         public int OrderOfApperance { get; set; }
 
         public ICollection<PremiumHWCar> Cars { get; set; }
-
     }
 }

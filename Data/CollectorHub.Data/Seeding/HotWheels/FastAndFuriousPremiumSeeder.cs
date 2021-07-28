@@ -209,13 +209,13 @@
         {
             List<string> yearsAndNames = new List<string>();
 
-            string yearNamePattern = @"<span class=.mw-headline. id=..*.>.*<\/span>"; // dots replace " 
+            string yearNamePattern = @"<span class=.mw-headline. id=..*.>.*<\/span>"; // dots replace "
             var mathes = this.GetMatchesFrom(html, yearNamePattern);
 
             foreach (Match match in mathes)
             {
                 string yearOrName = this.ReplaceTagsWithStringEmpty(match.ToString()); // replacing all tags and so on with string.Empty to extract only name or year
-                if (yearOrName != "External Links")// This is not year or name
+                if (yearOrName != "External Links") //// This is not year or name
                 {
                     yearsAndNames.Add(yearOrName);
                 }

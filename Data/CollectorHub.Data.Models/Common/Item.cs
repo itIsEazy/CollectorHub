@@ -1,6 +1,9 @@
 ﻿namespace CollectorHub.Data.Models.Common
 {
-    public abstract class Item : IItem
+    using CollectorHub.Data.Common.Models;
+    using CollectorHub.Data.Models.Interfaces;
+
+    public abstract class Item : BaseDeletableModel<int>, IItem
     {
         public Item()
         {

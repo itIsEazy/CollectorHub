@@ -1,12 +1,10 @@
-﻿namespace CollectorHub.Data.Models
+﻿namespace CollectorHub.Data.Models.Interfaces
 {
-    using System.Collections.Generic;
-
-    using CollectorHub.Data.Common.Models;
-
     public interface ICollection
     {
-        public abstract List<IItem> Items { get; set; }
+        public string Name { get; set; }
+
+        public string Description { get; set; }
 
         // public void AddItem(Item currItem)
         // {

@@ -1,29 +1,24 @@
 ﻿namespace CollectorHub.Web.Controllers
 {
     using System.Diagnostics;
-    using System.Linq;
-    using CollectorHub.Data;
+
+    using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Web.ViewModels;
-    using CollectorHub.Web.ViewModels.Home;
+
     using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : BaseController
     {
-        private readonly ApplicationDbContext db;
+        private readonly IGetHotWheelsInfoService hotWheelsInfoService;
 
-        public HomeController(ApplicationDbContext db)
+        public HomeController(IGetHotWheelsInfoService hotWheelsInfoService)
         {
-            this.db = db;
+            this.hotWheelsInfoService = hotWheelsInfoService;
         }
 
         public IActionResult Index()
         {
-            var hotWheelsModel = new HotWheelsInfoViewModel
-            {
-                TotalHotWheelsCarsCount = this.db.PremiumHWCars.Count(),
-                TotalHotWheelsSeriesCount = this.db.PremiumHWSeries.Count(),
-            };
-
+            var hotWheelsModel = this.hotWheelsInfoService.GetInfo();
             return this.View(hotWheelsModel);
         }
 

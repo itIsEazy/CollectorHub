@@ -167,12 +167,6 @@ namespace CollectorHub.Data.Migrations
                     b.Property<string>("PhotoLooseLink")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PriceBoughted")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("PriceNow")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("SerieId")
                         .HasColumnType("int");
 
@@ -194,27 +188,15 @@ namespace CollectorHub.Data.Migrations
 
             modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.PremiumHWCollection", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("UserId");
 
@@ -473,8 +455,8 @@ namespace CollectorHub.Data.Migrations
                     b.Property<int>("CarsId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CollectionsId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CollectionsId")
+                        .HasColumnType("int");
 
                     b.HasKey("CarsId", "CollectionsId");
 

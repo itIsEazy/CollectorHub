@@ -2,14 +2,16 @@
 {
     using System.Collections.Generic;
 
-    using CollectorHub.Data.Common.Models;
+    using CollectorHub.Data.Models.Common;
 
-    public class PremiumHWCollection : BaseDeletableModel<string>
+    public class PremiumHWCollection
     {
         public PremiumHWCollection()
         {
             this.Cars = new HashSet<PremiumHWCar>();
         }
+
+        public int Id { get; set; }
 
         public ApplicationUser User { get; set; }
 

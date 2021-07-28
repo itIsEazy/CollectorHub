@@ -1,10 +1,11 @@
 ﻿namespace CollectorHub.Data.Models.HotWheels
 {
+    using System;
     using System.Collections.Generic;
 
     using CollectorHub.Data.Models.Common;
 
-    public class PremiumHWCar : Item
+    public class PremiumHWCar
     {
         public PremiumHWCar()
         {
