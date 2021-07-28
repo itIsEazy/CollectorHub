@@ -9,5 +9,7 @@
         public int TotalHotWheelsCarsCount { get; set; }
 
         public int TotalHotWheelsSeriesCount { get; set; }
+
+        public int TotalHotWheelsCollectionsCount { get; set; }
     }
 }

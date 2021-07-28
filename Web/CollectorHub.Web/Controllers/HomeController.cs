@@ -18,8 +18,6 @@
 
         public IActionResult Index()
         {
-            
-
             var hotWheelsModel = new HotWheelsInfoViewModel
             {
                 TotalHotWheelsCarsCount = this.db.PremiumHWCars.Count(),
