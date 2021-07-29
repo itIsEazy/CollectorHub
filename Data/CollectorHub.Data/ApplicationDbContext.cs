@@ -8,6 +8,8 @@
 
     using CollectorHub.Data.Common.Models;
     using CollectorHub.Data.Models;
+    using CollectorHub.Data.Models.Common;
+    using CollectorHub.Data.Models.Forum;
     using CollectorHub.Data.Models.HotWheels;
     using CollectorHub.Data.Models.Lego;
     using CollectorHub.Data.Models.User;
@@ -35,6 +37,12 @@
         public DbSet<PremiumHWSerie> PremiumHWSeries { get; set; }
 
         public DbSet<PremiumHWCollection> PremiumHWCollections { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
+
+        public DbSet<ForumPost> ForumPosts { get; set; }
+
+        public DbSet<ForumPostComment> ForumPostComments { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
