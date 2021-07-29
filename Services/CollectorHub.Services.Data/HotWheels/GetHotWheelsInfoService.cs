@@ -1,10 +1,13 @@
 ﻿namespace CollectorHub.Services.Data.HotWheels
 {
+    using System.Collections.Generic;
     using System.Linq;
 
+    using CollectorHub.Data;
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.HotWheels;
     using CollectorHub.Web.ViewModels.Home;
+    using CollectorHub.Web.ViewModels.Themes;
 
     public class GetHotWheelsInfoService : IGetHotWheelsInfoService
     {
@@ -32,6 +35,35 @@
             };
 
             return data;
+        }
+
+        public ICollection<HotWheelsPremiumSeriesViewModel> GetAllPremiumSeriesAndCars()
+        {
+            var list = new List<HotWheelsPremiumSeriesViewModel>();
+
+            foreach (var serie in this.premiumHWSeriesRepository.All())
+            {
+                var currSerie = new HotWheelsPremiumSeriesViewModel();
+
+                currSerie.Name = serie.Name;
+                currSerie.Year = serie.Year;
+                currSerie.Id = serie.Id;
+
+                list.Add(currSerie);
+            }
+
+            foreach (var car in this.premiumHWCarsRepository.All())
+            {
+                foreach (var serie in list)
+                {
+                    if (car.Serie.Id == serie.Id)
+                    {
+                        serie.Cars.Add(car);
+                    }
+                }
+            }
+
+            return list;
         }
     }
 }
