@@ -1,6 +1,6 @@
 ﻿namespace CollectorHub.Data.Configurations
 {
-    using CollectorHub.Data.Models;
+    using CollectorHub.Data.Models.User;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

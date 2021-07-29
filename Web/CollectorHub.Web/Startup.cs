@@ -5,10 +5,9 @@
     using CollectorHub.Data;
     using CollectorHub.Data.Common;
     using CollectorHub.Data.Common.Repositories;
-    using CollectorHub.Data.Models;
+    using CollectorHub.Data.Models.User;
     using CollectorHub.Data.Repositories;
     using CollectorHub.Data.Seeding;
-    using CollectorHub.Services.Data;
     using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Services.Mapping;
     using CollectorHub.Services.Messaging;

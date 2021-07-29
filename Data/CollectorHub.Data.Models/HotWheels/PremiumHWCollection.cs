@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using CollectorHub.Data.Models.Common;
+    using CollectorHub.Data.Models.User;
 
     public class PremiumHWCollection
     {

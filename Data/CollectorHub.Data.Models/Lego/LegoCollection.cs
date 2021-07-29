@@ -4,6 +4,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using CollectorHub.Data.Common.Models;
+    using CollectorHub.Data.Models.User;
 
     public class LegoCollection : BaseDeletableModel<int>
     {

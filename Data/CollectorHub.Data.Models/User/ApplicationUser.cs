@@ -1,5 +1,5 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
-namespace CollectorHub.Data.Models
+namespace CollectorHub.Data.Models.User
 {
     using System;
     using System.Collections.Generic;

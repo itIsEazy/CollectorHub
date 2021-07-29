@@ -8,5 +8,15 @@
         {
             return this.View();
         }
+
+        public IActionResult HotWheelsAll()
+        {
+            return this.View();
+        }
+
+        public IActionResult LegoAll()
+        {
+            return this.View();
+        }
     }
 }

@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
 
     using CollectorHub.Common;
-    using CollectorHub.Data.Models;
+    using CollectorHub.Data.Models.User;
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;

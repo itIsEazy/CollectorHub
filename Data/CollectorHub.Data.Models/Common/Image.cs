@@ -1,8 +1,6 @@
-﻿namespace CollectorHub.Data.Models
+﻿namespace CollectorHub.Data.Models.Common
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
 
     using CollectorHub.Data.Common.Models;
 
