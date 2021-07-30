@@ -26,5 +26,10 @@
             // TODO: Redirect to each user collections page
             return this.Redirect("/");
         }
+
+        public IActionResult MyCollections()
+        {
+            return this.View();
+        }
     }
 }
