@@ -75,6 +75,9 @@ namespace CollectorHub.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<int>("StarsCount")
+                        .HasColumnType("int");
+
                     b.Property<int>("ViewsCount")
                         .HasColumnType("int");
 
@@ -135,18 +138,28 @@ namespace CollectorHub.Data.Migrations
                     b.ToTable("ForumPostComments");
                 });
 
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.PremiumHWCar", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCar", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Col")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Movie")
                         .HasColumnType("nvarchar(max)");
@@ -166,6 +179,9 @@ namespace CollectorHub.Data.Migrations
                     b.Property<int>("SerieId")
                         .HasColumnType("int");
 
+                    b.Property<string>("SerieId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Tampos")
                         .HasColumnType("nvarchar(max)");
 
@@ -177,34 +193,71 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SerieId");
+                    b.HasIndex("IsDeleted");
 
-                    b.ToTable("PremiumHWCars");
+                    b.HasIndex("SerieId1");
+
+                    b.ToTable("FastAndFuriousPremiumCars");
                 });
 
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.PremiumHWCollection", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IsDeleted");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("PremiumHWCollections");
+                    b.ToTable("FastAndFuriousPremiumCollections");
                 });
 
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.PremiumHWSerie", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumSerie", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -217,7 +270,9 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PremiumHWSeries");
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("FastAndFuriousPremiumSeries");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoCollection", b =>
@@ -462,6 +517,21 @@ namespace CollectorHub.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("FastAndFuriousPremiumCarFastAndFuriousPremiumCollection", b =>
+                {
+                    b.Property<string>("CarsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CollectionsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CarsId", "CollectionsId");
+
+                    b.HasIndex("CollectionsId");
+
+                    b.ToTable("FastAndFuriousPremiumCarFastAndFuriousPremiumCollection");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -566,21 +636,6 @@ namespace CollectorHub.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("PremiumHWCarPremiumHWCollection", b =>
-                {
-                    b.Property<int>("CarsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CollectionsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CarsId", "CollectionsId");
-
-                    b.HasIndex("CollectionsId");
-
-                    b.ToTable("PremiumHWCarPremiumHWCollection");
-                });
-
             modelBuilder.Entity("CollectorHub.Data.Models.Forum.ForumPost", b =>
                 {
                     b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "Author")
@@ -615,18 +670,16 @@ namespace CollectorHub.Data.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.PremiumHWCar", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCar", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.PremiumHWSerie", "Serie")
+                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumSerie", "Serie")
                         .WithMany("Cars")
-                        .HasForeignKey("SerieId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("SerieId1");
 
                     b.Navigation("Serie");
                 });
 
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.PremiumHWCollection", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", b =>
                 {
                     b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
                         .WithMany()
@@ -661,6 +714,21 @@ namespace CollectorHub.Data.Migrations
                     b.Navigation("Collection");
 
                     b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("FastAndFuriousPremiumCarFastAndFuriousPremiumCollection", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCar", null)
+                        .WithMany()
+                        .HasForeignKey("CarsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", null)
+                        .WithMany()
+                        .HasForeignKey("CollectionsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -714,27 +782,12 @@ namespace CollectorHub.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PremiumHWCarPremiumHWCollection", b =>
-                {
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.PremiumHWCar", null)
-                        .WithMany()
-                        .HasForeignKey("CarsId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.PremiumHWCollection", null)
-                        .WithMany()
-                        .HasForeignKey("CollectionsId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CollectorHub.Data.Models.Forum.ForumPost", b =>
                 {
                     b.Navigation("Comments");
                 });
 
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.PremiumHWSerie", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumSerie", b =>
                 {
                     b.Navigation("Cars");
                 });

@@ -32,13 +32,15 @@
 
         public DbSet<LegoCollection> LegoCollections { get; set; }
 
-        public DbSet<PremiumHWCar> PremiumHWCars { get; set; }
+        public DbSet<FastAndFuriousPremiumCar> FastAndFuriousPremiumCars { get; set; }
 
-        public DbSet<PremiumHWSerie> PremiumHWSeries { get; set; }
+        public DbSet<FastAndFuriousPremiumSerie> FastAndFuriousPremiumSeries { get; set; }
 
-        public DbSet<PremiumHWCollection> PremiumHWCollections { get; set; }
+        public DbSet<FastAndFuriousPremiumCollection> FastAndFuriousPremiumCollections { get; set; }
 
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<SubCategory> SubCategories { get; set; }
 
         public DbSet<ForumPost> ForumPosts { get; set; }
 

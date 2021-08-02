@@ -3,7 +3,7 @@
     using CollectorHub.Data.Common.Models;
     using CollectorHub.Data.Models.Interfaces;
 
-    public abstract class Item : BaseDeletableModel<int>, IItem
+    public abstract class Item : BaseDeletableModel<string>, IItem
     {
         public Item()
         {

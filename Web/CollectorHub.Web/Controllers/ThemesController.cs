@@ -1,10 +1,11 @@
 ﻿namespace CollectorHub.Web.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Web.ViewModels.Themes;
     using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
-    using System.Linq;
 
     public class ThemesController : Controller
     {

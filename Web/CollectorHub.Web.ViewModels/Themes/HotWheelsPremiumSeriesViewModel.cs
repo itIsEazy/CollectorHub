@@ -8,15 +8,17 @@
     {
         public HotWheelsPremiumSeriesViewModel()
         {
-            this.Cars = new HashSet<PremiumHWCar>();
+            this.Cars = new HashSet<FastAndFuriousPremiumCar>();
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Year { get; set; }
 
         public string Name { get; set; }
 
-        public ICollection<PremiumHWCar> Cars { get; set; }
+        public int OrderOfAppearence { get; set; }
+
+        public ICollection<FastAndFuriousPremiumCar> Cars { get; set; }
     }
 }

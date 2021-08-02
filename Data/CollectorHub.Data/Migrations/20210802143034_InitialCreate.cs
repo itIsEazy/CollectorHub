@@ -1,9 +1,8 @@
-﻿namespace CollectorHub.Data.Migrations
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+namespace CollectorHub.Data.Migrations
 {
-    using System;
-
-    using Microsoft.EntityFrameworkCore.Migrations;
-
     public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +18,7 @@
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -48,11 +47,42 @@
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FastAndFuriousPremiumSeries",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Year = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OrderOfApperance = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FastAndFuriousPremiumSeries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -77,26 +107,11 @@
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LegoItems", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PremiumHWSeries",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Year = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OrderOfApperance = table.Column<int>(type: "int", nullable: false),
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PremiumHWSeries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,7 +122,7 @@
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -128,7 +143,7 @@
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -148,7 +163,7 @@
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -166,7 +181,7 @@
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -192,13 +207,38 @@
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FastAndFuriousPremiumCollections",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FastAndFuriousPremiumCollections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FastAndFuriousPremiumCollections_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -216,7 +256,7 @@
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -230,30 +270,45 @@
                 });
 
             migrationBuilder.CreateTable(
-                name: "PremiumHWCollections",
+                name: "ForumPosts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    ViewsCount = table.Column<int>(type: "int", nullable: false),
+                    LikesCount = table.Column<int>(type: "int", nullable: false),
+                    StarsCount = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PremiumHWCollections", x => x.Id);
+                    table.PrimaryKey("PK_ForumPosts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PremiumHWCollections_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_ForumPosts_AspNetUsers_AuthorId",
+                        column: x => x.AuthorId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ForumPosts_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PremiumHWCars",
+                name: "FastAndFuriousPremiumCars",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Col = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ToyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -265,14 +320,19 @@
                     PhotoLooseLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhotoCardLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SerieId = table.Column<int>(type: "int", nullable: false),
+                    SerieId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PremiumHWCars", x => x.Id);
+                    table.PrimaryKey("PK_FastAndFuriousPremiumCars", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PremiumHWCars_PremiumHWSeries_SerieId",
-                        column: x => x.SerieId,
-                        principalTable: "PremiumHWSeries",
+                        name: "FK_FastAndFuriousPremiumCars_FastAndFuriousPremiumSeries_SerieId1",
+                        column: x => x.SerieId1,
+                        principalTable: "FastAndFuriousPremiumSeries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -284,7 +344,7 @@
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CollectionId = table.Column<int>(type: "int", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
+                    ItemId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -304,25 +364,57 @@
                 });
 
             migrationBuilder.CreateTable(
-                name: "PremiumHWCarPremiumHWCollection",
+                name: "ForumPostComments",
                 columns: table => new
                 {
-                    CarsId = table.Column<int>(type: "int", nullable: false),
-                    CollectionsId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    LikesCount = table.Column<int>(type: "int", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: false),
+                    PostId1 = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PremiumHWCarPremiumHWCollection", x => new { x.CarsId, x.CollectionsId });
+                    table.PrimaryKey("PK_ForumPostComments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PremiumHWCarPremiumHWCollection_PremiumHWCars_CarsId",
-                        column: x => x.CarsId,
-                        principalTable: "PremiumHWCars",
+                        name: "FK_ForumPostComments_AspNetUsers_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PremiumHWCarPremiumHWCollection_PremiumHWCollections_CollectionsId",
+                        name: "FK_ForumPostComments_ForumPosts_PostId1",
+                        column: x => x.PostId1,
+                        principalTable: "ForumPosts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FastAndFuriousPremiumCarFastAndFuriousPremiumCollection",
+                columns: table => new
+                {
+                    CarsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CollectionsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FastAndFuriousPremiumCarFastAndFuriousPremiumCollection", x => new { x.CarsId, x.CollectionsId });
+                    table.ForeignKey(
+                        name: "FK_FastAndFuriousPremiumCarFastAndFuriousPremiumCollection_FastAndFuriousPremiumCars_CarsId",
+                        column: x => x.CarsId,
+                        principalTable: "FastAndFuriousPremiumCars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FastAndFuriousPremiumCarFastAndFuriousPremiumCollection_FastAndFuriousPremiumCollections_CollectionsId",
                         column: x => x.CollectionsId,
-                        principalTable: "PremiumHWCollections",
+                        principalTable: "FastAndFuriousPremiumCollections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -377,6 +469,66 @@
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FastAndFuriousPremiumCarFastAndFuriousPremiumCollection_CollectionsId",
+                table: "FastAndFuriousPremiumCarFastAndFuriousPremiumCollection",
+                column: "CollectionsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FastAndFuriousPremiumCars_IsDeleted",
+                table: "FastAndFuriousPremiumCars",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FastAndFuriousPremiumCars_SerieId1",
+                table: "FastAndFuriousPremiumCars",
+                column: "SerieId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FastAndFuriousPremiumCollections_IsDeleted",
+                table: "FastAndFuriousPremiumCollections",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FastAndFuriousPremiumCollections_UserId",
+                table: "FastAndFuriousPremiumCollections",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FastAndFuriousPremiumSeries_IsDeleted",
+                table: "FastAndFuriousPremiumSeries",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumPostComments_AuthorId",
+                table: "ForumPostComments",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumPostComments_IsDeleted",
+                table: "ForumPostComments",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumPostComments_PostId1",
+                table: "ForumPostComments",
+                column: "PostId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumPosts_AuthorId",
+                table: "ForumPosts",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumPosts_CategoryId",
+                table: "ForumPosts",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumPosts_IsDeleted",
+                table: "ForumPosts",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LegoCollectionLegoItem_CollectionId",
                 table: "LegoCollectionLegoItem",
                 column: "CollectionId");
@@ -400,21 +552,6 @@
                 name: "IX_LegoItems_IsDeleted",
                 table: "LegoItems",
                 column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PremiumHWCarPremiumHWCollection_CollectionsId",
-                table: "PremiumHWCarPremiumHWCollection",
-                column: "CollectionsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PremiumHWCars_SerieId",
-                table: "PremiumHWCars",
-                column: "SerieId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PremiumHWCollections_UserId",
-                table: "PremiumHWCollections",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -435,13 +572,25 @@
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "FastAndFuriousPremiumCarFastAndFuriousPremiumCollection");
+
+            migrationBuilder.DropTable(
+                name: "ForumPostComments");
+
+            migrationBuilder.DropTable(
                 name: "LegoCollectionLegoItem");
 
             migrationBuilder.DropTable(
-                name: "PremiumHWCarPremiumHWCollection");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "FastAndFuriousPremiumCars");
+
+            migrationBuilder.DropTable(
+                name: "FastAndFuriousPremiumCollections");
+
+            migrationBuilder.DropTable(
+                name: "ForumPosts");
 
             migrationBuilder.DropTable(
                 name: "LegoCollections");
@@ -450,13 +599,10 @@
                 name: "LegoItems");
 
             migrationBuilder.DropTable(
-                name: "PremiumHWCars");
+                name: "FastAndFuriousPremiumSeries");
 
             migrationBuilder.DropTable(
-                name: "PremiumHWCollections");
-
-            migrationBuilder.DropTable(
-                name: "PremiumHWSeries");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

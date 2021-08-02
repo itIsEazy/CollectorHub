@@ -1,5 +1,6 @@
 ﻿namespace CollectorHub.Data.Models.Forum
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -11,9 +12,13 @@
     {
         public ForumPost()
         {
+            this.Id = Guid.NewGuid().ToString();
+
             this.ViewsCount = 0;
             this.LikesCount = 0;
             this.StarsCount = 0;
+
+            this.Comments = new HashSet<ForumPostComment>();
         }
 
         [Required]

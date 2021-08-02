@@ -14,7 +14,7 @@
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
-            if (dbContext.PremiumHWSeries.Any())
+            if (dbContext.FastAndFuriousPremiumCars.Any())
             {
                 return;
             }
@@ -29,7 +29,7 @@
             var sb = new StringBuilder();
 
             string fandFPremiumLink = "https://hotwheels.fandom.com/wiki/Fast_%26_Furious_Premium_Series";
-            string fandFBasicLink = "https://hotwheels.fandom.com/wiki/Fast_%26_Furious_Series";
+            //// string fandFBasicLink = "https://hotwheels.fandom.com/wiki/Fast_%26_Furious_Series";
 
             // string FandFPremiumLinkPath = @"C:\Users\35989\Desktop\CollectorHub\Tests\Sandbox\TestFiles\HotWheelsFFPremiumHTML.txt"
             // string FandFPremiumHTML = File.ReadAllText(FandFPremiumLinkPath);
@@ -39,8 +39,8 @@
 
             sb.AppendLine("Fast and Furious Premium Link Called");
 
-            List<PremiumHWSerie> allPremiumHWSeries = this.CollectYearAndNames(html);
-            List<PremiumHWCar> allPremiumHWCars = this.CollectInfoForCars(htmlForAllCars);
+            List<FastAndFuriousPremiumSerie> allPremiumHWSeries = this.CollectYearAndNames(html);
+            List<FastAndFuriousPremiumCar> allPremiumHWCars = this.CollectInfoForCars(htmlForAllCars);
 
             int indexer = 0;
             foreach (var serie in allPremiumHWSeries)
@@ -55,12 +55,12 @@
 
             foreach (var serie in allPremiumHWSeries)
             {
-                await db.PremiumHWSeries.AddAsync(serie);
+                await db.FastAndFuriousPremiumSeries.AddAsync(serie);
             }
 
             foreach (var car in allPremiumHWCars)
             {
-                await db.PremiumHWCars.AddAsync(car);
+                await db.FastAndFuriousPremiumCars.AddAsync(car);
             }
 
             await db.SaveChangesAsync();
@@ -70,22 +70,28 @@
             return sb.ToString();
         }
 
-        public List<PremiumHWCar> CollectInfoForCars(string html)
+        public List<FastAndFuriousPremiumCar> CollectInfoForCars(string html)
         {
-            List<PremiumHWCar> allCars = new List<PremiumHWCar>();
+            List<FastAndFuriousPremiumCar> allCars = new List<FastAndFuriousPremiumCar>();
 
-            string tdInfoPattern = @"<td>.*?<\/td>";
-            var mathes = this.GetMatchesFrom(html, tdInfoPattern);
+            // string tdInfoPattern = @"<td>.*?<\/td>";
+            var mathes = this.GetMatchesFrom(html, @"<td>.*?<\/td>");
 
             List<string> clearInformation = this.ClearTheInfoForCars(mathes);
 
-            PremiumHWCar currCar = new PremiumHWCar();
-            PremiumHWCar lastCar = new PremiumHWCar();
+            FastAndFuriousPremiumCar currCar = new FastAndFuriousPremiumCar();
+            FastAndFuriousPremiumCar lastCar = new FastAndFuriousPremiumCar();
             lastCar.ToyId = "this is id to not dail null ref except";
 
             int counter = 1; // counts ++ until last model column
             foreach (var item in clearInformation)
             {
+                // there are newly added cars that brake the logic so we will just ignore them for now
+                if (allCars.Count == 55)
+                {
+                    break;
+                }
+
                 if (counter == 11)
                 {
                     counter = 1;
@@ -146,7 +152,7 @@
                     }
 
                     lastCar = currCar;
-                    currCar = new PremiumHWCar();
+                    currCar = new FastAndFuriousPremiumCar();
                 }
 
                 counter++;
@@ -205,7 +211,7 @@
             return resultList;
         }
 
-        public List<PremiumHWSerie> CollectYearAndNames(string html)
+        public List<FastAndFuriousPremiumSerie> CollectYearAndNames(string html)
         {
             List<string> yearsAndNames = new List<string>();
 
@@ -223,7 +229,7 @@
                 // Console.WriteLine(match);
             }
 
-            List<PremiumHWSerie> allPremiumHWSeries = new List<PremiumHWSerie>();
+            List<FastAndFuriousPremiumSerie> allPremiumHWSeries = new List<FastAndFuriousPremiumSerie>();
 
             int yearCounter = 0;
             int orderCounter = 1;
@@ -233,6 +239,12 @@
             // if counter is 5 => counter back to 0 !
             foreach (var item in yearsAndNames)
             {
+                // newly added series that brakes the current logil WILL BE REFACTORED
+                if (allPremiumHWSeries.Count == 11)
+                {
+                    break;
+                }
+
                 if (yearCounter == 0 || yearCounter == 6)
                 {
                     yearCounter = 0;
@@ -241,7 +253,7 @@
                     continue;
                 }
 
-                PremiumHWSerie currSerie = new PremiumHWSerie();
+                FastAndFuriousPremiumSerie currSerie = new FastAndFuriousPremiumSerie();
 
                 currSerie.Year = year;
                 currSerie.Name = item;

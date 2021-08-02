@@ -1,5 +1,6 @@
 ﻿namespace CollectorHub.Data.Models.Forum
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     using CollectorHub.Data.Common.Models;
@@ -9,6 +10,7 @@
     {
         public ForumPostComment()
         {
+            this.Id = Guid.NewGuid().ToString();
             this.LikesCount = 0;
         }
 

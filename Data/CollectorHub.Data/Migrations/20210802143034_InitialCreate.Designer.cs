@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectorHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210728145819_InitialCreate")]
+    [Migration("20210802143034_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,138 +21,147 @@ namespace CollectorHub.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CollectorHub.Data.Models.ApplicationRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.ApplicationUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.PremiumHWCar", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.Common.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Forum.ForumPost", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LikesCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("StarsCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ViewsCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("ForumPosts");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Forum.ForumPostComment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LikesCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PostId1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("PostId1");
+
+                    b.ToTable("ForumPostComments");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCar", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Col")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Movie")
                         .HasColumnType("nvarchar(max)");
@@ -172,6 +181,9 @@ namespace CollectorHub.Data.Migrations
                     b.Property<int>("SerieId")
                         .HasColumnType("int");
 
+                    b.Property<string>("SerieId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Tampos")
                         .HasColumnType("nvarchar(max)");
 
@@ -183,34 +195,71 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SerieId");
+                    b.HasIndex("IsDeleted");
 
-                    b.ToTable("PremiumHWCars");
+                    b.HasIndex("SerieId1");
+
+                    b.ToTable("FastAndFuriousPremiumCars");
                 });
 
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.PremiumHWCollection", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IsDeleted");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("PremiumHWCollections");
+                    b.ToTable("FastAndFuriousPremiumCollections");
                 });
 
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.PremiumHWSerie", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumSerie", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -223,7 +272,9 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PremiumHWSeries");
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("FastAndFuriousPremiumSeries");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoCollection", b =>
@@ -348,6 +399,141 @@ namespace CollectorHub.Data.Migrations
                     b.ToTable("LegoItems");
                 });
 
+            modelBuilder.Entity("CollectorHub.Data.Models.User.ApplicationRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.User.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("FastAndFuriousPremiumCarFastAndFuriousPremiumCollection", b =>
+                {
+                    b.Property<string>("CarsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CollectionsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CarsId", "CollectionsId");
+
+                    b.HasIndex("CollectionsId");
+
+                    b.ToTable("FastAndFuriousPremiumCarFastAndFuriousPremiumCollection");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -452,35 +638,52 @@ namespace CollectorHub.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("PremiumHWCarPremiumHWCollection", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.Forum.ForumPost", b =>
                 {
-                    b.Property<int>("CarsId")
-                        .HasColumnType("int");
+                    b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
 
-                    b.Property<int>("CollectionsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CarsId", "CollectionsId");
-
-                    b.HasIndex("CollectionsId");
-
-                    b.ToTable("PremiumHWCarPremiumHWCollection");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.PremiumHWCar", b =>
-                {
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.PremiumHWSerie", "Serie")
-                        .WithMany("Cars")
-                        .HasForeignKey("SerieId")
+                    b.HasOne("CollectorHub.Data.Models.Common.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Forum.ForumPostComment", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("CollectorHub.Data.Models.Forum.ForumPost", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId1")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCar", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumSerie", "Serie")
+                        .WithMany("Cars")
+                        .HasForeignKey("SerieId1");
 
                     b.Navigation("Serie");
                 });
 
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.PremiumHWCollection", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.ApplicationUser", "User")
+                    b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
@@ -489,7 +692,7 @@ namespace CollectorHub.Data.Migrations
 
             modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoCollection", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.ApplicationUser", "User")
+                    b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
@@ -515,9 +718,24 @@ namespace CollectorHub.Data.Migrations
                     b.Navigation("Item");
                 });
 
+            modelBuilder.Entity("FastAndFuriousPremiumCarFastAndFuriousPremiumCollection", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCar", null)
+                        .WithMany()
+                        .HasForeignKey("CarsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", null)
+                        .WithMany()
+                        .HasForeignKey("CollectionsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.ApplicationRole", null)
+                    b.HasOne("CollectorHub.Data.Models.User.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -526,7 +744,7 @@ namespace CollectorHub.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.ApplicationUser", null)
+                    b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", null)
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -535,7 +753,7 @@ namespace CollectorHub.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.ApplicationUser", null)
+                    b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", null)
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -544,13 +762,13 @@ namespace CollectorHub.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.ApplicationRole", null)
+                    b.HasOne("CollectorHub.Data.Models.User.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CollectorHub.Data.Models.ApplicationUser", null)
+                    b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", null)
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -559,38 +777,19 @@ namespace CollectorHub.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.ApplicationUser", null)
+                    b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PremiumHWCarPremiumHWCollection", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.Forum.ForumPost", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.PremiumHWCar", null)
-                        .WithMany()
-                        .HasForeignKey("CarsId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.PremiumHWCollection", null)
-                        .WithMany()
-                        .HasForeignKey("CollectionsId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Navigation("Comments");
                 });
 
-            modelBuilder.Entity("CollectorHub.Data.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Claims");
-
-                    b.Navigation("Logins");
-
-                    b.Navigation("Roles");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.PremiumHWSerie", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumSerie", b =>
                 {
                     b.Navigation("Cars");
                 });
@@ -603,6 +802,15 @@ namespace CollectorHub.Data.Migrations
             modelBuilder.Entity("CollectorHub.Data.Models.LegoItem", b =>
                 {
                     b.Navigation("Collections");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.User.ApplicationUser", b =>
+                {
+                    b.Navigation("Claims");
+
+                    b.Navigation("Logins");
+
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

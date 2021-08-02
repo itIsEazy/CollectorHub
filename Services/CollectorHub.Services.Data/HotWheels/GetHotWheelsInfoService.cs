@@ -11,27 +11,27 @@
 
     public class GetHotWheelsInfoService : IGetHotWheelsInfoService
     {
-        private readonly IRepository<PremiumHWCar> premiumHWCarsRepository;
-        private readonly IRepository<PremiumHWSerie> premiumHWSeriesRepository;
-        private readonly IRepository<PremiumHWCollection> premiumHWCollectionsRepository;
+        private readonly IRepository<FastAndFuriousPremiumCar> ffpremiumCarsRepository;
+        private readonly IRepository<FastAndFuriousPremiumSerie> ffpremiumSeriesRepository;
+        private readonly IRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository;
 
         public GetHotWheelsInfoService(
-            IRepository<PremiumHWCar> premiumHWCarsRepository,
-            IRepository<PremiumHWSerie> premiumHWSeriesRepository,
-            IRepository<PremiumHWCollection> premiumHWCollectionsRepository)
+            IRepository<FastAndFuriousPremiumCar> ffpremiumCarsRepository,
+            IRepository<FastAndFuriousPremiumSerie> ffpremiumSeriesRepository,
+            IRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository)
         {
-            this.premiumHWCarsRepository = premiumHWCarsRepository;
-            this.premiumHWSeriesRepository = premiumHWSeriesRepository;
-            this.premiumHWCollectionsRepository = premiumHWCollectionsRepository;
+            this.ffpremiumCarsRepository = ffpremiumCarsRepository;
+            this.ffpremiumSeriesRepository = ffpremiumSeriesRepository;
+            this.ffpremiumCollectionsRepository = ffpremiumCollectionsRepository;
         }
 
         HotWheelsInfoViewModel IGetHotWheelsInfoService.GetInfo()
         {
             var data = new HotWheelsInfoViewModel
             {
-                TotalHotWheelsCarsCount = this.premiumHWCarsRepository.All().Count(),
-                TotalHotWheelsSeriesCount = this.premiumHWSeriesRepository.All().Count(),
-                TotalHotWheelsCollectionsCount = this.premiumHWCollectionsRepository.All().Count(),
+                TotalHotWheelsCarsCount = this.ffpremiumCarsRepository.All().Count(),
+                TotalHotWheelsSeriesCount = this.ffpremiumSeriesRepository.All().Count(),
+                TotalHotWheelsCollectionsCount = this.ffpremiumCollectionsRepository.All().Count(),
             };
 
             return data;
@@ -41,18 +41,21 @@
         {
             var list = new List<HotWheelsPremiumSeriesViewModel>();
 
-            foreach (var serie in this.premiumHWSeriesRepository.All())
+            foreach (var serie in this.ffpremiumSeriesRepository.All())
             {
                 var currSerie = new HotWheelsPremiumSeriesViewModel();
 
                 currSerie.Name = serie.Name;
                 currSerie.Year = serie.Year;
                 currSerie.Id = serie.Id;
+                currSerie.OrderOfAppearence = serie.OrderOfApperance;
 
                 list.Add(currSerie);
             }
 
-            foreach (var car in this.premiumHWCarsRepository.All())
+            list = list.OrderBy(x => x.Year).ToList();
+
+            foreach (var car in this.ffpremiumCarsRepository.All())
             {
                 foreach (var serie in list)
                 {
@@ -60,8 +63,12 @@
                     {
                         serie.Cars.Add(car);
                     }
+
+                    serie.Cars = serie.Cars.OrderBy(x => x.Col).ToList();
                 }
             }
+
+            list = list.OrderBy(x => x.OrderOfAppearence).ToList();
 
             return list;
         }

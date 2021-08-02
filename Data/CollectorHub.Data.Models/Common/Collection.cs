@@ -6,7 +6,7 @@
     using CollectorHub.Data.Common.Models;
     using CollectorHub.Data.Models.Interfaces;
 
-    public abstract class Collection : BaseDeletableModel<int>, ICollection
+    public abstract class Collection : BaseDeletableModel<string>, ICollection
     {
         public Collection()
         {

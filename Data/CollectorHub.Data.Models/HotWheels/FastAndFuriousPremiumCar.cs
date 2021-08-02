@@ -3,16 +3,16 @@
     using System;
     using System.Collections.Generic;
 
+    using CollectorHub.Data.Common.Models;
     using CollectorHub.Data.Models.Common;
 
-    public class PremiumHWCar
+    public class FastAndFuriousPremiumCar : BaseDeletableModel<string>
     {
-        public PremiumHWCar()
+        public FastAndFuriousPremiumCar()
         {
-            this.Collections = new HashSet<PremiumHWCollection>();
+            this.Id = Guid.NewGuid().ToString();
+            this.Collections = new HashSet<FastAndFuriousPremiumCollection>();
         }
-
-        public int Id { get; set; }
 
         public string Col { get; set; }
 
@@ -36,8 +36,8 @@
 
         public int SerieId { get; set; }
 
-        public PremiumHWSerie Serie { get; set; }
+        public FastAndFuriousPremiumSerie Serie { get; set; }
 
-        public IEnumerable<PremiumHWCollection> Collections { get; set; }
+        public IEnumerable<FastAndFuriousPremiumCollection> Collections { get; set; }
     }
 }
