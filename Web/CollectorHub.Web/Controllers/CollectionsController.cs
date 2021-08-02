@@ -17,6 +17,32 @@
             return this.View();
         }
 
+        [Authorize]
+        public IActionResult CreateHotWheelsFastAndFurious()
+        {
+            return this.View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult CreateHotWheelsFastAndFurious(CreateHotWheelsFastAndFuriousCollectionInputModel model)
+        {
+            return this.View();
+        }
+
+        [Authorize]
+        public IActionResult CreateHotWheelsFastAndFuriousPremium()
+        {
+            return this.View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult CreateHotWheelsFastAndFuriousPremium(CreateHotWheelsFastAndFuriousCollectionInputModel model)
+        {
+            return this.View();
+        }
+
         [HttpPost]
         [Authorize]
         public IActionResult Create(CreateHotWheelsCollectionInputModel input)
