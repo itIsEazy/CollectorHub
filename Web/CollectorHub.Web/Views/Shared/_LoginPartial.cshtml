@@ -11,7 +11,7 @@
             <a class="nav-link text-dark" asp-area="" asp-controller="Collections" asp-action="MyCollections">My Collections</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @this.User.Identity.Name!</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">My profile</a>
         </li>
         if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {
@@ -27,9 +27,6 @@
     }
     else
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Collections" asp-action="MyCollections">My Collections</a>
-        </li>
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>

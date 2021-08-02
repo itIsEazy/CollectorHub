@@ -8,6 +8,7 @@
     using CollectorHub.Data.Models.User;
     using CollectorHub.Data.Repositories;
     using CollectorHub.Data.Seeding;
+    using CollectorHub.Services.Data.Administration;
     using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Services.Mapping;
     using CollectorHub.Services.Messaging;
@@ -38,7 +39,8 @@
                 options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-                .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddRoles<ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<CookiePolicyOptions>(
                 options =>
@@ -65,6 +67,7 @@
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<IGetHotWheelsInfoService, GetHotWheelsInfoService>();
+            services.AddTransient<IAdministrationService, AdministrationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

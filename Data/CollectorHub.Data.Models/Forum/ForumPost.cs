@@ -13,6 +13,7 @@
         {
             this.ViewsCount = 0;
             this.LikesCount = 0;
+            this.StarsCount = 0;
         }
 
         [Required]
@@ -36,6 +37,8 @@
         public int ViewsCount { get; set; }
 
         public int LikesCount { get; set; }
+
+        public int StarsCount { get; set; }
 
         public IEnumerable<ForumPostComment> Comments { get; set; }
     }

@@ -1,6 +1,7 @@
 ﻿namespace CollectorHub.Web.Controllers
 {
     using CollectorHub.Web.ViewModels.Collections;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class CollectionsController : Controller
@@ -10,12 +11,14 @@
             return this.View();
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             return this.View();
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(CreateHotWheelsCollectionInputModel input)
         {
             if (!this.ModelState.IsValid)
