@@ -1,8 +1,16 @@
 ﻿namespace CollectorHub.Data.Models.Interfaces
 {
+    using System.Collections.Generic;
+
+    using CollectorHub.Data.Models.User;
+
     public interface ICollection
     {
         public string Name { get; set; }
+
+        public int ViewsCount { get; set; }
+
+        public bool IsPublic { get; set; }
 
         public string Description { get; set; }
 

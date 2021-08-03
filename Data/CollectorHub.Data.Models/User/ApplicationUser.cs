@@ -5,7 +5,7 @@ namespace CollectorHub.Data.Models.User
     using System.Collections.Generic;
 
     using CollectorHub.Data.Common.Models;
-
+    using CollectorHub.Data.Models.HotWheels;
     using Microsoft.AspNetCore.Identity;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
@@ -16,7 +16,11 @@ namespace CollectorHub.Data.Models.User
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+
+            this.HWFFPremiumCollections = new HashSet<FastAndFuriousPremiumCollection>();
         }
+
+        public IEnumerable<FastAndFuriousPremiumCollection> HWFFPremiumCollections { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }

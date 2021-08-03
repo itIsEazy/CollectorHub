@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using CollectorHub.Data;
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.HotWheels;
     using CollectorHub.Web.ViewModels.Home;

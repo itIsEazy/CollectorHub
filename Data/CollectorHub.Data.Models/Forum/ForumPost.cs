@@ -22,6 +22,9 @@
         }
 
         [Required]
+        public string AuthorId { get; set; }
+
+        [Required]
         public ApplicationUser Author { get; set; }
 
         [Required]

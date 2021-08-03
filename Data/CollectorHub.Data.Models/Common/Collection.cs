@@ -1,15 +1,18 @@
 ﻿namespace CollectorHub.Data.Models.Common
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using CollectorHub.Data.Common.Models;
     using CollectorHub.Data.Models.Interfaces;
+    using CollectorHub.Data.Models.User;
 
     public abstract class Collection : BaseDeletableModel<string>, ICollection
     {
         public Collection()
         {
+            this.Id = Guid.NewGuid().ToString();
         }
 
         [Required]
@@ -21,6 +24,10 @@
         [MinLength(10)]
         [MaxLength(400)]
         public string Description { get; set; }
+
+        public int ViewsCount { get; set; }
+
+        public bool IsPublic { get; set; }
 
         [Url]
         public string ImageUrl { get; set; }

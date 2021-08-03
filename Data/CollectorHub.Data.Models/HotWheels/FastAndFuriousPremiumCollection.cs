@@ -15,6 +15,8 @@
             this.Cars = new HashSet<FastAndFuriousPremiumCar>();
         }
 
+        public string UserId { get; set; }
+
         public ApplicationUser User { get; set; }
 
         public IEnumerable<FastAndFuriousPremiumCar> Cars { get; set; }

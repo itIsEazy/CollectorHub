@@ -38,6 +38,8 @@
 
         public DbSet<FastAndFuriousPremiumCollection> FastAndFuriousPremiumCollections { get; set; }
 
+        public DbSet<FastAndFuriousPremiumCollectionApplicationUser> FastAndFuriousPremiumCollectionsApplicationUsers { get; set; }
+
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<SubCategory> SubCategories { get; set; }
