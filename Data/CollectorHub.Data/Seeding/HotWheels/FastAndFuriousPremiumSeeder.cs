@@ -47,6 +47,7 @@
             {
                 for (int i = 0; i < 5; i++)
                 {
+                    allPremiumHWCars[indexer].SerieId = serie.Id;
                     allPremiumHWCars[indexer].Serie = serie;
                     serie.Cars.Add(allPremiumHWCars[indexer]);
                     indexer++;

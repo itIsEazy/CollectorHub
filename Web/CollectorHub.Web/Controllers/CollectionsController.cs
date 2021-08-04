@@ -76,22 +76,12 @@
             return this.RedirectToAction(nameof(this.MyCollections));
         }
 
-        [HttpPost]
-        [Authorize]
-        public IActionResult Create(CreateHotWheelsCollectionInputModel input)
+        public IActionResult MyCollections(HotWheelsFastAndFuriousPremiumCollectionMyCollectionsViewModel model)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View();
-            }
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            // TODO: Redirect to each user collections page
-            return this.Redirect("/");
-        }
-
-        public IActionResult MyCollections()
-        {
-            return this.View();
+            model = this.hotWheelsInfoService.GetHotWheelsFastAndFuriousPremiumCollection(userId);
+            return this.View(model);
         }
     }
 }

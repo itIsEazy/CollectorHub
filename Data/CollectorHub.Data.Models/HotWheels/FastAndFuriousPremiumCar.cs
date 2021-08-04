@@ -34,7 +34,7 @@
 
         public string PhotoCardLink { get; set; }
 
-        public int SerieId { get; set; }
+        public string SerieId { get; set; }
 
         public FastAndFuriousPremiumSerie Serie { get; set; }
 

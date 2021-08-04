@@ -6,6 +6,7 @@
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.HotWheels;
     using CollectorHub.Data.Models.User;
+    using CollectorHub.Web.ViewModels.Collections;
     using CollectorHub.Web.ViewModels.Home;
     using CollectorHub.Web.ViewModels.Themes;
 
@@ -115,6 +116,38 @@
             this.allUsers.SaveChangesAsync();
             this.ffpremiumCollectionsRepository.AddAsync(collection);
             this.ffpremiumCollectionsRepository.SaveChangesAsync();
+        }
+
+        public HotWheelsFastAndFuriousPremiumCollectionMyCollectionsViewModel GetHotWheelsFastAndFuriousPremiumCollection(string userId)
+        {
+            string defaultImageUrl = "http://hwcollectorsnews.com/wp-content/uploads/2019/09/Fat-original-Box-Set-1024x508.jpg";
+
+            var model = new HotWheelsFastAndFuriousPremiumCollectionMyCollectionsViewModel();
+
+            var collection = this.ffpremiumCollectionsRepository
+                .All()
+                .Where(x => x.UserId == userId)
+                .FirstOrDefault();
+
+            int totalCarsCount = this.ffpremiumCarsRepository
+                .All()
+                .Count();
+
+            model.Name = collection.Name;
+            model.ViewsCount = collection.ViewsCount;
+            model.Description = collection.Description;
+            model.Progression = "0 / " + totalCarsCount.ToString() + " Cars owned";
+
+            if (string.IsNullOrEmpty(collection.ImageUrl))
+            {
+                model.ImageUrl = defaultImageUrl;
+            }
+            else
+            {
+                model.ImageUrl = collection.ImageUrl;
+            }
+
+            return model;
         }
     }
 }
