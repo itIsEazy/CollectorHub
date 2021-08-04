@@ -5,23 +5,27 @@
 
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.HotWheels;
+    using CollectorHub.Data.Models.User;
     using CollectorHub.Web.ViewModels.Home;
     using CollectorHub.Web.ViewModels.Themes;
 
     public class GetHotWheelsInfoService : IGetHotWheelsInfoService
     {
-        private readonly IRepository<FastAndFuriousPremiumCar> ffpremiumCarsRepository;
-        private readonly IRepository<FastAndFuriousPremiumSerie> ffpremiumSeriesRepository;
-        private readonly IRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository;
+        private readonly IDeletableEntityRepository<FastAndFuriousPremiumCar> ffpremiumCarsRepository;
+        private readonly IDeletableEntityRepository<FastAndFuriousPremiumSerie> ffpremiumSeriesRepository;
+        private readonly IDeletableEntityRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository;
+        private readonly IDeletableEntityRepository<ApplicationUser> allUsers;
 
         public GetHotWheelsInfoService(
-            IRepository<FastAndFuriousPremiumCar> ffpremiumCarsRepository,
-            IRepository<FastAndFuriousPremiumSerie> ffpremiumSeriesRepository,
-            IRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository)
+            IDeletableEntityRepository<FastAndFuriousPremiumCar> ffpremiumCarsRepository,
+            IDeletableEntityRepository<FastAndFuriousPremiumSerie> ffpremiumSeriesRepository,
+            IDeletableEntityRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository,
+            IDeletableEntityRepository<ApplicationUser> allUsers)
         {
             this.ffpremiumCarsRepository = ffpremiumCarsRepository;
             this.ffpremiumSeriesRepository = ffpremiumSeriesRepository;
             this.ffpremiumCollectionsRepository = ffpremiumCollectionsRepository;
+            this.allUsers = allUsers;
         }
 
         HotWheelsInfoViewModel IGetHotWheelsInfoService.GetInfo()
@@ -34,6 +38,14 @@
             };
 
             return data;
+        }
+
+        public ApplicationUser GetUser(string userId)
+        {
+            return this.allUsers
+                .All()
+                .Where(x => x.Id == userId)
+                .FirstOrDefault();
         }
 
         public ICollection<HotWheelsPremiumSeriesViewModel> GetAllPremiumSeriesAndCars()
@@ -70,6 +82,39 @@
             list = list.OrderBy(x => x.OrderOfAppearence).ToList();
 
             return list;
+        }
+
+        public bool CheckIfUserCanCreateHWFFPremiumCollection(string userId)
+        {
+            var user = this.GetUser(userId);
+
+            if (user.FFPremiumCollectionId == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void CreateHotWheelsFastAndFuriousPremium(string userId, string description, bool isPublic)
+        {
+            var user = this.GetUser(userId);
+
+            var collection = new FastAndFuriousPremiumCollection();
+
+            collection.UserId = userId;
+            collection.Description = description;
+            collection.IsPublic = isPublic;
+            collection.Name = "Hot Wheels Fast and Furious Premium";
+            collection.ViewsCount = 0;
+
+            user.FFPremiumCollectionId = collection.Id;
+
+            this.allUsers.SaveChangesAsync();
+            this.ffpremiumCollectionsRepository.AddAsync(collection);
+            this.ffpremiumCollectionsRepository.SaveChangesAsync();
         }
     }
 }

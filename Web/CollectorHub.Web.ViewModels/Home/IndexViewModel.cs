@@ -11,6 +11,5 @@
         public int TotalUsersCount { get; set; }
 
         public int TotalLegoItemsForSale { get; set; }
-
     }
 }

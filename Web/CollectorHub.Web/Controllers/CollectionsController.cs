@@ -1,11 +1,23 @@
 ﻿namespace CollectorHub.Web.Controllers
 {
+    using System.Security.Claims;
+
+    using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Web.ViewModels.Collections;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    public class CollectionsController : Controller
+    public class CollectionsController : BaseController
     {
+        private readonly IGetHotWheelsInfoService hotWheelsInfoService;
+
+        public CollectionsController(
+            IGetHotWheelsInfoService hotWheelsInfoService)
+        {
+            this.hotWheelsInfoService = hotWheelsInfoService;
+        }
+
         public IActionResult Index()
         {
             return this.View();
@@ -33,14 +45,35 @@
         [Authorize]
         public IActionResult CreateHotWheelsFastAndFuriousPremium()
         {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.hotWheelsInfoService.CheckIfUserCanCreateHWFFPremiumCollection(userId))
+            {
+                return this.RedirectToAction(nameof(this.MyCollections));
+            }
+
             return this.View();
         }
 
-        [Authorize]
         [HttpPost]
-        public IActionResult CreateHotWheelsFastAndFuriousPremium(CreateHotWheelsFastAndFuriousCollectionInputModel model)
+        [Authorize]
+        public IActionResult CreateHotWheelsFastAndFuriousPremium(CreateHotWheelsFastAndFuriousPremiumCollectionInputModel model)
         {
-            return this.View();
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.hotWheelsInfoService.CheckIfUserCanCreateHWFFPremiumCollection(userId))
+            {
+                return this.RedirectToAction(nameof(this.MyCollections));
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            this.hotWheelsInfoService.CreateHotWheelsFastAndFuriousPremium(userId, model.Description, model.IsPublic);
+
+            return this.RedirectToAction(nameof(this.MyCollections));
         }
 
         [HttpPost]

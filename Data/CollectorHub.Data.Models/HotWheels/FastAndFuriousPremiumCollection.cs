@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using CollectorHub.Data.Common.Models;
     using CollectorHub.Data.Models.Common;
@@ -17,6 +18,7 @@
 
         public string UserId { get; set; }
 
+        [ForeignKey(nameof(ApplicationUser))]
         public ApplicationUser User { get; set; }
 
         public IEnumerable<FastAndFuriousPremiumCar> Cars { get; set; }

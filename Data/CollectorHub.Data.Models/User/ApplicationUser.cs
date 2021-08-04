@@ -3,6 +3,7 @@ namespace CollectorHub.Data.Models.User
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using CollectorHub.Data.Common.Models;
     using CollectorHub.Data.Models.HotWheels;
@@ -16,11 +17,12 @@ namespace CollectorHub.Data.Models.User
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
-
-            this.HWFFPremiumCollections = new HashSet<FastAndFuriousPremiumCollection>();
         }
 
-        public IEnumerable<FastAndFuriousPremiumCollection> HWFFPremiumCollections { get; set; }
+        public string FFPremiumCollectionId { get; set; }
+
+        [ForeignKey(nameof(FastAndFuriousPremiumCollection))]
+        public FastAndFuriousPremiumCollection FFPremiumCollection { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }
