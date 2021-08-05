@@ -67,7 +67,9 @@
 
             list = list.OrderBy(x => x.Year).ToList();
 
-            foreach (var car in this.ffpremiumCarsRepository.All())
+            var allCars = this.ffpremiumCarsRepository.All();
+
+            foreach (var car in allCars)
             {
                 foreach (var serie in list)
                 {
@@ -113,8 +115,9 @@
 
             user.FFPremiumCollectionId = collection.Id;
 
-            this.allUsers.SaveChangesAsync();
             this.ffpremiumCollectionsRepository.AddAsync(collection);
+
+            this.allUsers.SaveChangesAsync();
             this.ffpremiumCollectionsRepository.SaveChangesAsync();
         }
 
@@ -132,6 +135,11 @@
             int totalCarsCount = this.ffpremiumCarsRepository
                 .All()
                 .Count();
+
+            if (collection == null) //// if our model is null the view will know User do NOT have such collection and will not visiulize it
+            {
+                return null;
+            }
 
             model.Name = collection.Name;
             model.ViewsCount = collection.ViewsCount;

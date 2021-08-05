@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectorHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210804135749_InitialCreate")]
+    [Migration("20210805193035_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -219,10 +219,7 @@ namespace CollectorHub.Data.Migrations
                     b.Property<string>("PhotoLooseLink")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SerieId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SerieId1")
+                    b.Property<string>("SerieId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Tampos")
@@ -238,7 +235,7 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.HasIndex("SerieId1");
+                    b.HasIndex("SerieId");
 
                     b.ToTable("FastAndFuriousPremiumCars");
                 });
@@ -756,7 +753,7 @@ namespace CollectorHub.Data.Migrations
                 {
                     b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumSerie", "Serie")
                         .WithMany("Cars")
-                        .HasForeignKey("SerieId1");
+                        .HasForeignKey("SerieId");
 
                     b.Navigation("Serie");
                 });

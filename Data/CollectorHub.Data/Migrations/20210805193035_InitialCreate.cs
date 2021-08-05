@@ -131,8 +131,7 @@ namespace CollectorHub.Data.Migrations
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhotoLooseLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhotoCardLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SerieId = table.Column<int>(type: "int", nullable: false),
-                    SerieId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    SerieId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -142,8 +141,8 @@ namespace CollectorHub.Data.Migrations
                 {
                     table.PrimaryKey("PK_FastAndFuriousPremiumCars", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumCars_FastAndFuriousPremiumSeries_SerieId1",
-                        column: x => x.SerieId1,
+                        name: "FK_FastAndFuriousPremiumCars_FastAndFuriousPremiumSeries_SerieId",
+                        column: x => x.SerieId,
                         principalTable: "FastAndFuriousPremiumSeries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -500,9 +499,9 @@ namespace CollectorHub.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumCars_SerieId1",
+                name: "IX_FastAndFuriousPremiumCars_SerieId",
                 table: "FastAndFuriousPremiumCars",
-                column: "SerieId1");
+                column: "SerieId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FastAndFuriousPremiumCollections_ApplicationUser",
