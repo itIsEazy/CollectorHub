@@ -289,24 +289,32 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FastAndFuriousPremiumCarFastAndFuriousPremiumCollection",
+                name: "FastAndFuriousPremiumItem",
                 columns: table => new
                 {
-                    CarsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CollectionsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CarId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    FastAndFuriousPremiumCollectionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PriceNow = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PriceBoughted = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OwnerPictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FastAndFuriousPremiumCarFastAndFuriousPremiumCollection", x => new { x.CarsId, x.CollectionsId });
+                    table.PrimaryKey("PK_FastAndFuriousPremiumItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumCarFastAndFuriousPremiumCollection_FastAndFuriousPremiumCars_CarsId",
-                        column: x => x.CarsId,
+                        name: "FK_FastAndFuriousPremiumItem_FastAndFuriousPremiumCars_CarId",
+                        column: x => x.CarId,
                         principalTable: "FastAndFuriousPremiumCars",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumCarFastAndFuriousPremiumCollection_FastAndFuriousPremiumCollections_CollectionsId",
-                        column: x => x.CollectionsId,
+                        name: "FK_FastAndFuriousPremiumItem_FastAndFuriousPremiumCollections_FastAndFuriousPremiumCollectionId",
+                        column: x => x.FastAndFuriousPremiumCollectionId,
                         principalTable: "FastAndFuriousPremiumCollections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -489,11 +497,6 @@ namespace CollectorHub.Data.Migrations
                 column: "SubCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumCarFastAndFuriousPremiumCollection_CollectionsId",
-                table: "FastAndFuriousPremiumCarFastAndFuriousPremiumCollection",
-                column: "CollectionsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_FastAndFuriousPremiumCars_IsDeleted",
                 table: "FastAndFuriousPremiumCars",
                 column: "IsDeleted");
@@ -511,6 +514,21 @@ namespace CollectorHub.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_FastAndFuriousPremiumCollections_IsDeleted",
                 table: "FastAndFuriousPremiumCollections",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FastAndFuriousPremiumItem_CarId",
+                table: "FastAndFuriousPremiumItem",
+                column: "CarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FastAndFuriousPremiumItem_FastAndFuriousPremiumCollectionId",
+                table: "FastAndFuriousPremiumItem",
+                column: "FastAndFuriousPremiumCollectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FastAndFuriousPremiumItem_IsDeleted",
+                table: "FastAndFuriousPremiumItem",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
@@ -646,7 +664,7 @@ namespace CollectorHub.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "FastAndFuriousPremiumCarFastAndFuriousPremiumCollection");
+                name: "FastAndFuriousPremiumItem");
 
             migrationBuilder.DropTable(
                 name: "ForumPostComments");

@@ -11,7 +11,7 @@
         public FastAndFuriousPremiumCar()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.Collections = new HashSet<FastAndFuriousPremiumCollection>();
+            this.Items = new HashSet<FastAndFuriousPremiumItem>();
         }
 
         public string Col { get; set; }
@@ -38,6 +38,6 @@
 
         public FastAndFuriousPremiumSerie Serie { get; set; }
 
-        public IEnumerable<FastAndFuriousPremiumCollection> Collections { get; set; }
+        public IEnumerable<FastAndFuriousPremiumItem> Items { get; set; }
     }
 }

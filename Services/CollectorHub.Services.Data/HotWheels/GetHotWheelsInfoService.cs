@@ -141,10 +141,16 @@
                 return null;
             }
 
+            int ownedCarsCount = 0;
+            if (collection.Items != null)
+            {
+                ownedCarsCount = collection.Items.Count();
+            }
+
             model.Name = collection.Name;
             model.ViewsCount = collection.ViewsCount;
             model.Description = collection.Description;
-            model.Progression = "0 / " + totalCarsCount.ToString() + " Cars owned";
+            model.Progression = ownedCarsCount.ToString() + " / " + totalCarsCount.ToString() + " Cars owned";
 
             if (string.IsNullOrEmpty(collection.ImageUrl))
             {

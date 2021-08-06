@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectorHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210805193035_InitialCreate")]
+    [Migration("20210806140704_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -289,6 +289,49 @@ namespace CollectorHub.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("FastAndFuriousPremiumCollections");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CarId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FastAndFuriousPremiumCollectionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OwnerPictureUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PriceBoughted")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PriceNow")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("FastAndFuriousPremiumCollectionId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("FastAndFuriousPremiumItem");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumSerie", b =>
@@ -574,21 +617,6 @@ namespace CollectorHub.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("FastAndFuriousPremiumCarFastAndFuriousPremiumCollection", b =>
-                {
-                    b.Property<string>("CarsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CollectionsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CarsId", "CollectionsId");
-
-                    b.HasIndex("CollectionsId");
-
-                    b.ToTable("FastAndFuriousPremiumCarFastAndFuriousPremiumCollection");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -767,6 +795,19 @@ namespace CollectorHub.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumItem", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCar", "Car")
+                        .WithMany("Items")
+                        .HasForeignKey("CarId");
+
+                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", null)
+                        .WithMany("Items")
+                        .HasForeignKey("FastAndFuriousPremiumCollectionId");
+
+                    b.Navigation("Car");
+                });
+
             modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoCollection", b =>
                 {
                     b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
@@ -802,21 +843,6 @@ namespace CollectorHub.Data.Migrations
                         .HasForeignKey("FastAndFuriousPremiumCollection");
 
                     b.Navigation("FFPremiumCollection");
-                });
-
-            modelBuilder.Entity("FastAndFuriousPremiumCarFastAndFuriousPremiumCollection", b =>
-                {
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCar", null)
-                        .WithMany()
-                        .HasForeignKey("CarsId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", null)
-                        .WithMany()
-                        .HasForeignKey("CollectionsId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -873,6 +899,16 @@ namespace CollectorHub.Data.Migrations
             modelBuilder.Entity("CollectorHub.Data.Models.Forum.ForumPost", b =>
                 {
                     b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCar", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumSerie", b =>

@@ -13,7 +13,7 @@
         public FastAndFuriousPremiumCollection()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.Cars = new HashSet<FastAndFuriousPremiumCar>();
+            this.Items = new HashSet<FastAndFuriousPremiumItem>();
         }
 
         public string UserId { get; set; }
@@ -21,6 +21,6 @@
         [ForeignKey(nameof(ApplicationUser))]
         public ApplicationUser User { get; set; }
 
-        public IEnumerable<FastAndFuriousPremiumCar> Cars { get; set; }
+        public IEnumerable<FastAndFuriousPremiumItem> Items { get; set; }
     }
 }

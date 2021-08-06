@@ -76,6 +76,7 @@
             return this.RedirectToAction(nameof(this.MyCollections));
         }
 
+        [Authorize]
         public IActionResult MyCollections(HotWheelsFastAndFuriousPremiumCollectionMyCollectionsViewModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;

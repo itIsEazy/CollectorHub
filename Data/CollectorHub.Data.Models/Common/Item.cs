@@ -12,5 +12,7 @@
         public decimal PriceNow { get; set; }
 
         public decimal PriceBoughted { get; set; }
+
+        public string OwnerPictureUrl { get; set; }
     }
 }
