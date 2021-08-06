@@ -20,5 +20,7 @@
         void CreateHotWheelsFastAndFuriousPremium(string userId, string description, bool isPublic);
 
         HotWheelsFastAndFuriousPremiumCollectionMyCollectionsViewModel GetHotWheelsFastAndFuriousPremiumCollection(string userId);
+
+        HotWheelsFastAndFuriousPremiumCollectionViewModel GetHotWheelsFastAndFuriousPremiumFullCollection(string userId);
     }
 }

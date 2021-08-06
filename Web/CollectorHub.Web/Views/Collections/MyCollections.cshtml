@@ -15,7 +15,7 @@
             <div class="d-lg-inline-block border">
                 <p class="text-center">@Model.Progression</p>
                 <p>@Model.Description</p>
-                <a class="btn btn-outline-secondary text-center w-100" role="button">Check out collection</a>
+                <a asp-controller="Collections" asp-action="HotWheelsFastAndFuriousPremium" asp-route-collectionId="@Model.Id" class="btn btn-outline-secondary text-center w-100" role="button">Check out collection</a>
             </div>
         </div>
     </div>

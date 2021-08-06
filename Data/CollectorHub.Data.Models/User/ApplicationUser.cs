@@ -22,7 +22,7 @@ namespace CollectorHub.Data.Models.User
         public string FFPremiumCollectionId { get; set; }
 
         [ForeignKey(nameof(FastAndFuriousPremiumCollection))]
-        public FastAndFuriousPremiumCollection FFPremiumCollection { get; set; }
+        public virtual FastAndFuriousPremiumCollection FFPremiumCollection { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }

@@ -9,6 +9,7 @@
     using CollectorHub.Web.ViewModels.Collections;
     using CollectorHub.Web.ViewModels.Home;
     using CollectorHub.Web.ViewModels.Themes;
+    using Microsoft.EntityFrameworkCore;
 
     public class GetHotWheelsInfoService : IGetHotWheelsInfoService
     {
@@ -108,12 +109,14 @@
             var collection = new FastAndFuriousPremiumCollection();
 
             collection.UserId = userId;
+            collection.User = user;
             collection.Description = description;
             collection.IsPublic = isPublic;
             collection.Name = "Hot Wheels Fast and Furious Premium";
             collection.ViewsCount = 0;
 
             user.FFPremiumCollectionId = collection.Id;
+            user.FFPremiumCollection = collection;
 
             this.ffpremiumCollectionsRepository.AddAsync(collection);
 
@@ -147,6 +150,7 @@
                 ownedCarsCount = collection.Items.Count();
             }
 
+            model.Id = collection.Id;
             model.Name = collection.Name;
             model.ViewsCount = collection.ViewsCount;
             model.Description = collection.Description;
@@ -160,6 +164,25 @@
             {
                 model.ImageUrl = collection.ImageUrl;
             }
+
+            return model;
+        }
+
+        public HotWheelsFastAndFuriousPremiumCollectionViewModel GetHotWheelsFastAndFuriousPremiumFullCollection(string collectionId)
+        {
+            var collection = this.ffpremiumCollectionsRepository
+                .All()
+                .Where(x => x.Id == collectionId)
+                .FirstOrDefault();
+
+            var model = new HotWheelsFastAndFuriousPremiumCollectionViewModel();
+
+            model.Name = collection.Name;
+            model.ImageUrl = collection.ImageUrl;
+            model.IsPublic = collection.IsPublic;
+            model.User = collection.User;
+            model.ViewsCount = collection.ViewsCount;
+            model.Description = collection.Description;
 
             return model;
         }

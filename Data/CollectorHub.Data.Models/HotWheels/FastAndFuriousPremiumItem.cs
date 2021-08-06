@@ -11,6 +11,6 @@
             this.Id = Guid.NewGuid().ToString();
         }
 
-        public FastAndFuriousPremiumCar Car { get; set; }
+        public virtual FastAndFuriousPremiumCar Car { get; set; }
     }
 }

@@ -19,8 +19,8 @@
         public string UserId { get; set; }
 
         [ForeignKey(nameof(ApplicationUser))]
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
-        public IEnumerable<FastAndFuriousPremiumItem> Items { get; set; }
+        public virtual IEnumerable<FastAndFuriousPremiumItem> Items { get; set; }
     }
 }

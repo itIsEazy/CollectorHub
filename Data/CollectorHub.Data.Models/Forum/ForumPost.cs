@@ -25,7 +25,7 @@
         public string AuthorId { get; set; }
 
         [Required]
-        public ApplicationUser Author { get; set; }
+        public virtual ApplicationUser Author { get; set; }
 
         [Required]
         [MaxLength(30)]
@@ -40,7 +40,7 @@
 
         public int CategoryId { get; set; }
 
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
 
         public int ViewsCount { get; set; }
 
@@ -48,6 +48,6 @@
 
         public int StarsCount { get; set; }
 
-        public IEnumerable<ForumPostComment> Comments { get; set; }
+        public virtual IEnumerable<ForumPostComment> Comments { get; set; }
     }
 }

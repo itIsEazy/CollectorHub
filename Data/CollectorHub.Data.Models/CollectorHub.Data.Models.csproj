@@ -22,5 +22,9 @@
   <ItemGroup>
     <ProjectReference Include="..\CollectorHub.Data.Common\CollectorHub.Data.Common.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Lego\DO NOT FORGET VIRUAL\" />
+  </ItemGroup>
   
 </Project>

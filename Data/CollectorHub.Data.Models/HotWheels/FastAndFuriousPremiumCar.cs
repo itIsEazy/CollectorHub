@@ -36,8 +36,8 @@
 
         public string SerieId { get; set; }
 
-        public FastAndFuriousPremiumSerie Serie { get; set; }
+        public virtual FastAndFuriousPremiumSerie Serie { get; set; }
 
-        public IEnumerable<FastAndFuriousPremiumItem> Items { get; set; }
+        public virtual IEnumerable<FastAndFuriousPremiumItem> Items { get; set; }
     }
 }

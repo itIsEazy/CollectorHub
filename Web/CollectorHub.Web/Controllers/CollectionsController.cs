@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize]
     public class CollectionsController : BaseController
     {
         private readonly IGetHotWheelsInfoService hotWheelsInfoService;
@@ -18,31 +19,28 @@
             this.hotWheelsInfoService = hotWheelsInfoService;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return this.View();
         }
 
-        [Authorize]
         public IActionResult Create()
         {
             return this.View();
         }
 
-        [Authorize]
         public IActionResult CreateHotWheelsFastAndFurious()
         {
             return this.View();
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult CreateHotWheelsFastAndFurious(CreateHotWheelsFastAndFuriousCollectionInputModel model)
         {
             return this.View();
         }
 
-        [Authorize]
         public IActionResult CreateHotWheelsFastAndFuriousPremium()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -56,7 +54,6 @@
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult CreateHotWheelsFastAndFuriousPremium(CreateHotWheelsFastAndFuriousPremiumCollectionInputModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -76,7 +73,13 @@
             return this.RedirectToAction(nameof(this.MyCollections));
         }
 
-        [Authorize]
+        public IActionResult HotWheelsFastAndFuriousPremium(string collectionId)
+        {
+            var model = this.hotWheelsInfoService.GetHotWheelsFastAndFuriousPremiumFullCollection(collectionId);
+
+            return this.View(model);
+        }
+
         public IActionResult MyCollections(HotWheelsFastAndFuriousPremiumCollectionMyCollectionsViewModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;

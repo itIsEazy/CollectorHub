@@ -18,7 +18,7 @@
         public string AuthorId { get; set; }
 
         [Required]
-        public ApplicationUser Author { get; set; }
+        public virtual ApplicationUser Author { get; set; }
 
         [Required]
         [MaxLength(300)]
@@ -29,6 +29,6 @@
         public int PostId { get; set; }
 
         [Required]
-        public ForumPost Post { get; set; }
+        public virtual ForumPost Post { get; set; }
     }
 }

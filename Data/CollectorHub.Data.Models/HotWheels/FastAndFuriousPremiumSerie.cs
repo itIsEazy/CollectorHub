@@ -19,6 +19,6 @@
 
         public int OrderOfApperance { get; set; }
 
-        public ICollection<FastAndFuriousPremiumCar> Cars { get; set; }
+        public virtual ICollection<FastAndFuriousPremiumCar> Cars { get; set; }
     }
 }

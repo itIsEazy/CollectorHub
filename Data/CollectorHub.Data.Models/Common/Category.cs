@@ -14,6 +14,6 @@
         [MaxLength(30)]
         public string Name { get; set; }
 
-        public SubCategory SubCategory { get; set; }
+        public virtual SubCategory SubCategory { get; set; }
     }
 }
