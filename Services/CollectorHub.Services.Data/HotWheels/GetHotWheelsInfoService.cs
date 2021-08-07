@@ -16,17 +16,20 @@
         private readonly IDeletableEntityRepository<FastAndFuriousPremiumCar> ffpremiumCarsRepository;
         private readonly IDeletableEntityRepository<FastAndFuriousPremiumSerie> ffpremiumSeriesRepository;
         private readonly IDeletableEntityRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository;
+        private readonly IDeletableEntityRepository<FastAndFuriousPremiumItem> ffpremiumItemsRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> allUsers;
 
         public GetHotWheelsInfoService(
             IDeletableEntityRepository<FastAndFuriousPremiumCar> ffpremiumCarsRepository,
             IDeletableEntityRepository<FastAndFuriousPremiumSerie> ffpremiumSeriesRepository,
             IDeletableEntityRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository,
+            IDeletableEntityRepository<FastAndFuriousPremiumItem> ffpremiumItemsRepository,
             IDeletableEntityRepository<ApplicationUser> allUsers)
         {
             this.ffpremiumCarsRepository = ffpremiumCarsRepository;
             this.ffpremiumSeriesRepository = ffpremiumSeriesRepository;
             this.ffpremiumCollectionsRepository = ffpremiumCollectionsRepository;
+            this.ffpremiumItemsRepository = ffpremiumItemsRepository;
             this.allUsers = allUsers;
         }
 
@@ -188,13 +191,32 @@
                 model.ImageUrl = collection.ImageUrl;
             }
 
+            model.Id = collection.Id;
             model.Name = collection.Name;
             model.IsPublic = collection.IsPublic;
             model.User = collection.User;
             model.ViewsCount = collection.ViewsCount;
             model.Description = collection.Description;
+            model.Items = this.ffpremiumItemsRepository.All().Where(x => x.CollectionId == collectionId).ToList();
 
             return model;
+        }
+
+        public void AddItemToFastAndFuriousPremiumCollection(string carId, string collectionId, decimal price, string customUrl)
+        {
+            var item = new FastAndFuriousPremiumItem();
+            var collection = this.ffpremiumCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
+
+            item.Car = this.ffpremiumCarsRepository.All().Where(x => x.Id == carId).FirstOrDefault();
+            item.OwnerPictureUrl = customUrl;
+            item.Collection = collection;
+            item.PriceBoughted = price;
+
+            this.ffpremiumItemsRepository.AddAsync(item);
+            collection.Items.Add(item);
+
+            this.ffpremiumCollectionsRepository.SaveChangesAsync();
+            this.ffpremiumItemsRepository.SaveChangesAsync();
         }
     }
 }

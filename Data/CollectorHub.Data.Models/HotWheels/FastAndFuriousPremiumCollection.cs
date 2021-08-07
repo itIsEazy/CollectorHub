@@ -21,6 +21,6 @@
         [ForeignKey(nameof(ApplicationUser))]
         public virtual ApplicationUser User { get; set; }
 
-        public virtual IEnumerable<FastAndFuriousPremiumItem> Items { get; set; }
+        public virtual ICollection<FastAndFuriousPremiumItem> Items { get; set; }
     }
 }

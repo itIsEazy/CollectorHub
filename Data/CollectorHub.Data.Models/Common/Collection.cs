@@ -31,5 +31,11 @@
 
         [Url]
         public string ImageUrl { get; set; }
+
+        public string CategoryId { get; set; }
+
+        public virtual Category Category { get; set; }
+
+        // add bool ShowCollectionPrice / ShowItemsPrice (Very Important)
     }
 }

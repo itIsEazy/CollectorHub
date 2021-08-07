@@ -22,5 +22,7 @@
         HotWheelsFastAndFuriousPremiumCollectionMyCollectionsViewModel GetHotWheelsFastAndFuriousPremiumCollection(string userId);
 
         HotWheelsFastAndFuriousPremiumCollectionViewModel GetHotWheelsFastAndFuriousPremiumFullCollection(string userId);
+
+        void AddItemToFastAndFuriousPremiumCollection(string carId, string collectionId, decimal price, string customUrl);
     }
 }

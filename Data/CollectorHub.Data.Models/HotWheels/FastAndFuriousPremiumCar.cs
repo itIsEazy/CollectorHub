@@ -38,6 +38,6 @@
 
         public virtual FastAndFuriousPremiumSerie Serie { get; set; }
 
-        public virtual IEnumerable<FastAndFuriousPremiumItem> Items { get; set; }
+        public virtual ICollection<FastAndFuriousPremiumItem> Items { get; set; }
     }
 }

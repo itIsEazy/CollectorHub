@@ -76,10 +76,26 @@
 
         public IActionResult HotWheelsFastAndFuriousPremium(string collectionId)
         {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             var model = this.hotWheelsInfoService.GetHotWheelsFastAndFuriousPremiumFullCollection(collectionId);
+
+            if (userId != model.User.Id && model.IsPublic == false)
+            {
+                return this.RedirectToAction(nameof(this.Index));
+            }
+
             model.AllSeries = this.hotWheelsInfoService.GetAllPremiumSeriesAndCars().ToList();
 
             return this.View(model);
+        }
+
+        public IActionResult AddHotWheelsFastAndFuriousPremiumItemToCollection(HotWheelsFastAndFuriousPremiumCollectionViewModel model)
+        {
+            this.hotWheelsInfoService.AddItemToFastAndFuriousPremiumCollection(model.AddModel.CarId, model.AddModel.CollectionId, model.AddModel.PriceBoughted, model.AddModel.OwnerPictureUrl);
+
+            return this.RedirectToAction(nameof(this.HotWheelsFastAndFuriousPremium), new { collectionId = model.AddModel.CollectionId });
+            //// Redirects to : Collections/HotWheelsFastAndFuriousPremium?collectionId
         }
 
         public IActionResult MyCollections(HotWheelsFastAndFuriousPremiumCollectionMyCollectionsViewModel model)

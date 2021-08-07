@@ -18,5 +18,8 @@
         public decimal PriceBoughted { get; set; }
 
         public string OwnerPictureUrl { get; set; }
+
+        // add bool IsNewCondition (Very Important)
+        // add bool UseDefaultPictureForThisItem (Important)
     }
 }

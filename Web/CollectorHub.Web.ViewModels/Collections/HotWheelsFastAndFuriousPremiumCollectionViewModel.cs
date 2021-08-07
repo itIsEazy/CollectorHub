@@ -12,6 +12,8 @@
         {
         }
 
+        public string Id { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -27,5 +29,7 @@
         public IEnumerable<FastAndFuriousPremiumItem> Items { get; set; }
 
         public IEnumerable<HotWheelsPremiumSeriesViewModel> AllSeries { get; set; }
+
+        public AddHotWheelsFastAndFuriousPremiumItemInputModel AddModel { get; set; }
     }
 }

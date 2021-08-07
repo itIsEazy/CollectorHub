@@ -4,14 +4,16 @@ using CollectorHub.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CollectorHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210807211737_AddedStringIdsWhereMissing")]
+    partial class AddedStringIdsWhereMissing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -308,14 +310,14 @@ namespace CollectorHub.Data.Migrations
                     b.Property<string>("CarId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CollectionId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("FastAndFuriousPremiumCollectionId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -336,7 +338,7 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.HasIndex("CollectionId");
+                    b.HasIndex("FastAndFuriousPremiumCollectionId");
 
                     b.HasIndex("IsDeleted");
 
@@ -816,13 +818,11 @@ namespace CollectorHub.Data.Migrations
                         .WithMany("Items")
                         .HasForeignKey("CarId");
 
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", "Collection")
+                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", null)
                         .WithMany("Items")
-                        .HasForeignKey("CollectionId");
+                        .HasForeignKey("FastAndFuriousPremiumCollectionId");
 
                     b.Navigation("Car");
-
-                    b.Navigation("Collection");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoCollection", b =>

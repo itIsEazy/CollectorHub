@@ -48,6 +48,6 @@
 
         public int StarsCount { get; set; }
 
-        public virtual IEnumerable<ForumPostComment> Comments { get; set; }
+        public virtual ICollection<ForumPostComment> Comments { get; set; }
     }
 }

@@ -4,14 +4,16 @@ using CollectorHub.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CollectorHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210807205430_AddedCategoryToCollectionClass")]
+    partial class AddedCategoryToCollectionClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,16 +66,13 @@ namespace CollectorHub.Data.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("SubcategoryId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SubcategoryId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
 
-                    b.HasIndex("SubcategoryId1");
+                    b.HasIndex("SubcategoryId");
 
                     b.ToTable("SubCategories");
                 });
@@ -249,10 +248,7 @@ namespace CollectorHub.Data.Migrations
                     b.Property<string>("ApplicationUser")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CategoryId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CategoryId1")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
@@ -293,7 +289,7 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasIndex("ApplicationUser");
 
-                    b.HasIndex("CategoryId1");
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("IsDeleted");
 
@@ -308,14 +304,14 @@ namespace CollectorHub.Data.Migrations
                     b.Property<string>("CarId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CollectionId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("FastAndFuriousPremiumCollectionId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -336,7 +332,7 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.HasIndex("CollectionId");
+                    b.HasIndex("FastAndFuriousPremiumCollectionId");
 
                     b.HasIndex("IsDeleted");
 
@@ -743,7 +739,7 @@ namespace CollectorHub.Data.Migrations
                 {
                     b.HasOne("CollectorHub.Data.Models.Common.SubCategory", "Subcategory")
                         .WithMany()
-                        .HasForeignKey("SubcategoryId1");
+                        .HasForeignKey("SubcategoryId");
 
                     b.Navigation("Subcategory");
                 });
@@ -803,7 +799,7 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasOne("CollectorHub.Data.Models.Common.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId1");
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
 
@@ -816,13 +812,11 @@ namespace CollectorHub.Data.Migrations
                         .WithMany("Items")
                         .HasForeignKey("CarId");
 
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", "Collection")
+                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", null)
                         .WithMany("Items")
-                        .HasForeignKey("CollectionId");
+                        .HasForeignKey("FastAndFuriousPremiumCollectionId");
 
                     b.Navigation("Car");
-
-                    b.Navigation("Collection");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoCollection", b =>
