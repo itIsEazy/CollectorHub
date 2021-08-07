@@ -1,6 +1,7 @@
 ﻿namespace CollectorHub.Data.Models
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     using CollectorHub.Data.Common.Models;
     using CollectorHub.Data.Models.Lego;
@@ -25,10 +26,13 @@
 
         public string Name { get; set; }
 
+        [Range(0, 9999999999999999.99)]
         public decimal PriceNow { get; set; } // IN LEVA
 
+        [Range(0, 9999999999999999.99)]
         public decimal AvgPriceNew { get; set; }
 
+        [Range(0, 9999999999999999.99)]
         public decimal AvgPriceUsed { get; set; }
 
         public int ProductionYear { get; set; }
@@ -37,8 +41,10 @@
 
         public string Condition { get; set; } // NEW / USED
 
+        [Range(0, 9999999999999999.99)]
         public decimal PriceBoughted { get; set; }
 
+        [Range(0, 9999999999999999.99)]
         public decimal Profit { get; set; }
 
         public int CollectionId { get; set; }

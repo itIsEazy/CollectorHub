@@ -4,6 +4,7 @@
 
     using CollectorHub.Data.Models.HotWheels;
     using CollectorHub.Data.Models.User;
+    using CollectorHub.Web.ViewModels.Themes;
 
     public class HotWheelsFastAndFuriousPremiumCollectionViewModel
     {
@@ -24,5 +25,7 @@
         public ApplicationUser User { get; set; }
 
         public IEnumerable<FastAndFuriousPremiumItem> Items { get; set; }
+
+        public IEnumerable<HotWheelsPremiumSeriesViewModel> AllSeries { get; set; }
     }
 }

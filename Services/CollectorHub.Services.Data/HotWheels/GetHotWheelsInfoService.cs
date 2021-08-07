@@ -170,6 +170,8 @@
 
         public HotWheelsFastAndFuriousPremiumCollectionViewModel GetHotWheelsFastAndFuriousPremiumFullCollection(string collectionId)
         {
+            string defaultImageUrl = "http://hwcollectorsnews.com/wp-content/uploads/2019/09/Fat-original-Box-Set-1024x508.jpg";
+
             var collection = this.ffpremiumCollectionsRepository
                 .All()
                 .Where(x => x.Id == collectionId)
@@ -177,8 +179,16 @@
 
             var model = new HotWheelsFastAndFuriousPremiumCollectionViewModel();
 
+            if (string.IsNullOrEmpty(collection.ImageUrl))
+            {
+                model.ImageUrl = defaultImageUrl;
+            }
+            else
+            {
+                model.ImageUrl = collection.ImageUrl;
+            }
+
             model.Name = collection.Name;
-            model.ImageUrl = collection.ImageUrl;
             model.IsPublic = collection.IsPublic;
             model.User = collection.User;
             model.ViewsCount = collection.ViewsCount;

@@ -1,5 +1,7 @@
 ﻿namespace CollectorHub.Data.Models.Common
 {
+    using System.ComponentModel.DataAnnotations;
+
     using CollectorHub.Data.Common.Models;
     using CollectorHub.Data.Models.Interfaces;
 
@@ -9,8 +11,10 @@
         {
         }
 
+        [Range(0, 9999999999999999.99)]
         public decimal PriceNow { get; set; }
 
+        [Range(0, 9999999999999999.99)]
         public decimal PriceBoughted { get; set; }
 
         public string OwnerPictureUrl { get; set; }

@@ -1,5 +1,6 @@
 ﻿namespace CollectorHub.Web.Controllers
 {
+    using System.Linq;
     using System.Security.Claims;
 
     using CollectorHub.Services.Data.HotWheels;
@@ -76,6 +77,7 @@
         public IActionResult HotWheelsFastAndFuriousPremium(string collectionId)
         {
             var model = this.hotWheelsInfoService.GetHotWheelsFastAndFuriousPremiumFullCollection(collectionId);
+            model.AllSeries = this.hotWheelsInfoService.GetAllPremiumSeriesAndCars().ToList();
 
             return this.View(model);
         }
