@@ -26,9 +26,13 @@
 
         public int LikesCount { get; set; }
 
-        public int PostId { get; set; }
+        public string PostId { get; set; }
 
         [Required]
         public virtual ForumPost Post { get; set; }
+
+        public string ParentId { get; set; }
+
+        public virtual ForumPostComment Parent { get; set; }
     }
 }

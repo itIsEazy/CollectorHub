@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using CollectorHub.Data.Seeding.Category;
     using CollectorHub.Data.Seeding.HotWheels;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,7 @@
                           {
                               new RolesSeeder(),
                               new FastAndFuriousPremiumSeeder(),
+                              new CategorySeeder(),
                           };
 
             foreach (var seeder in seeders)

@@ -44,6 +44,21 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ForumStar",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ForumStar", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LegoItems",
                 columns: table => new
                 {
@@ -78,7 +93,8 @@ namespace CollectorHub.Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    SubcategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    SubcategoryId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SubcategoryId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -88,8 +104,8 @@ namespace CollectorHub.Data.Migrations
                 {
                     table.PrimaryKey("PK_SubCategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubCategories_SubCategories_SubcategoryId",
-                        column: x => x.SubcategoryId,
+                        name: "FK_SubCategories_SubCategories_SubcategoryId1",
+                        column: x => x.SubcategoryId1,
                         principalTable: "SubCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -152,10 +168,12 @@ namespace CollectorHub.Data.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    SubCategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SubCategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -244,11 +262,18 @@ namespace CollectorHub.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
                     ViewsCount = table.Column<int>(type: "int", nullable: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FastAndFuriousPremiumCollections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FastAndFuriousPremiumCollections_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -262,6 +287,7 @@ namespace CollectorHub.Data.Migrations
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ForumStarId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -286,6 +312,12 @@ namespace CollectorHub.Data.Migrations
                         principalTable: "FastAndFuriousPremiumCollections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_ForumStar_ForumStarId",
+                        column: x => x.ForumStarId,
+                        principalTable: "ForumStar",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -294,7 +326,7 @@ namespace CollectorHub.Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CarId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    FastAndFuriousPremiumCollectionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CollectionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -313,8 +345,8 @@ namespace CollectorHub.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumItem_FastAndFuriousPremiumCollections_FastAndFuriousPremiumCollectionId",
-                        column: x => x.FastAndFuriousPremiumCollectionId,
+                        name: "FK_FastAndFuriousPremiumItem_FastAndFuriousPremiumCollections_CollectionId",
+                        column: x => x.CollectionId,
                         principalTable: "FastAndFuriousPremiumCollections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -326,10 +358,11 @@ namespace CollectorHub.Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ViewsCount = table.Column<int>(type: "int", nullable: false),
                     LikesCount = table.Column<int>(type: "int", nullable: false),
                     StarsCount = table.Column<int>(type: "int", nullable: false),
@@ -348,8 +381,8 @@ namespace CollectorHub.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ForumPosts_Categories_CategoryId",
-                        column: x => x.CategoryId,
+                        name: "FK_ForumPosts_Categories_CategoryId1",
+                        column: x => x.CategoryId1,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -387,8 +420,8 @@ namespace CollectorHub.Data.Migrations
                     AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     LikesCount = table.Column<int>(type: "int", nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: false),
-                    PostId1 = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PostId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ParentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -404,9 +437,39 @@ namespace CollectorHub.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ForumPostComments_ForumPosts_PostId1",
-                        column: x => x.PostId1,
+                        name: "FK_ForumPostComments_ForumPostComments_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "ForumPostComments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ForumPostComments_ForumPosts_PostId",
+                        column: x => x.PostId,
                         principalTable: "ForumPosts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ForumPostForumStar",
+                columns: table => new
+                {
+                    PostsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    StarsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ForumPostForumStar", x => new { x.PostsId, x.StarsId });
+                    table.ForeignKey(
+                        name: "FK_ForumPostForumStar_ForumPosts_PostsId",
+                        column: x => x.PostsId,
+                        principalTable: "ForumPosts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ForumPostForumStar_ForumStar_StarsId",
+                        column: x => x.StarsId,
+                        principalTable: "ForumStar",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -480,6 +543,11 @@ namespace CollectorHub.Data.Migrations
                 column: "FastAndFuriousPremiumCollection");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_ForumStarId",
+                table: "AspNetUsers",
+                column: "ForumStarId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_IsDeleted",
                 table: "AspNetUsers",
                 column: "IsDeleted");
@@ -512,6 +580,11 @@ namespace CollectorHub.Data.Migrations
                 column: "ApplicationUser");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FastAndFuriousPremiumCollections_CategoryId",
+                table: "FastAndFuriousPremiumCollections",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FastAndFuriousPremiumCollections_IsDeleted",
                 table: "FastAndFuriousPremiumCollections",
                 column: "IsDeleted");
@@ -522,9 +595,9 @@ namespace CollectorHub.Data.Migrations
                 column: "CarId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumItem_FastAndFuriousPremiumCollectionId",
+                name: "IX_FastAndFuriousPremiumItem_CollectionId",
                 table: "FastAndFuriousPremiumItem",
-                column: "FastAndFuriousPremiumCollectionId");
+                column: "CollectionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FastAndFuriousPremiumItem_IsDeleted",
@@ -547,9 +620,19 @@ namespace CollectorHub.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ForumPostComments_PostId1",
+                name: "IX_ForumPostComments_ParentId",
                 table: "ForumPostComments",
-                column: "PostId1");
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumPostComments_PostId",
+                table: "ForumPostComments",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumPostForumStar_StarsId",
+                table: "ForumPostForumStar",
+                column: "StarsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ForumPosts_AuthorId",
@@ -557,13 +640,18 @@ namespace CollectorHub.Data.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ForumPosts_CategoryId",
+                name: "IX_ForumPosts_CategoryId1",
                 table: "ForumPosts",
-                column: "CategoryId");
+                column: "CategoryId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ForumPosts_IsDeleted",
                 table: "ForumPosts",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForumStar_IsDeleted",
+                table: "ForumStar",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
@@ -597,9 +685,9 @@ namespace CollectorHub.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubCategories_SubcategoryId",
+                name: "IX_SubCategories_SubcategoryId1",
                 table: "SubCategories",
-                column: "SubcategoryId");
+                column: "SubcategoryId1");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserRoles_AspNetUsers_UserId",
@@ -670,6 +758,9 @@ namespace CollectorHub.Data.Migrations
                 name: "ForumPostComments");
 
             migrationBuilder.DropTable(
+                name: "ForumPostForumStar");
+
+            migrationBuilder.DropTable(
                 name: "LegoCollectionLegoItem");
 
             migrationBuilder.DropTable(
@@ -691,16 +782,19 @@ namespace CollectorHub.Data.Migrations
                 name: "FastAndFuriousPremiumSeries");
 
             migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "SubCategories");
-
-            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "FastAndFuriousPremiumCollections");
+
+            migrationBuilder.DropTable(
+                name: "ForumStar");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "SubCategories");
         }
     }
 }

@@ -9,6 +9,8 @@
     using CollectorHub.Data.Repositories;
     using CollectorHub.Data.Seeding;
     using CollectorHub.Services.Data.Administration;
+    using CollectorHub.Services.Data.Category;
+    using CollectorHub.Services.Data.Forum;
     using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Services.Mapping;
     using CollectorHub.Services.Messaging;
@@ -68,6 +70,8 @@
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<IGetHotWheelsInfoService, GetHotWheelsInfoService>();
             services.AddTransient<IAdministrationService, AdministrationService>();
+            services.AddTransient<IForumService, ForumService>();
+            services.AddTransient<ICategoryService, CategoryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

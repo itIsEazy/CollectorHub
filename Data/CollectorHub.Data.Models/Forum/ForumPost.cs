@@ -19,6 +19,7 @@
             this.StarsCount = 0;
 
             this.Comments = new HashSet<ForumPostComment>();
+            this.Stars = new HashSet<ForumStar>();
         }
 
         [Required]
@@ -29,10 +30,10 @@
 
         [Required]
         [MaxLength(30)]
-        public string Name { get; set; }
+        public string Title { get; set; }
 
         [Required]
-        [MaxLength(300)]
+        [MaxLength(3000)]
         public string Content { get; set; }
 
         [Url]
@@ -49,5 +50,7 @@
         public int StarsCount { get; set; }
 
         public virtual ICollection<ForumPostComment> Comments { get; set; }
+
+        public virtual ICollection<ForumStar> Stars { get; set; }
     }
 }

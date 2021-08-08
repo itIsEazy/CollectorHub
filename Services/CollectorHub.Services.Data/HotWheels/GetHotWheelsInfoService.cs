@@ -9,7 +9,6 @@
     using CollectorHub.Web.ViewModels.Collections;
     using CollectorHub.Web.ViewModels.Home;
     using CollectorHub.Web.ViewModels.Themes;
-    using Microsoft.EntityFrameworkCore;
 
     public class GetHotWheelsInfoService : IGetHotWheelsInfoService
     {
@@ -150,7 +149,7 @@
             int ownedCarsCount = 0;
             if (collection.Items != null)
             {
-                ownedCarsCount = collection.Items.Count();
+                ownedCarsCount = collection.Items.GroupBy(x => x.CarId).Count(); // this way we select cars without repetitions /If user has 4 of exact same car he do not have 4 / 55 he has 1 / 55/
             }
 
             model.Id = collection.Id;
