@@ -8,6 +8,8 @@
     {
         ForumIndexViewModel GetIndexViewInformation();
 
+        ForumPostViewModel GetForumPostViewModel(string postId);
+
         Task CreateForumPost(string userId, string title, string content, string imageUrl);
     }
 }

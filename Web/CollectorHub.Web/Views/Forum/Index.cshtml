@@ -32,7 +32,9 @@
                 <div class="border col-lg-12">
                     <h3>@post.Title - Category - @post.Date</h3>
                     <img class="col-lg-4" style="height:125px; width:300px" src="@post.ImageUrl" alt="Post image" />
+                    <p class="d-inline-block">@post.Content</p>
                     <p class="align-content-center text-center">@post.CommentCount Comments | @post.ViewCount Views | @post.StarsCount Stars</p>
+                    <a asp-controller="Forum" asp-action="Post" asp-route-postId="@post.Id" class="btn btn-outline-secondary text-center w-100" role="button">Check out this Post</a>
                 </div>
             }
         }

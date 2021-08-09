@@ -45,5 +45,14 @@
 
             return this.RedirectToAction(nameof(this.Index));
         }
+
+        public IActionResult Post(string postId)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var model = this.forumService.GetForumPostViewModel(postId);
+
+            return this.View(model);
+        }
     }
 }

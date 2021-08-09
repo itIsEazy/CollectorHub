@@ -182,6 +182,7 @@
 
             var model = new HotWheelsFastAndFuriousPremiumCollectionViewModel();
 
+            // this should be removed from there ! this URL shoud be placed in its place when the entity is created man :0
             if (string.IsNullOrEmpty(collection.ImageUrl))
             {
                 model.ImageUrl = defaultImageUrl;
