@@ -1,7 +1,9 @@
 ﻿namespace CollectorHub.Web.Controllers
 {
-    using CollectorHub.Data;
+    using System.Security.Claims;
+
     using CollectorHub.Services.Data.Forum;
+    using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Web.ViewModels.Forum;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -27,6 +29,21 @@
         public IActionResult Create()
         {
             return this.View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(CreateForumPostInputModel model)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            this.forumService.CreateForumPost(userId, model.Title, model.Content, model.ImageUrl);
+
+            return this.RedirectToAction(nameof(this.Index));
         }
     }
 }

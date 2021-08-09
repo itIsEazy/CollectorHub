@@ -1,7 +1,11 @@
 ﻿namespace CollectorHub.Services.Data.Forum
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.Forum;
+    using CollectorHub.Data.Models.User;
     using CollectorHub.Services.Data.Category;
     using CollectorHub.Web.ViewModels.Forum;
 
@@ -9,13 +13,16 @@
     {
         private readonly ICategoryService categoryService;
         private readonly IDeletableEntityRepository<ForumPost> forumPostsRepository;
+        private readonly IDeletableEntityRepository<ApplicationUser> allUsers;
 
         public ForumService(
             ICategoryService categoryService,
-            IDeletableEntityRepository<ForumPost> forumPostsRepository)
+            IDeletableEntityRepository<ForumPost> forumPostsRepository,
+            IDeletableEntityRepository<ApplicationUser> allUsers)
         {
             this.categoryService = categoryService;
             this.forumPostsRepository = forumPostsRepository;
+            this.allUsers = allUsers;
         }
 
         public ForumIndexViewModel GetIndexViewInformation()
@@ -26,7 +33,9 @@
 
             model.Categories = this.categoryService.GetAllCategories();
 
-            foreach (var forumPost in this.forumPostsRepository.AllAsNoTracking())
+            var allForumPosts = this.forumPostsRepository.All();
+
+            foreach (var forumPost in this.forumPostsRepository.All())
             {
                 var post = new ForumPostIndexViewModel();
 
@@ -46,9 +55,34 @@
                 {
                     post.ImageUrl = forumPost.ImageUrl;
                 }
+
+                model.ForumPosts.Add(post);
             }
 
             return model;
+        }
+
+        // VERY VERY VERY VERY VERY VRY VEYYEYEYGHALIEUGAEUGOIEAG Add Gategory by passing daerektly Category or category id most probably
+        // VERY VERY VERY VERY VERY VRY VEYYEYEYGHALIEUGAEUGOIEAG Add Gategory by passing daerektly Category or category id most probably
+        // VERY VERY VERY VERY VERY VRY VEYYEYEYGHALIEUGAEUGOIEAG Add Gategory by passing daerektly Category or category id most probably
+        // VERY VERY VERY VERY VERY VRY VEYYEYEYGHALIEUGAEUGOIEAG Add Gategory by passing daerektly Category or category id most probably
+        public async Task CreateForumPost(string userId, string title, string content, string imageUrl)
+        {
+            var post = new ForumPost();
+
+            var user = this.allUsers.All().Where(x => x.Id == userId).FirstOrDefault();
+
+            post.Author = user;
+            post.Title = title;
+            post.Content = content;
+            post.ImageUrl = imageUrl;
+
+            user.ForumPosts.Add(post);
+
+            Task.WaitAll(this.forumPostsRepository.AddAsync(post));
+            Task.WaitAll(this.allUsers.SaveChangesAsync());
+
+            await this.forumPostsRepository.SaveChangesAsync();
         }
     }
 }

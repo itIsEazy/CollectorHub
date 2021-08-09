@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.HotWheels;
@@ -104,7 +105,7 @@
             }
         }
 
-        public void CreateHotWheelsFastAndFuriousPremium(string userId, string description, bool isPublic)
+        public async Task CreateHotWheelsFastAndFuriousPremium(string userId, string description, bool isPublic)
         {
             var user = this.GetUser(userId);
 
@@ -120,10 +121,10 @@
             user.FFPremiumCollectionId = collection.Id;
             user.FFPremiumCollection = collection;
 
-            this.ffpremiumCollectionsRepository.AddAsync(collection);
+            Task.WaitAll(this.ffpremiumCollectionsRepository.AddAsync(collection));
+            Task.WaitAll(this.allUsers.SaveChangesAsync());
 
-            this.allUsers.SaveChangesAsync();
-            this.ffpremiumCollectionsRepository.SaveChangesAsync();
+            await this.ffpremiumCollectionsRepository.SaveChangesAsync();
         }
 
         public HotWheelsFastAndFuriousPremiumCollectionMyCollectionsViewModel GetHotWheelsFastAndFuriousPremiumCollection(string userId)
@@ -201,7 +202,7 @@
             return model;
         }
 
-        public void AddItemToFastAndFuriousPremiumCollection(string carId, string collectionId, decimal price, string customUrl)
+        public async Task AddItemToFastAndFuriousPremiumCollection(string carId, string collectionId, decimal price, string customUrl)
         {
             var item = new FastAndFuriousPremiumItem();
             var collection = this.ffpremiumCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
@@ -211,11 +212,12 @@
             item.Collection = collection;
             item.PriceBoughted = price;
 
-            this.ffpremiumItemsRepository.AddAsync(item);
             collection.Items.Add(item);
 
-            this.ffpremiumCollectionsRepository.SaveChangesAsync();
-            this.ffpremiumItemsRepository.SaveChangesAsync();
+            Task.WaitAll(this.ffpremiumItemsRepository.AddAsync(item));
+            Task.WaitAll(this.ffpremiumCollectionsRepository.SaveChangesAsync());
+
+            await this.ffpremiumItemsRepository.SaveChangesAsync();
         }
     }
 }

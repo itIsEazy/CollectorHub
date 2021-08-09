@@ -22,24 +22,17 @@
             this.Stars = new HashSet<ForumStar>();
         }
 
-        [Required]
         public string AuthorId { get; set; }
 
-        [Required]
         public virtual ApplicationUser Author { get; set; }
 
-        [Required]
-        [MaxLength(30)]
         public string Title { get; set; }
 
-        [Required]
-        [MaxLength(3000)]
         public string Content { get; set; }
 
-        [Url]
         public string ImageUrl { get; set; }
 
-        public int CategoryId { get; set; }
+        public string CategoryId { get; set; }
 
         public virtual Category Category { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿namespace CollectorHub.Services.Data.HotWheels
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     using CollectorHub.Data.Models.User;
     using CollectorHub.Web.ViewModels.Collections;
@@ -17,12 +18,12 @@
 
         bool CheckIfUserCanCreateHWFFPremiumCollection(string userId);
 
-        void CreateHotWheelsFastAndFuriousPremium(string userId, string description, bool isPublic);
+        Task CreateHotWheelsFastAndFuriousPremium(string userId, string description, bool isPublic);
 
         HotWheelsFastAndFuriousPremiumCollectionMyCollectionsViewModel GetHotWheelsFastAndFuriousPremiumCollection(string userId);
 
         HotWheelsFastAndFuriousPremiumCollectionViewModel GetHotWheelsFastAndFuriousPremiumFullCollection(string userId);
 
-        void AddItemToFastAndFuriousPremiumCollection(string carId, string collectionId, decimal price, string customUrl);
+        Task AddItemToFastAndFuriousPremiumCollection(string carId, string collectionId, decimal price, string customUrl);
     }
 }

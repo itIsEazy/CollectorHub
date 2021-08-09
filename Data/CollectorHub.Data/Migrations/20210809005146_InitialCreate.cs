@@ -44,7 +44,7 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ForumStar",
+                name: "ForumStars",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -55,7 +55,7 @@ namespace CollectorHub.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ForumStar", x => x.Id);
+                    table.PrimaryKey("PK_ForumStars", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -313,15 +313,15 @@ namespace CollectorHub.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_ForumStar_ForumStarId",
+                        name: "FK_AspNetUsers_ForumStars_ForumStarId",
                         column: x => x.ForumStarId,
-                        principalTable: "ForumStar",
+                        principalTable: "ForumStars",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "FastAndFuriousPremiumItem",
+                name: "FastAndFuriousPremiumItems",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -337,15 +337,15 @@ namespace CollectorHub.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FastAndFuriousPremiumItem", x => x.Id);
+                    table.PrimaryKey("PK_FastAndFuriousPremiumItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumItem_FastAndFuriousPremiumCars_CarId",
+                        name: "FK_FastAndFuriousPremiumItems_FastAndFuriousPremiumCars_CarId",
                         column: x => x.CarId,
                         principalTable: "FastAndFuriousPremiumCars",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumItem_FastAndFuriousPremiumCollections_CollectionId",
+                        name: "FK_FastAndFuriousPremiumItems_FastAndFuriousPremiumCollections_CollectionId",
                         column: x => x.CollectionId,
                         principalTable: "FastAndFuriousPremiumCollections",
                         principalColumn: "Id",
@@ -357,12 +357,11 @@ namespace CollectorHub.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: false),
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    CategoryId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ViewsCount = table.Column<int>(type: "int", nullable: false),
                     LikesCount = table.Column<int>(type: "int", nullable: false),
                     StarsCount = table.Column<int>(type: "int", nullable: false),
@@ -381,8 +380,8 @@ namespace CollectorHub.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ForumPosts_Categories_CategoryId1",
-                        column: x => x.CategoryId1,
+                        name: "FK_ForumPosts_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -467,9 +466,9 @@ namespace CollectorHub.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ForumPostForumStar_ForumStar_StarsId",
+                        name: "FK_ForumPostForumStar_ForumStars_StarsId",
                         column: x => x.StarsId,
-                        principalTable: "ForumStar",
+                        principalTable: "ForumStars",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -590,18 +589,18 @@ namespace CollectorHub.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumItem_CarId",
-                table: "FastAndFuriousPremiumItem",
+                name: "IX_FastAndFuriousPremiumItems_CarId",
+                table: "FastAndFuriousPremiumItems",
                 column: "CarId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumItem_CollectionId",
-                table: "FastAndFuriousPremiumItem",
+                name: "IX_FastAndFuriousPremiumItems_CollectionId",
+                table: "FastAndFuriousPremiumItems",
                 column: "CollectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumItem_IsDeleted",
-                table: "FastAndFuriousPremiumItem",
+                name: "IX_FastAndFuriousPremiumItems_IsDeleted",
+                table: "FastAndFuriousPremiumItems",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
@@ -640,9 +639,9 @@ namespace CollectorHub.Data.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ForumPosts_CategoryId1",
+                name: "IX_ForumPosts_CategoryId",
                 table: "ForumPosts",
-                column: "CategoryId1");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ForumPosts_IsDeleted",
@@ -650,8 +649,8 @@ namespace CollectorHub.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ForumStar_IsDeleted",
-                table: "ForumStar",
+                name: "IX_ForumStars_IsDeleted",
+                table: "ForumStars",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
@@ -752,7 +751,7 @@ namespace CollectorHub.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "FastAndFuriousPremiumItem");
+                name: "FastAndFuriousPremiumItems");
 
             migrationBuilder.DropTable(
                 name: "ForumPostComments");
@@ -788,7 +787,7 @@ namespace CollectorHub.Data.Migrations
                 name: "FastAndFuriousPremiumCollections");
 
             migrationBuilder.DropTable(
-                name: "ForumStar");
+                name: "ForumStars");
 
             migrationBuilder.DropTable(
                 name: "Categories");

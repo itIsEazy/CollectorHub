@@ -8,6 +8,8 @@
     {
         public ForumIndexViewModel()
         {
+            this.Categories = new HashSet<CategoryIndexViewModel>();
+            this.ForumPosts = new HashSet<ForumPostIndexViewModel>();
         }
 
         public ICollection<CategoryIndexViewModel> Categories { get; set; }

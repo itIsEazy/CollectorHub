@@ -38,6 +38,8 @@
 
         public DbSet<FastAndFuriousPremiumCollection> FastAndFuriousPremiumCollections { get; set; }
 
+        public DbSet<FastAndFuriousPremiumItem> FastAndFuriousPremiumItems { get; set; }
+
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<SubCategory> SubCategories { get; set; }
@@ -45,6 +47,8 @@
         public DbSet<ForumPost> ForumPosts { get; set; }
 
         public DbSet<ForumPostComment> ForumPostComments { get; set; }
+
+        public DbSet<ForumStar> ForumStars { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

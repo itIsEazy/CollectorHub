@@ -21,16 +21,21 @@
     </div>
     <h2 class="text-center">Trending conversations</h2>
     <div class="border col-lg-12">
-        <div class="border col-lg-12">
-            <h3>Topic name - Category - 30.07.2021</h3>
-            <img class="col-lg-4" style="height:125px; width:300px" src="https://static.highsnobiety.com/thumbor/wAZjnohAI-tb0DuCPP6HyrbKOsk=/1600x1067/static.highsnobiety.com/wp-content/uploads/2020/08/04221137/hot-wheels-1-5-million-dollar-collection-01.jpg" alt="Topic image" />
-            <p class="align-content-center text-center">6 Comments | 200 Views | 20 Stars</p>
-        </div>
-        <div class="border col-lg-12">
-            <h3>Topic name - Category - 30.07.2021</h3>
-            <img class="col-lg-4" style="height:125px; width:300px" src="https://static.highsnobiety.com/thumbor/wAZjnohAI-tb0DuCPP6HyrbKOsk=/1600x1067/static.highsnobiety.com/wp-content/uploads/2020/08/04221137/hot-wheels-1-5-million-dollar-collection-01.jpg" alt="Topic image" />
-            <p class="align-content-center text-center">6 Comments | 200 Views | 20 Stars</p>
-        </div>
+        @if (Model.ForumPosts == null || Model.ForumPosts.Count() == 0)
+        {
+            <h2 class="text-center">No Posts for now :)</h2>
+        }
+        else
+        {
+            foreach (var post in Model.ForumPosts)
+            {
+                <div class="border col-lg-12">
+                    <h3>@post.Title - Category - @post.Date</h3>
+                    <img class="col-lg-4" style="height:125px; width:300px" src="@post.ImageUrl" alt="Post image" />
+                    <p class="align-content-center text-center">@post.CommentCount Comments | @post.ViewCount Views | @post.StarsCount Stars</p>
+                </div>
+            }
+        }
         <button type="button" class="btn btn-outline-secondary " style="width:100%">See more trending topics</button>
     </div>
 

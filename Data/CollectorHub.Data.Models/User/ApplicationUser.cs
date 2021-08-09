@@ -6,6 +6,7 @@ namespace CollectorHub.Data.Models.User
     using System.ComponentModel.DataAnnotations.Schema;
 
     using CollectorHub.Data.Common.Models;
+    using CollectorHub.Data.Models.Forum;
     using CollectorHub.Data.Models.HotWheels;
     using Microsoft.AspNetCore.Identity;
 
@@ -17,12 +18,15 @@ namespace CollectorHub.Data.Models.User
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+            this.ForumPosts = new HashSet<ForumPost>();
         }
 
         public string FFPremiumCollectionId { get; set; }
 
         [ForeignKey(nameof(FastAndFuriousPremiumCollection))]
         public virtual FastAndFuriousPremiumCollection FFPremiumCollection { get; set; }
+
+        public virtual ICollection<ForumPost> ForumPosts { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }
