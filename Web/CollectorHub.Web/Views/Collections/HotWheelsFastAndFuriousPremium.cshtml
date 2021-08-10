@@ -18,6 +18,8 @@
     <h1 class="text-danger">ADD : if collection is NOT public button to make it public !  </h1>
     <h1 class="text-danger">ADD : option for someone to suggest u to buy ur collection !  </h1>
     <h1 class="text-danger">ADD : statistcs (collection price items price and so on)  </h1>
+    <h1 class="text-danger">ADD : Collection.DeletetUserItems where u will store all Items(Cars) Users Removed </h1>
+    <h1 class="text-danger">TODO : make every user Collection to have serie and cars in this serie when user adds Item(Car) get its serie & carId and add it in its place so it can be displayed properyl(IMPORTANT)  </h1>
     <p class="text-center">@Model.Description</p>
 </div>
 
@@ -33,20 +35,33 @@
             @foreach (var item in Model.Items)
             {
                 <div class="border d-inline-block">
-                    <div class=" d-inline-block" style="width: 200px; height:500px">
+                    <div class=" d-inline-block" style="width: 200px; height:400px">
                         <p class=" text-center">@item.Car.Col</p>
-                        @if (item.OwnerPictureUrl == null)
-                        {
-                            <img class="card-img-top col-md-12" src="@item.Car.PhotoCardLink" alt="Car Card photo">
-                        }
-                        else
-                        {
-                            <img class="card-img-top col-md-12" src="@item.OwnerPictureUrl" alt="Car Card photo">
-                        }
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Car.Name</h5>
-                            <p class="card-textx">@item.Car.Movie</p>
-                            <p>@item.PriceBoughted lv.</p>
+                        <div style="width: 200px; height:200px">
+                            @if (item.OwnerPictureUrl == null)
+                            {
+                                <img class="card-img-top col-md-12 w-100 h-100" src="@item.Car.PhotoCardLink" alt="Car Card photo">
+                            }
+                            else
+                            {
+                                <img class="card-img-top col-md-12" src="@item.OwnerPictureUrl" alt="Car Card photo">
+                            }
+                        </div>
+                        <div>
+                            <h5 class="text-center">@item.Car.Name</h5>
+                            <p class="text-center">@item.Car.Movie</p>
+                            @if (ViewBag.BrowsingUserId != Model.User.Id && Model.ShowPrices == true || ViewBag.BrowsingUserId == Model.User.Id)
+                            {
+                                <p class="text-center">@item.PriceBoughted lv.</p>
+                            }
+                            @if (ViewBag.BrowsingUserId == Model.User.Id)
+                            {
+                                <form method="post">
+                                    <input asp-for="@Model.SelectedModel.ItemId" type="hidden" value="@item.Id" />
+                                    <input asp-for="@Model.SelectedModel.CollectionId" type="hidden" value="@Model.Id" />
+                                    <input asp-controller="Collections" asp-action="RemoveHotWheelsFastAndFuriousPremiumItemFromCollection" class="btn btn-primary mt-3" type="submit" value="Remove" />
+                                </form>
+                            }
                         </div>
                     </div>
                 </div>
@@ -77,16 +92,16 @@
                                 <form method="post">
                                     <div class="form-check">
                                         <p>Price :</p>
-                                        <input class="w-75" asp-for="@Model.AddModel.PriceBoughted" type="number" value="0" step=".01">
-                                        <span asp-validation-for="@Model.AddModel.PriceBoughted" class="small text-danger"></span>
+                                        <input class="w-75" asp-for="@Model.SelectedModel.PriceBoughted" type="number" value="0" step=".01">
+                                        <span asp-validation-for="@Model.SelectedModel.PriceBoughted" class="small text-danger"></span>
                                     </div>
                                     <div>
-                                        <input asp-for="@Model.AddModel.CarId" type="hidden" value="@car.Id" />
-                                        <input asp-for="@Model.AddModel.CollectionId" type="hidden" value="@Model.Id" />
+                                        <input asp-for="@Model.SelectedModel.CarId" type="hidden" value="@car.Id" />
+                                        <input asp-for="@Model.SelectedModel.CollectionId" type="hidden" value="@Model.Id" />
                                     </div>
                                     <div class="form-group">
-                                        <input asp-for="@Model.AddModel.OwnerPictureUrl" type="text" class="form-control" placeholder="Add custom picture if u want">
-                                        <span asp-validation-for="@Model.AddModel.OwnerPictureUrl" class="small text-danger"></span>
+                                        <input asp-for="@Model.SelectedModel.OwnerPictureUrl" type="text" class="form-control" placeholder="Add custom picture if u want">
+                                        <span asp-validation-for="@Model.SelectedModel.OwnerPictureUrl" class="small text-danger"></span>
                                     </div>
                                     <input asp-controller="Collections" asp-action="AddHotWheelsFastAndFuriousPremiumItemToCollection" class="btn btn-primary mt-3" type="submit" value="Add" />
                                 </form>

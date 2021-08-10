@@ -17,6 +17,8 @@
 
         public bool IsPublic { get; set; }
 
+        public bool ShowPrices { get; set; }
+
         public string UserId { get; set; }
 
         public ApplicationUser User { get; set; }

@@ -67,6 +67,11 @@
 
             var postFromDatabase = this.forumPostsRepository.All().Where(x => x.Id == postId).FirstOrDefault();
 
+            if (postFromDatabase == null)
+            {
+                return null;
+            }
+
             var postAuthour = this.allUsers.All().Where(x => x.Id == postFromDatabase.AuthorId).FirstOrDefault();
 
             model.Id = postFromDatabase.Id;
@@ -91,6 +96,8 @@
         // VERY VERY VERY VERY VERY VRY VEYYEYEYGHALIEUGAEUGOIEAG Add Gategory by passing daerektly Category or category id most probably
         public async Task CreateForumPost(string userId, string title, string content, string imageUrl)
         {
+            string defaultForumPostImageUrl = "https://cdn.pixabay.com/photo/2015/10/07/12/17/post-976115_960_720.png";
+
             var post = new ForumPost();
 
             var user = this.allUsers.All().Where(x => x.Id == userId).FirstOrDefault();
@@ -99,12 +106,30 @@
             post.AuthorId = user.Id;
             post.Title = title;
             post.Content = content;
-            post.ImageUrl = imageUrl;
+
+            if (string.IsNullOrEmpty(imageUrl))
+            {
+                post.ImageUrl = defaultForumPostImageUrl;
+            }
+            else
+            {
+                post.ImageUrl = imageUrl;
+            }
 
             user.ForumPosts.Add(post);
 
             Task.WaitAll(this.forumPostsRepository.AddAsync(post));
             Task.WaitAll(this.allUsers.SaveChangesAsync());
+
+            await this.forumPostsRepository.SaveChangesAsync();
+        }
+
+        // NICE TO HAVE u may collect all the users that have seen this post in some hashset (this information can be used later in the game for statistics ML.NET :))
+        public async Task IncreaseForumPostCount(string postId)
+        {
+            var post = this.forumPostsRepository.All().Where(x => x.Id == postId).FirstOrDefault();
+
+            post.ViewsCount += 1;
 
             await this.forumPostsRepository.SaveChangesAsync();
         }

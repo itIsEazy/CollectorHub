@@ -69,7 +69,7 @@
                 return this.View(model);
             }
 
-            this.hotWheelsInfoService.CreateHotWheelsFastAndFuriousPremium(userId, model.Description, model.IsPublic);
+            this.hotWheelsInfoService.CreateHotWheelsFastAndFuriousPremium(userId, model.Description, model.IsPublic, model.ShowPrices);
 
             return this.RedirectToAction(nameof(this.MyCollections));
         }
@@ -77,6 +77,8 @@
         public IActionResult HotWheelsFastAndFuriousPremium(string collectionId)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            this.ViewBag.BrowsingUserId = userId;
 
             var model = this.hotWheelsInfoService.GetHotWheelsFastAndFuriousPremiumFullCollection(collectionId);
 
@@ -92,10 +94,17 @@
 
         public IActionResult AddHotWheelsFastAndFuriousPremiumItemToCollection(HotWheelsFastAndFuriousPremiumCollectionViewModel model)
         {
-            this.hotWheelsInfoService.AddItemToFastAndFuriousPremiumCollection(model.AddModel.CarId, model.AddModel.CollectionId, model.AddModel.PriceBoughted, model.AddModel.OwnerPictureUrl);
+            this.hotWheelsInfoService.AddItemToFastAndFuriousPremiumCollection(model.SelectedModel.CarId, model.SelectedModel.CollectionId, model.SelectedModel.PriceBoughted, model.SelectedModel.OwnerPictureUrl);
 
-            return this.RedirectToAction(nameof(this.HotWheelsFastAndFuriousPremium), new { collectionId = model.AddModel.CollectionId });
+            return this.RedirectToAction(nameof(this.HotWheelsFastAndFuriousPremium), new { collectionId = model.SelectedModel.CollectionId });
             //// Redirects to : Collections/HotWheelsFastAndFuriousPremium?collectionId
+        }
+
+        public IActionResult RemoveHotWheelsFastAndFuriousPremiumItemFromCollection(HotWheelsFastAndFuriousPremiumCollectionViewModel model)
+        {
+            this.hotWheelsInfoService.RemoveItemFromFastAndFuriousPremiumCollection(model.SelectedModel.ItemId, model.SelectedModel.CollectionId);
+
+            return this.RedirectToAction(nameof(this.HotWheelsFastAndFuriousPremium), new { collectionId = model.SelectedModel.CollectionId });
         }
 
         public IActionResult MyCollections(HotWheelsFastAndFuriousPremiumCollectionMyCollectionsViewModel model)

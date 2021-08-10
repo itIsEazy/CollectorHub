@@ -11,5 +11,7 @@
         ForumPostViewModel GetForumPostViewModel(string postId);
 
         Task CreateForumPost(string userId, string title, string content, string imageUrl);
+
+        Task IncreaseForumPostCount(string postId);
     }
 }

@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
 
     using CollectorHub.Data.Common.Repositories;
+    using CollectorHub.Data.Models.Common;
     using CollectorHub.Data.Models.HotWheels;
     using CollectorHub.Data.Models.User;
     using CollectorHub.Web.ViewModels.Collections;
@@ -105,7 +106,7 @@
             }
         }
 
-        public async Task CreateHotWheelsFastAndFuriousPremium(string userId, string description, bool isPublic)
+        public async Task CreateHotWheelsFastAndFuriousPremium(string userId, string description, bool isPublic, bool showPrices)
         {
             var user = this.GetUser(userId);
 
@@ -115,6 +116,7 @@
             collection.User = user;
             collection.Description = description;
             collection.IsPublic = isPublic;
+            collection.ShowPrices = showPrices;
             collection.Name = "Hot Wheels Fast and Furious Premium";
             collection.ViewsCount = 0;
 
@@ -195,6 +197,7 @@
             model.Id = collection.Id;
             model.Name = collection.Name;
             model.IsPublic = collection.IsPublic;
+            model.ShowPrices = collection.ShowPrices;
             model.User = collection.User;
             model.ViewsCount = collection.ViewsCount;
             model.Description = collection.Description;
@@ -219,6 +222,15 @@
             Task.WaitAll(this.ffpremiumCollectionsRepository.SaveChangesAsync());
 
             await this.ffpremiumItemsRepository.SaveChangesAsync();
+        }
+
+        public async Task RemoveItemFromFastAndFuriousPremiumCollection(string itemId, string collectionId)
+        {
+            var item = this.ffpremiumItemsRepository.All().Where(x => x.Id == itemId).FirstOrDefault();
+
+            this.ffpremiumItemsRepository.Delete(item);
+
+            Task.WaitAll(this.ffpremiumItemsRepository.SaveChangesAsync());
         }
     }
 }

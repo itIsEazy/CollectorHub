@@ -18,12 +18,14 @@
 
         bool CheckIfUserCanCreateHWFFPremiumCollection(string userId);
 
-        Task CreateHotWheelsFastAndFuriousPremium(string userId, string description, bool isPublic);
+        Task CreateHotWheelsFastAndFuriousPremium(string userId, string description, bool isPublic, bool showPrices);
 
         HotWheelsFastAndFuriousPremiumCollectionMyCollectionsViewModel GetHotWheelsFastAndFuriousPremiumCollection(string userId);
 
         HotWheelsFastAndFuriousPremiumCollectionViewModel GetHotWheelsFastAndFuriousPremiumFullCollection(string userId);
 
         Task AddItemToFastAndFuriousPremiumCollection(string carId, string collectionId, decimal price, string customUrl);
+
+        Task RemoveItemFromFastAndFuriousPremiumCollection(string itemId, string collectionId);
     }
 }

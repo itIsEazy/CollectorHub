@@ -52,6 +52,16 @@
 
             var model = this.forumService.GetForumPostViewModel(postId);
 
+            if (model == null)
+            {
+                return this.RedirectToAction(nameof(this.Index));
+            }
+
+            if (model.Author.Id != userId)
+            {
+                this.forumService.IncreaseForumPostCount(model.Id);
+            }
+
             return this.View(model);
         }
     }

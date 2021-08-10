@@ -22,6 +22,8 @@
 
         public bool IsPublic { get; set; }
 
+        public bool ShowPrices { get; set; }
+
         public string ImageUrl { get; set; }
 
         public ApplicationUser User { get; set; }
@@ -30,6 +32,6 @@
 
         public IEnumerable<HotWheelsPremiumSeriesViewModel> AllSeries { get; set; }
 
-        public AddHotWheelsFastAndFuriousPremiumItemInputModel AddModel { get; set; }
+        public AddHotWheelsFastAndFuriousPremiumItemInputModel SelectedModel { get; set; }
     }
 }

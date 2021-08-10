@@ -15,8 +15,12 @@
         <span asp-validation-for="Description" class="small text-danger"></span>
     </div>
     <div class="form-check">
-        <input asp-for="IsPublic" type="checkbox"  class="form-check-input" >
+        <input asp-for="IsPublic" type="checkbox" class="form-check-input">
         <label asp-for="IsPublic" class="form-check-label">Make My Collection Public</label>
+    </div>
+    <div class="form-check">
+        <input asp-for="ShowPrices" type="checkbox" class="form-check-input">
+        <label asp-for="ShowPrices" class="form-check-label">Show prices for my Items</label>
     </div>
     <input class="btn btn-primary mt-3" type="submit" value="Create" />
 </form>

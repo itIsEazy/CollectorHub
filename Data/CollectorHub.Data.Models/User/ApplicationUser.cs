@@ -21,6 +21,7 @@ namespace CollectorHub.Data.Models.User
             this.ForumPosts = new HashSet<ForumPost>();
         }
 
+        // needs to FIX THIS NOW
         public string FFPremiumCollectionId { get; set; }
 
         [ForeignKey(nameof(FastAndFuriousPremiumCollection))]

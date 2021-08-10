@@ -16,6 +16,8 @@
 
         public string CarId { get; set; }
 
+        public string ItemId { get; set; }
+
         public string CollectionId { get; set; }
 
         // nice to have : add currentUserId and in service check if collection.User.Id == currentUserId

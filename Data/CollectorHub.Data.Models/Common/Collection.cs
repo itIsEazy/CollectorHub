@@ -29,6 +29,8 @@
 
         public bool IsPublic { get; set; }
 
+        public bool ShowPrices { get; set; }
+
         [Url]
         public string ImageUrl { get; set; }
 
