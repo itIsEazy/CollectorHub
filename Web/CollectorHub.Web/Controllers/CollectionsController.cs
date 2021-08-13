@@ -25,9 +25,9 @@
         }
 
         [AllowAnonymous]
-        public IActionResult Index(string collectionId)
+        public IActionResult Index(string categoryId)
         {
-            var model = this.collectionsService.GetIndexViewInformation(collectionId);
+            var model = this.collectionsService.GetIndexViewInformation(categoryId);
             return this.View(model);
         }
 

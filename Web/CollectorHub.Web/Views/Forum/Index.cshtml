@@ -1,21 +1,43 @@
 ﻿@model ForumIndexViewModel
 
+
+@{
+    bool categoryPostsAreAvailable = false;
+
+    if (Model.PostsByCategory != null && Model.PostsByCategory.Count > 0)
+    {
+        categoryPostsAreAvailable = true;
+    }
+}
+
 <h1 class="text-danger">ADD : Pageing (Very Important)</h1>
 <h1 class="text-danger">ADD : #article10 'when someone clicks on post and then back #shows where post is' (Important)</h1>
 <h1 class="text-danger">TODO : Watch video from the workshop to see how to make parenting (Important)</h1>
 <h1 class="text-danger">Currently using properties for stars count, view count... U WANT TO CHANGE THAT DO NOT FORGER</h1>
 
+@if (categoryPostsAreAvailable)
+{
+    <div class="col-lg-2">
+        <a asp-controller="Forum" asp-action="Index" class="btn btn-outline-secondary text-center w-100" role="button">Go Back to Trendings</a>
+    </div>
+}
 
 <div class="border col-md-12">
     <h2 class="text-center">Categories</h2>
+
     <div class="border col-lg-12 ">
-        @foreach (var category in Model.Categories)
-        {
-            <div class="d-inline-block ">
-                <img class="border " style="height: 100px; width: 100px" src="@category.ImageUrl" alt="Category logo" />
-                <p class="align-content-center text-center">@category.Name</p>
-            </div>
-        }
+        <div>
+            <p class="text-center">Get Posts by Category</p>
+        </div>
+        <div class="text-center">
+            @foreach (var category in Model.Categories)
+            {
+                <div class="d-inline-block">
+                    <img class="border " style="height: 100px; width: 100px" src="@category.ImageUrl" alt="Category logo" />
+                    <a class="btn btn-outline-secondary text-center w-100" asp-controller="Forum" asp-action="Index" asp-route-categoryId="@category.Id" role="button">@category.Name</a>
+                </div>
+            }
+        </div>
     </div>
 
     <div class="col-lg-12">
@@ -24,18 +46,30 @@
 
     <hr />
 
-    <h2 class="text-center">Trending conversations</h2>
+    @if (categoryPostsAreAvailable)
+    {
+        <h2 class="text-center">@Model.CategoryName Posts</h2>
+    }
+    else
+    {
+        <h2 class="text-center">Trending conversations</h2>
+    }
+
     <div class="border col-lg-12">
-        @if (Model.ForumPosts == null || Model.ForumPosts.Count() == 0)
-        {
-            <h2 class="text-center">No Posts for now :)</h2>
-        }
-        else
-        {
-            foreach (var post in Model.ForumPosts)
+        @{
+            var list = Model.TrendingPosts;
+            if (categoryPostsAreAvailable)
+            {
+                list = Model.PostsByCategory;
+            }
+            if (list == null || list.Count == 0)
+            {
+                <h2 class="text-center">No Posts for now :)</h2>
+            }
+            foreach (var post in list)
             {
                 <div class="border col-lg-12">
-                    <h3>@post.Title - Category - @post.Date</h3>
+                    <h3>@post.Title - @post.Category.Name - @post.Date</h3>
                     <img class="col-lg-4" style="height:125px; width:300px" src="@post.ImageUrl" alt="Post image" />
                     <p class="d-inline-block">@post.Content</p>
                     <p class="align-content-center text-center">@post.CommentCount Comments | @post.ViewCount Views | @post.StarsCount Stars</p>

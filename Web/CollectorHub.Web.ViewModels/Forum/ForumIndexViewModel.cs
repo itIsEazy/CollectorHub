@@ -9,11 +9,19 @@
         public ForumIndexViewModel()
         {
             this.Categories = new HashSet<CategoryIndexViewModel>();
-            this.ForumPosts = new HashSet<ForumPostIndexViewModel>();
+            this.TrendingPosts = new HashSet<ForumPostIndexViewModel>();
+            this.PostsByCategory = new HashSet<ForumPostIndexViewModel>();
         }
 
-        public ICollection<CategoryIndexViewModel> Categories { get; set; }
+        public string CategoryId { get; set; }
 
-        public ICollection<ForumPostIndexViewModel> ForumPosts { get; set; }
+        public string CategoryName { get; set; }
+
+        public IEnumerable<CategoryIndexViewModel> Categories { get; set; }
+
+        public ICollection<ForumPostIndexViewModel> TrendingPosts { get; set; }
+
+        public ICollection<ForumPostIndexViewModel> PostsByCategory { get; set; }
+
     }
 }

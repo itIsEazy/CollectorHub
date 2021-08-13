@@ -10,8 +10,6 @@
 
     public interface IGetHotWheelsInfoService
     {
-        HotWheelsInfoViewModel GetInfo();
-
         ApplicationUser GetUser(string userId);
 
         ICollection<HotWheelsPremiumSeriesViewModel> GetAllPremiumSeriesAndCars();
@@ -26,6 +24,6 @@
 
         Task AddItemToFastAndFuriousPremiumCollection(string carId, string collectionId, decimal price, string customUrl);
 
-        Task RemoveItemFromFastAndFuriousPremiumCollection(string itemId, string collectionId);
+        void RemoveItemFromFastAndFuriousPremiumCollection(string itemId, string collectionId);
     }
 }

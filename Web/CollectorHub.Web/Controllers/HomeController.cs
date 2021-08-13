@@ -3,7 +3,10 @@
     using System.Diagnostics;
 
     using CollectorHub.Services.Data.Administration;
+    using CollectorHub.Services.Data.Collections;
+    using CollectorHub.Services.Data.Forum;
     using CollectorHub.Services.Data.HotWheels;
+    using CollectorHub.Services.Data.User;
     using CollectorHub.Web.ViewModels;
     using CollectorHub.Web.ViewModels.Home;
     using Microsoft.AspNetCore.Authorization;
@@ -13,19 +16,32 @@
     {
         private readonly IGetHotWheelsInfoService hotWheelsInfoService;
         private readonly IAdministrationService administrationService;
+        private readonly IUserService userService;
+        private readonly ICollectionsService collectionsService;
+        private readonly IForumService forumService;
 
         public HomeController(
             IGetHotWheelsInfoService hotWheelsInfoService,
-            IAdministrationService administrationService)
+            IAdministrationService administrationService,
+            IUserService userService,
+            ICollectionsService collectionsService,
+            IForumService forumService)
         {
             this.hotWheelsInfoService = hotWheelsInfoService;
             this.administrationService = administrationService;
+            this.userService = userService;
+            this.collectionsService = collectionsService;
+            this.forumService = forumService;
         }
 
         public IActionResult Index()
         {
-            var hotWheelsModel = this.hotWheelsInfoService.GetInfo();
-            return this.View(hotWheelsModel);
+            var model = new MainPageIndexViewModel();
+            model.TotalUsersCount = this.userService.TotalUsersCount();
+            model.TotalCollectionsCount = this.collectionsService.GetAllCollectionsCount();
+            model.TotalForumPostsCount = this.forumService.TotalForumPostsCount();
+
+            return this.View(model);
         }
 
         [Authorize]

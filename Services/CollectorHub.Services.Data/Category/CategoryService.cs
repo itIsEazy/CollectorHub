@@ -15,7 +15,7 @@
             this.categoriesRepository = categoriesRepository;
         }
 
-        public ICollection<CategoryIndexViewModel> GetAllCategories()
+        public IEnumerable<CategoryIndexViewModel> GetAllCategories()
         {
             var list = new List<CategoryIndexViewModel>();
 

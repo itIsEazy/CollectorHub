@@ -11,7 +11,7 @@
             this.Categories = new HashSet<CategoryIndexViewModel>();
         }
 
-        public ICollection<CategoryIndexViewModel> Categories { get; set; }
+        public IEnumerable<CategoryIndexViewModel> Categories { get; set; }
 
         public ICollection<CollectionIndexViewModel> TrendingCollectons { get; set; }
     }

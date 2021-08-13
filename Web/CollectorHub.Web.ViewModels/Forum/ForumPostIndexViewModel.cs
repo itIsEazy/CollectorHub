@@ -25,6 +25,5 @@
         public int ViewCount { get; set; }
 
         public string Date { get; set; }
-
     }
 }

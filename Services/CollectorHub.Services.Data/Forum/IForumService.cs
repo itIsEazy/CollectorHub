@@ -6,12 +6,14 @@
 
     public interface IForumService
     {
-        ForumIndexViewModel GetIndexViewInformation();
+        int TotalForumPostsCount();
+
+        ForumIndexViewModel GetIndexViewInformation(string categoryId);
 
         ForumPostViewModel GetForumPostViewModel(string postId);
 
-        Task CreateForumPost(string userId, string title, string content, string imageUrl);
+        Task CreateForumPost(string userId, string title, string content, string imageUrl, string categoryId);
 
-        Task IncreaseForumPostCount(string postId);
+        void IncreaseForumPostCount(string postId);
     }
 }

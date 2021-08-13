@@ -5,5 +5,7 @@
     public interface ICollectionsService
     {
         CollectionsIndexViewModel GetIndexViewInformation(string categoryId);
+
+        int GetAllCollectionsCount();
     }
 }

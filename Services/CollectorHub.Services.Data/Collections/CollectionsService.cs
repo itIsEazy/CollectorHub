@@ -21,6 +21,16 @@
             this.ffpremiumCollectionsRepository = ffpremiumCollectionsRepository;
         }
 
+        public int GetAllCollectionsCount()
+        {
+            int totalCount = 0;
+
+            int allHotWheelsCollections = this.GetAllHotWHeelsCollectionsCount();
+            totalCount += allHotWheelsCollections;
+
+            return totalCount;
+        }
+
         public CollectionsIndexViewModel GetIndexViewInformation(string categoryId)
         {
             var model = new CollectionsIndexViewModel();
@@ -81,6 +91,16 @@
             }
 
             return list;
+        }
+
+        private int GetAllHotWHeelsCollectionsCount()
+        {
+            int totalCount = 0;
+
+            var allHWFFPremiumCollectionsCount = this.ffpremiumCollectionsRepository.All().Count();
+            totalCount += allHWFFPremiumCollectionsCount;
+
+            return totalCount;
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿namespace CollectorHub.Web.ViewModels.Forum
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using CollectorHub.Data.Models.Common;
+    using CollectorHub.Web.ViewModels.Common;
 
     public class CreateForumPostInputModel
     {
@@ -21,6 +23,10 @@
         [Url]
         public string ImageUrl { get; set; }
 
-        public Category Category { get; set; }
+        [Required]
+        [Display(Name = "Category")]
+        public string CategoryId { get; set; }
+
+        public IEnumerable<CategoryIndexViewModel> Categories { get; set; }
     }
 }

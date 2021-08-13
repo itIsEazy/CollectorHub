@@ -34,18 +34,6 @@
             this.allUsers = allUsers;
         }
 
-        HotWheelsInfoViewModel IGetHotWheelsInfoService.GetInfo()
-        {
-            var data = new HotWheelsInfoViewModel
-            {
-                TotalHotWheelsCarsCount = this.ffpremiumCarsRepository.All().Count(),
-                TotalHotWheelsSeriesCount = this.ffpremiumSeriesRepository.All().Count(),
-                TotalHotWheelsCollectionsCount = this.ffpremiumCollectionsRepository.All().Count(),
-            };
-
-            return data;
-        }
-
         public ApplicationUser GetUser(string userId)
         {
             return this.allUsers
@@ -227,13 +215,13 @@
             await this.ffpremiumItemsRepository.SaveChangesAsync();
         }
 
-        public async Task RemoveItemFromFastAndFuriousPremiumCollection(string itemId, string collectionId)
+        public void RemoveItemFromFastAndFuriousPremiumCollection(string itemId, string collectionId)
         {
             var item = this.ffpremiumItemsRepository.All().Where(x => x.Id == itemId).FirstOrDefault();
 
             this.ffpremiumItemsRepository.Delete(item);
 
-            Task.WaitAll(this.ffpremiumItemsRepository.SaveChangesAsync());
+            this.ffpremiumItemsRepository.SaveChanges();
         }
     }
 }

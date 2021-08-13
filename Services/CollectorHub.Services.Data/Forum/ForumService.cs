@@ -1,5 +1,6 @@
 ﻿namespace CollectorHub.Services.Data.Forum
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -25,7 +26,12 @@
             this.allUsers = allUsers;
         }
 
-        public ForumIndexViewModel GetIndexViewInformation()
+        public int TotalForumPostsCount()
+        {
+            return this.forumPostsRepository.All().Count();
+        }
+
+        public ForumIndexViewModel GetIndexViewInformation(string categoryId)
         {
             string defaultForumPostImageUrl = "https://cdn.pixabay.com/photo/2015/10/07/12/17/post-976115_960_720.png";
 
@@ -33,7 +39,20 @@
 
             model.Categories = this.categoryService.GetAllCategories();
 
-            foreach (var forumPost in this.forumPostsRepository.All())
+            var allPosts = this.forumPostsRepository.All();
+
+            if (categoryId != null)
+            {
+                allPosts = this.forumPostsRepository.All().Where(x => x.CategoryId == categoryId);
+                model.CategoryName = this.categoryService
+                    .GetAllCategories()
+                    .Where(x => x.Id == categoryId)
+                    .Select(x => x.Name)
+                    .FirstOrDefault()
+                    .ToString();
+            }
+
+            foreach (var forumPost in allPosts)
             {
                 var post = new ForumPostIndexViewModel();
 
@@ -55,7 +74,14 @@
                     post.ImageUrl = forumPost.ImageUrl;
                 }
 
-                model.ForumPosts.Add(post);
+                if (categoryId != null)
+                {
+                    model.PostsByCategory.Add(post);
+                }
+                else
+                {
+                    model.TrendingPosts.Add(post);
+                }
             }
 
             return model;
@@ -94,7 +120,7 @@
         // VERY VERY VERY VERY VERY VRY VEYYEYEYGHALIEUGAEUGOIEAG Add Gategory by passing daerektly Category or category id most probably
         // VERY VERY VERY VERY VERY VRY VEYYEYEYGHALIEUGAEUGOIEAG Add Gategory by passing daerektly Category or category id most probably
         // VERY VERY VERY VERY VERY VRY VEYYEYEYGHALIEUGAEUGOIEAG Add Gategory by passing daerektly Category or category id most probably
-        public async Task CreateForumPost(string userId, string title, string content, string imageUrl)
+        public async Task CreateForumPost(string userId, string title, string content, string imageUrl, string categoryId)
         {
             string defaultForumPostImageUrl = "https://cdn.pixabay.com/photo/2015/10/07/12/17/post-976115_960_720.png";
 
@@ -106,6 +132,7 @@
             post.AuthorId = user.Id;
             post.Title = title;
             post.Content = content;
+            post.CategoryId = categoryId;
 
             if (string.IsNullOrEmpty(imageUrl))
             {
@@ -125,7 +152,7 @@
         }
 
         // NICE TO HAVE u may collect all the users that have seen this post in some hashset (this information can be used later in the game for statistics ML.NET :))
-        public async Task IncreaseForumPostCount(string postId)
+        public void IncreaseForumPostCount(string postId)
         {
             var post = this.forumPostsRepository.All().Where(x => x.Id == postId).FirstOrDefault();
 

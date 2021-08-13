@@ -6,6 +6,6 @@
 
     public interface ICategoryService
     {
-        ICollection<CategoryIndexViewModel> GetAllCategories();
+        IEnumerable<CategoryIndexViewModel> GetAllCategories();
     }
 }

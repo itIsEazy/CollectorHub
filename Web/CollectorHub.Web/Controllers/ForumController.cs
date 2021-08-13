@@ -2,6 +2,7 @@
 {
     using System.Security.Claims;
 
+    using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Forum;
     using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Web.ViewModels.Forum;
@@ -12,23 +13,31 @@
     public class ForumController : Controller
     {
         private readonly IForumService forumService;
+        private readonly ICategoryService categoryService;
 
-        public ForumController(IForumService forumService)
+        public ForumController(
+            IForumService forumService,
+            ICategoryService categoryService)
         {
             this.forumService = forumService;
+            this.categoryService = categoryService;
         }
 
         [AllowAnonymous]
-        public IActionResult Index(ForumIndexViewModel model)
+        public IActionResult Index(string categoryId, ForumIndexViewModel model)
         {
-            model = this.forumService.GetIndexViewInformation();
+            model.CategoryId = categoryId;
+            model = this.forumService.GetIndexViewInformation(categoryId);
 
             return this.View(model);
         }
 
         public IActionResult Create()
         {
-            return this.View();
+            var model = new CreateForumPostInputModel();
+            model.Categories = this.categoryService.GetAllCategories();
+
+            return this.View(model);
         }
 
         [HttpPost]
@@ -41,7 +50,7 @@
                 return this.View(model);
             }
 
-            this.forumService.CreateForumPost(userId, model.Title, model.Content, model.ImageUrl);
+            this.forumService.CreateForumPost(userId, model.Title, model.Content, model.ImageUrl, model.CategoryId);
 
             return this.RedirectToAction(nameof(this.Index));
         }

@@ -13,6 +13,7 @@
     using CollectorHub.Services.Data.Collections;
     using CollectorHub.Services.Data.Forum;
     using CollectorHub.Services.Data.HotWheels;
+    using CollectorHub.Services.Data.User;
     using CollectorHub.Services.Mapping;
     using CollectorHub.Services.Messaging;
     using CollectorHub.Web.ViewModels;
@@ -74,6 +75,7 @@
             services.AddTransient<IForumService, ForumService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<ICollectionsService, CollectionsService>();
+            services.AddTransient<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
