@@ -108,6 +108,8 @@
 
         public async Task CreateHotWheelsFastAndFuriousPremium(string userId, string description, bool isPublic, bool showPrices)
         {
+            string defaultCollectionImageUrl = "https://previews.123rf.com/images/ratoca/ratoca1507/ratoca150700170/42144597-new-collection.jpg";
+
             var user = this.GetUser(userId);
 
             var collection = new FastAndFuriousPremiumCollection();
@@ -118,6 +120,7 @@
             collection.IsPublic = isPublic;
             collection.ShowPrices = showPrices;
             collection.Name = "Hot Wheels Fast and Furious Premium";
+            collection.ImageUrl = defaultCollectionImageUrl;
             collection.ViewsCount = 0;
 
             user.FFPremiumCollectionId = collection.Id;

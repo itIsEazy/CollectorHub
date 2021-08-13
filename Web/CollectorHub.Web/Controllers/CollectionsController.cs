@@ -3,6 +3,7 @@
     using System.Linq;
     using System.Security.Claims;
 
+    using CollectorHub.Services.Data.Collections;
     using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Web.ViewModels.Collections;
 
@@ -13,17 +14,21 @@
     public class CollectionsController : BaseController
     {
         private readonly IGetHotWheelsInfoService hotWheelsInfoService;
+        private readonly ICollectionsService collectionsService;
 
         public CollectionsController(
-            IGetHotWheelsInfoService hotWheelsInfoService)
+            IGetHotWheelsInfoService hotWheelsInfoService,
+            ICollectionsService collectionsService)
         {
             this.hotWheelsInfoService = hotWheelsInfoService;
+            this.collectionsService = collectionsService;
         }
 
         [AllowAnonymous]
-        public IActionResult Index()
+        public IActionResult Index(string collectionId)
         {
-            return this.View();
+            var model = this.collectionsService.GetIndexViewInformation(collectionId);
+            return this.View(model);
         }
 
         public IActionResult Create()
@@ -79,6 +84,8 @@
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             this.ViewBag.BrowsingUserId = userId;
+
+            //// IMPORTANT SHOULD CHECK IF GIVEN ID IS VALID !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 
             var model = this.hotWheelsInfoService.GetHotWheelsFastAndFuriousPremiumFullCollection(collectionId);
 

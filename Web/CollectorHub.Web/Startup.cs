@@ -10,6 +10,7 @@
     using CollectorHub.Data.Seeding;
     using CollectorHub.Services.Data.Administration;
     using CollectorHub.Services.Data.Category;
+    using CollectorHub.Services.Data.Collections;
     using CollectorHub.Services.Data.Forum;
     using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Services.Mapping;
@@ -72,6 +73,7 @@
             services.AddTransient<IAdministrationService, AdministrationService>();
             services.AddTransient<IForumService, ForumService>();
             services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<ICollectionsService, CollectionsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

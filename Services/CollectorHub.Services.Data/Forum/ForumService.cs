@@ -132,7 +132,8 @@
             post.ViewsCount += 1;
 
             this.forumPostsRepository.SaveChanges();
-            //await this.forumPostsRepository.SaveChangesAsync();
+
+            // await this.forumPostsRepository.SaveChangesAsync();
         }
     }
 }

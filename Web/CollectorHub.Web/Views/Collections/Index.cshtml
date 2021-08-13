@@ -1,79 +1,51 @@
 ﻿
+@model CollectionsIndexViewModel
 
-<div class="border col-md-12">
-    <h2 class="text-center">Categories</h2>
-    <div class="border col-lg-12 ">
+<h2 class="text-center">Categories</h2>
+<div class="border col-lg-12 ">
+    @foreach (var category in Model.Categories)
+    {
         <div class="d-inline-block ">
-            <img class="border" style="height: 100px; width: 100px" src="https://1000logos.net/wp-content/uploads/2020/09/Hot-Wheels-logo.png" alt="Hot Wheels logo" />
-            <p class="align-content-center text-center">Hot Wheels</p>
+            <img class="border " style="height: 100px; width: 100px" src="@category.ImageUrl" alt="Category logo" />
+            <p class="align-content-center text-center">@category.Name</p>
         </div>
-        <div class="d-inline-block ">
-            <img class="border" style="height: 100px; width: 100px" src="https://media.designrush.com/inspiration_images/137696/conversions/_1611238416_214_lego_logo_2_34b6241a2a27-mobile.jpg" alt="Lego logo" />
-            <p class="align-content-center text-center">Lego</p>
-        </div>
-    </div>
+    }
+</div>
+<div class="col-lg-12">
+    <a class="btn btn-outline-secondary text-center w-100" asp-controller="Collections" asp-action="Create" role="button">Create Collection</a>
 </div>
 
-<div>
+<hr />
+
+<div class="col-lg-12">
     <h1 class="text-center border">Trending Collections</h1>
-    <div class="col-lg-12 border">
-        <div class="d-inline-block border">
-            <p class="text-center">Collection Name</p>
-            <img style="width: 200px; height:200px" src="https://dzone.com/storage/temp/12808952-model-car-collection.jpeg" alt="Collection Image" />
-            <p class="text-center">Owner</p>
-            <div class="text-center">
-                <a class="btn btn-outline-secondary text-center w-100 " role="button">Emanuil Manolov</a>
-            </div>
-            <div>
-                <a class="btn btn-outline-secondary text-center w-100 " role="button">Check Out Collection</a>
-            </div>
+    @if (Model.TrendingCollectons == null || Model.TrendingCollectons.Count <= 0)
+    {
+        <div class="col-lg-12">
+            <h1 class="text-center">NO TRENDING COLLECTIONS</h1>
         </div>
-        <div class="d-inline-block border">
-            <p class="text-center">Collection Name</p>
-            <img style="width: 200px; height:200px" src="https://dzone.com/storage/temp/12808952-model-car-collection.jpeg" alt="Collection Image" />
-            <p class="text-center">Owner</p>
-            <div class="text-center">
-                <a class="btn btn-outline-secondary text-center w-100 " role="button">Emanuil Manolov</a>
-            </div>
-            <div>
-                <a class="btn btn-outline-secondary text-center w-100 " role="button">Check Out Collection</a>
-            </div>
+    }
+    else
+    {
+        <div class="col-lg-12 border">
+            @foreach (var collection in Model.TrendingCollectons)
+            {
+                <div class="d-inline-block border">
+                    <p class="text-center">@collection.Name</p>
+                    <img style="width: 200px; height:200px" src="@collection.ImageUrl" alt="Collection Image" />
+                    <p class="text-center">Owner</p>
+                    <div class="text-center">
+                        <a class="btn btn-outline-secondary text-center w-100 " role="button">@collection.Owner.UserName</a>
+                    </div>
+                    <div>
+                        <a class="btn btn-outline-secondary text-center w-100 " role="button">Check Out Collection</a>
+                    </div>
+                </div>
+            }
         </div>
-        <div class="d-inline-block border">
-            <p class="text-center">Collection Name</p>
-            <img style="width: 200px; height:200px" src="https://dzone.com/storage/temp/12808952-model-car-collection.jpeg" alt="Collection Image" />
-            <p class="text-center">Owner</p>
-            <div class="text-center">
-                <a class="btn btn-outline-secondary text-center w-100 " role="button">Emanuil Manolov</a>
-            </div>
-            <div>
-                <a class="btn btn-outline-secondary text-center w-100 " role="button">Check Out Collection</a>
-            </div>
-        </div>
-        <div class="d-inline-block border">
-            <p class="text-center">Collection Name</p>
-            <img style="width: 200px; height:200px" src="https://dzone.com/storage/temp/12808952-model-car-collection.jpeg" alt="Collection Image" />
-            <p class="text-center">Owner</p>
-            <div class="text-center">
-                <a class="btn btn-outline-secondary text-center w-100 " role="button">Emanuil Manolov</a>
-            </div>
-            <div>
-                <a class="btn btn-outline-secondary text-center w-100 " role="button">Check Out Collection</a>
-            </div>
-        </div>
-        <div class="d-inline-block border">
-            <p class="text-center">Collection Name</p>
-            <img style="width: 200px; height:200px" src="https://dzone.com/storage/temp/12808952-model-car-collection.jpeg" alt="Collection Image" />
-            <p class="text-center">Owner</p>
-            <div class="text-center">
-                <a class="btn btn-outline-secondary text-center w-100 " role="button">Emanuil Manolov</a>
-            </div>
-            <div>
-                <a class="btn btn-outline-secondary text-center w-100 " role="button">Check Out Collection</a>
-            </div>
-        </div>
-    </div>
+    }
 </div>
+
 
 
 
