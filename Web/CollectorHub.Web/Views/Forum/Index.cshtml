@@ -68,11 +68,28 @@
             }
             foreach (var post in list)
             {
-                <div class="border col-lg-12">
-                    <h3>@post.Title - @post.Category.Name - @post.Date</h3>
-                    <img class="col-lg-4" style="height:125px; width:300px" src="@post.ImageUrl" alt="Post image" />
-                    <p class="d-inline-block">@post.Content</p>
-                    <p class="align-content-center text-center">@post.CommentCount Comments | @post.ViewCount Views | @post.StarsCount Stars</p>
+                <div class="border col-lg-12 border">
+                    <div class="col-lg-12 text-center border">
+                        <h3>@post.Title - @post.Category.Name - @post.Date</h3>
+                    </div>
+                    <div class="col-lg-12 border">
+                        <div class="col-lg-4 d-inline-block">
+                            <img style="height:100%; width:100%" src="@post.ImageUrl" alt="Post image" />
+                        </div>
+                        <div class="col-lg-2 d-inline-block">
+                            <p class="d-inline-block border">@post.Content</p>
+                        </div>
+                        <div class="col-lg-6 d-inline">
+                            <div>
+                                <img src="/lib/chfavico.ico" alt="User ico" />
+                                <p>itisEASTI</p>
+                                <p>Comment content</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 text-center">
+                        <p class="align-content-center text-center">@post.CommentCount Comments | @post.ViewCount Views | @post.StarsCount Stars</p>
+                    </div>
                     <a asp-controller="Forum" asp-action="Post" asp-route-postId="@post.Id" class="btn btn-outline-secondary text-center w-100" role="button">Check out this Post</a>
                 </div>
             }

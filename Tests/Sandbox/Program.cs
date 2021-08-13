@@ -13,6 +13,7 @@
     using CollectorHub.Data.Common;
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models;
+    using CollectorHub.Data.Models.User;
     using CollectorHub.Data.Repositories;
     using CollectorHub.Data.Seeding;
     using CollectorHub.Services.Messaging;
