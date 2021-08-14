@@ -223,5 +223,56 @@
 
             this.ffpremiumItemsRepository.SaveChanges();
         }
+
+        public void ChangePrivateOptionForCollection(string collectionId)
+        {
+            var collection = this.ffpremiumCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
+
+            if (collection.IsPublic)
+            {
+                collection.IsPublic = false;
+            }
+            else
+            {
+                collection.IsPublic = true;
+            }
+
+            this.ffpremiumCollectionsRepository.SaveChanges();
+        }
+
+        public void ChangeShowPricesOptionForCollection(string collectionId)
+        {
+            var collection = this.ffpremiumCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
+
+            if (collection.ShowPrices)
+            {
+                collection.ShowPrices = false;
+            }
+            else
+            {
+                collection.ShowPrices = true;
+            }
+
+            this.ffpremiumCollectionsRepository.SaveChanges();
+        }
+
+        public bool UserOwnsCollection(string userId, string collectionId)
+        {
+            var collection = this.ffpremiumCollectionsRepository
+                .All()
+                .Where(x => x.Id == collectionId)
+                .FirstOrDefault();
+
+            var currCollectionUserId = collection.UserId;
+
+            if (currCollectionUserId == userId)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

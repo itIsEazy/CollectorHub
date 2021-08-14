@@ -25,5 +25,11 @@
         Task AddItemToFastAndFuriousPremiumCollection(string carId, string collectionId, decimal price, string customUrl);
 
         void RemoveItemFromFastAndFuriousPremiumCollection(string itemId, string collectionId);
+
+        void ChangePrivateOptionForCollection(string collectionId);
+
+        void ChangeShowPricesOptionForCollection(string collectionId);
+
+        bool UserOwnsCollection(string userId, string collectionId);
     }
 }
