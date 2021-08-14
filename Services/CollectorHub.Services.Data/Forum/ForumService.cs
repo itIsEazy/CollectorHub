@@ -8,20 +8,24 @@
     using CollectorHub.Data.Models.Forum;
     using CollectorHub.Data.Models.User;
     using CollectorHub.Services.Data.Category;
+    using CollectorHub.Services.Data.Common;
     using CollectorHub.Web.ViewModels.Forum;
 
     public class ForumService : IForumService
     {
         private readonly ICategoryService categoryService;
+        private readonly ICommonService commonService;
         private readonly IDeletableEntityRepository<ForumPost> forumPostsRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> allUsers;
 
         public ForumService(
             ICategoryService categoryService,
+            ICommonService commonService,
             IDeletableEntityRepository<ForumPost> forumPostsRepository,
             IDeletableEntityRepository<ApplicationUser> allUsers)
         {
             this.categoryService = categoryService;
+            this.commonService = commonService;
             this.forumPostsRepository = forumPostsRepository;
             this.allUsers = allUsers;
         }
@@ -31,25 +35,68 @@
             return this.forumPostsRepository.All().Count();
         }
 
-        public ForumIndexViewModel GetIndexViewInformation(string categoryId)
+        public IndexViewModel GetIndexViewInformation(string categoryId, string searchInput, int sortingId)
         {
             string defaultForumPostImageUrl = "https://cdn.pixabay.com/photo/2015/10/07/12/17/post-976115_960_720.png";
 
-            var model = new ForumIndexViewModel();
+            var model = new IndexViewModel();
 
             model.Categories = this.categoryService.GetAllCategories();
+            model.Sortings = this.commonService.GetAllSortings();
 
-            var allPosts = this.forumPostsRepository.All();
+            var allPosts = this.forumPostsRepository.All().ToList();
 
+            //// if User is getting collection by CATEGORY Button
             if (categoryId != null)
             {
-                allPosts = this.forumPostsRepository.All().Where(x => x.CategoryId == categoryId);
+                allPosts = this.forumPostsRepository.All().Where(x => x.CategoryId == categoryId).ToList();
                 model.CategoryName = this.categoryService
                     .GetAllCategories()
                     .Where(x => x.Id == categoryId)
                     .Select(x => x.Name)
                     .FirstOrDefault()
                     .ToString();
+            }
+
+            //// if User has Typed somethign in searchInput
+            if (searchInput != null)
+            {
+                var searchedList = new List<ForumPost>();
+                List<string> words = searchInput.Split().ToList();
+
+                foreach (var post in allPosts)
+                {
+                    int wordMatchedCount = 0;
+
+                    bool removeCurrentPost = true;
+
+                    foreach (var word in words)
+                    {
+                        if (post.Title.Contains(word))
+                        {
+                            removeCurrentPost = false;
+                            wordMatchedCount += 1;
+                        }
+
+                        if (post.Content.Contains(word))
+                        {
+                            removeCurrentPost = false;
+                            wordMatchedCount += 1;
+                        }
+
+                        if (wordMatchedCount >= 3)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (!removeCurrentPost)
+                    {
+                        searchedList.Add(post);
+                    }
+                }
+
+                allPosts = searchedList;
             }
 
             foreach (var forumPost in allPosts)
@@ -81,6 +128,29 @@
                 else
                 {
                     model.TrendingPosts.Add(post);
+                }
+            }
+
+            //// if User is using sorting option
+            if (sortingId != 0)
+            {
+                var sorting = this.commonService.GetAllSortings().Where(x => x.Id == sortingId).FirstOrDefault();
+
+                if (sorting.Name == "Newest")
+                {
+                    allPosts = allPosts.OrderBy(x => x.CreatedOn).ToList();
+                }
+                else if (sorting.Name == "Oldest")
+                {
+                    allPosts = allPosts.OrderByDescending(x => x.CreatedOn).ToList();
+                }
+                else if (sorting.Name == "Most viewed")
+                {
+                    allPosts = allPosts.OrderBy(x => x.ViewsCount).ToList();
+                }
+                else if (sorting.Name == "Less viewed")
+                {
+                    allPosts = allPosts.OrderByDescending(x => x.ViewsCount).ToList();
                 }
             }
 

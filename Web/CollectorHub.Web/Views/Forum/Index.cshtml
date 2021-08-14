@@ -1,12 +1,20 @@
-﻿@model ForumIndexViewModel
+﻿@model IndexViewModel
 
 
 @{
+    string postsAreaTitle = "Trending Posts";
+
     bool categoryPostsAreAvailable = false;
 
-    if (Model.PostsByCategory != null && Model.PostsByCategory.Count > 0)
+    //// categoryPostsAreAvailable
+    if (Model.PostsByCategory != null && Model.PostsByCategory.Count > 0 || Model.CategoryName != null)
     {
+        postsAreaTitle = @Model.CategoryName + " Posts";
         categoryPostsAreAvailable = true;
+    }
+    else if (Model.SearchModel != null)
+    {
+        postsAreaTitle = "All Posts";
     }
 }
 
@@ -15,14 +23,17 @@
 <h1 class="text-danger">TODO : Watch video from the workshop to see how to make parenting (Important)</h1>
 <h1 class="text-danger">Currently using properties for stars count, view count... U WANT TO CHANGE THAT DO NOT FORGER</h1>
 
-@if (categoryPostsAreAvailable)
-{
-    <div class="col-lg-2">
-        <a asp-controller="Forum" asp-action="Index" class="btn btn-outline-secondary text-center w-100" role="button">Go Back to Trendings</a>
-    </div>
-}
-
 <div class="border col-md-12">
+
+    @if (categoryPostsAreAvailable)
+    {
+        <div class="col-lg-12">
+            <a asp-controller="Forum" asp-action="Index" class="btn btn-outline-secondary text-center w-100" role="button">Go Back to Trendings</a>
+        </div>
+    }
+
+    <hr />
+
     <h2 class="text-center">Categories</h2>
 
     <div class="border col-lg-12 ">
@@ -40,20 +51,60 @@
         </div>
     </div>
 
+    <hr />
+
     <div class="col-lg-12">
         <a class="btn btn-outline-secondary text-center w-100" asp-controller="Forum" asp-action="Create" role="button">Create Post</a>
     </div>
 
     <hr />
 
-    @if (categoryPostsAreAvailable)
-    {
-        <h2 class="text-center">@Model.CategoryName Posts</h2>
-    }
-    else
-    {
-        <h2 class="text-center">Trending conversations</h2>
-    }
+    <div class="col-lg-12 border">
+        <form method="post">
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <div class="form-group">
+                        <label asp-for="@Model.SearchModel.CategoryId"></label>
+                        <select asp-for="@Model.SearchModel.CategoryId" class="form-control">
+                            <option value="">All</option>
+                            @foreach (var category in Model.Categories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label asp-for="@Model.SearchModel.SearchInput"></label>
+                    <input asp-for="@Model.SearchModel.SearchInput" class="form-control" placeholder="Hot Wheels fast and furious, etc...">
+                </div>
+
+                <div class="form-group col-md-4">
+                    <div class="form-group">
+                        <label asp-for="@Model.SearchModel.SortingId"></label>
+                        <select asp-for="@Model.SearchModel.SortingId" class="form-control">
+                            @foreach (var sorting in Model.Sortings)
+                            {
+                                <option value="@sorting.Id">@sorting.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="col-lg-12">
+                <input class="btn btn-outline-secondary text-center w-100" asp-controller="Forum" asp-action="Index" type="submit" value="Search" />
+            </div>
+
+        </form>
+    </div>
+
+    <hr />
+
+    <h2 class="text-center">@postsAreaTitle</h2>
 
     <div class="border col-lg-12">
         @{
@@ -73,13 +124,15 @@
                         <h3>@post.Title - @post.Category.Name - @post.Date</h3>
                     </div>
                     <div class="col-lg-12 border">
-                        <div class="col-lg-4 d-inline-block">
-                            <img style="height:100%; width:100%" src="@post.ImageUrl" alt="Post image" />
+                        <div class="d-inline-block border" st>
+                            <div class="d-inline-block">
+                                <img style="width:400px; height:300px" src="@post.ImageUrl" alt="Post image" />
+                            </div>
                         </div>
-                        <div class="col-lg-2 d-inline-block">
-                            <p class="d-inline-block border">@post.Content</p>
-                        </div>
-                        <div class="col-lg-6 d-inline">
+                        <div class="d-inline-block border">
+                            <div>
+                                <p class="border">@post.Content</p>
+                            </div>
                             <div>
                                 <img src="/lib/chfavico.ico" alt="User ico" />
                                 <p>itisEASTI</p>

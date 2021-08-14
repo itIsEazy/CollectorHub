@@ -24,10 +24,20 @@
         }
 
         [AllowAnonymous]
-        public IActionResult Index(string categoryId, ForumIndexViewModel model)
+        public IActionResult Index(string categoryId, IndexViewModel model)
         {
-            model.CategoryId = categoryId;
-            model = this.forumService.GetIndexViewInformation(categoryId);
+            var currCategoryId = categoryId;
+            string searchInput = null;
+            int sortingid = 0;
+
+            if (categoryId == null && model.SearchModel != null)
+            {
+                currCategoryId = model.SearchModel.CategoryId;
+                searchInput = model.SearchModel.SearchInput;
+                sortingid = model.SearchModel.SortingId;
+            }
+
+            model = this.forumService.GetIndexViewInformation(currCategoryId, searchInput, sortingid);
 
             return this.View(model);
         }

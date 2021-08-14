@@ -88,6 +88,23 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Sortings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sortings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SubCategories",
                 columns: table => new
                 {
@@ -680,6 +697,11 @@ namespace CollectorHub.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Sortings_IsDeleted",
+                table: "Sortings",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SubCategories_IsDeleted",
                 table: "SubCategories",
                 column: "IsDeleted");
@@ -762,6 +784,9 @@ namespace CollectorHub.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "LegoCollectionLegoItem");
+
+            migrationBuilder.DropTable(
+                name: "Sortings");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

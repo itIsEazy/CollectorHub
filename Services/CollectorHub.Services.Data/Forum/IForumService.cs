@@ -8,7 +8,7 @@
     {
         int TotalForumPostsCount();
 
-        ForumIndexViewModel GetIndexViewInformation(string categoryId);
+        IndexViewModel GetIndexViewInformation(string categoryId, string searchInput, int sortingId);
 
         ForumPostViewModel GetForumPostViewModel(string postId);
 

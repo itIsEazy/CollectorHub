@@ -50,6 +50,8 @@
 
         public DbSet<ForumStar> ForumStars { get; set; }
 
+        public DbSet<Sorting> Sortings { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
