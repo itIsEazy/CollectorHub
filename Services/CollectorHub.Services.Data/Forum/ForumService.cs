@@ -99,6 +99,29 @@
                 allPosts = searchedList;
             }
 
+            //// if User is using sorting option
+            if (sortingId != 0)
+            {
+                var sorting = this.commonService.GetAllSortings().Where(x => x.Id == sortingId).FirstOrDefault();
+
+                if (sorting.Name == "Newest")
+                {
+                    allPosts = allPosts.OrderByDescending(x => x.CreatedOn).ToList();
+                }
+                else if (sorting.Name == "Oldest")
+                {
+                    allPosts = allPosts.OrderBy(x => x.CreatedOn).ToList();
+                }
+                else if (sorting.Name == "Most viewed")
+                {
+                    allPosts = allPosts.OrderByDescending(x => x.ViewsCount).ToList();
+                }
+                else if (sorting.Name == "Less viewed")
+                {
+                    allPosts = allPosts.OrderBy(x => x.ViewsCount).ToList();
+                }
+            }
+
             foreach (var forumPost in allPosts)
             {
                 var post = new ForumPostIndexViewModel();
@@ -128,29 +151,6 @@
                 else
                 {
                     model.TrendingPosts.Add(post);
-                }
-            }
-
-            //// if User is using sorting option
-            if (sortingId != 0)
-            {
-                var sorting = this.commonService.GetAllSortings().Where(x => x.Id == sortingId).FirstOrDefault();
-
-                if (sorting.Name == "Newest")
-                {
-                    allPosts = allPosts.OrderBy(x => x.CreatedOn).ToList();
-                }
-                else if (sorting.Name == "Oldest")
-                {
-                    allPosts = allPosts.OrderByDescending(x => x.CreatedOn).ToList();
-                }
-                else if (sorting.Name == "Most viewed")
-                {
-                    allPosts = allPosts.OrderBy(x => x.ViewsCount).ToList();
-                }
-                else if (sorting.Name == "Less viewed")
-                {
-                    allPosts = allPosts.OrderByDescending(x => x.ViewsCount).ToList();
                 }
             }
 

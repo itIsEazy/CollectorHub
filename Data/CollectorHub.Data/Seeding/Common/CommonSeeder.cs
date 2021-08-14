@@ -27,22 +27,22 @@
         private async Task SeedSorting(ApplicationDbContext dbContext)
         {
             var priceSortASC = new Sorting();
-            priceSortASC.Name = "Expensivest";
+            priceSortASC.Name = "Cheapest";
 
             var priceSortDESC = new Sorting();
-            priceSortDESC.Name = "Cheapest";
+            priceSortDESC.Name = "Expensivest";
 
             var dateCreatedASC = new Sorting();
-            dateCreatedASC.Name = "Newest";
+            dateCreatedASC.Name = "Oldest";
 
             var dateCreatedDESC = new Sorting();
-            dateCreatedDESC.Name = "Oldest";
+            dateCreatedDESC.Name = "Newest";
 
             var viewCountASC = new Sorting();
-            viewCountASC.Name = "Most viewed";
+            viewCountASC.Name = "Less viewed";
 
             var viewCountDESC = new Sorting();
-            viewCountDESC.Name = "Less viewed";
+            viewCountDESC.Name = "Most viewed";
 
             await dbContext.Sortings.AddAsync(priceSortASC);
             await dbContext.Sortings.AddAsync(priceSortDESC);
