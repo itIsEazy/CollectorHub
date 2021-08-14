@@ -50,9 +50,9 @@
                 return this.View(model);
             }
 
-            this.forumService.CreateForumPost(userId, model.Title, model.Content, model.ImageUrl, model.CategoryId);
+            string currCreatedPostId = this.forumService.CreateForumPost(userId, model.Title, model.Content, model.ImageUrl, model.CategoryId).Result;
 
-            return this.RedirectToAction(nameof(this.Index));
+            return this.RedirectToAction(nameof(this.Post), new { postId = currCreatedPostId });
         }
 
         public IActionResult Post(string postId)

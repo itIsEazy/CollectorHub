@@ -120,7 +120,7 @@
         // VERY VERY VERY VERY VERY VRY VEYYEYEYGHALIEUGAEUGOIEAG Add Gategory by passing daerektly Category or category id most probably
         // VERY VERY VERY VERY VERY VRY VEYYEYEYGHALIEUGAEUGOIEAG Add Gategory by passing daerektly Category or category id most probably
         // VERY VERY VERY VERY VERY VRY VEYYEYEYGHALIEUGAEUGOIEAG Add Gategory by passing daerektly Category or category id most probably
-        public async Task CreateForumPost(string userId, string title, string content, string imageUrl, string categoryId)
+        public async Task<string> CreateForumPost(string userId, string title, string content, string imageUrl, string categoryId)
         {
             string defaultForumPostImageUrl = "https://cdn.pixabay.com/photo/2015/10/07/12/17/post-976115_960_720.png";
 
@@ -149,6 +149,8 @@
             Task.WaitAll(this.allUsers.SaveChangesAsync());
 
             await this.forumPostsRepository.SaveChangesAsync();
+
+            return post.Id;
         }
 
         // NICE TO HAVE u may collect all the users that have seen this post in some hashset (this information can be used later in the game for statistics ML.NET :))

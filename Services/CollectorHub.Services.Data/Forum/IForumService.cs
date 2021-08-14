@@ -12,7 +12,7 @@
 
         ForumPostViewModel GetForumPostViewModel(string postId);
 
-        Task CreateForumPost(string userId, string title, string content, string imageUrl, string categoryId);
+        Task<string> CreateForumPost(string userId, string title, string content, string imageUrl, string categoryId);
 
         void IncreaseForumPostCount(string postId);
     }
