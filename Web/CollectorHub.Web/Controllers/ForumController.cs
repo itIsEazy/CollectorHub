@@ -83,5 +83,14 @@
 
             return this.View(model);
         }
+
+        public IActionResult AddCommentToPost(ForumPostViewModel model)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            this.forumService.AddCommentToPost(model.CommentInput.PostId, userId, model.CommentInput.Content);
+
+            return this.RedirectToAction(nameof(this.Post), new { postId = model.CommentInput.PostId });
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿namespace CollectorHub.Web.ViewModels.Forum
 {
+    using System.Collections.Generic;
+
     using CollectorHub.Data.Models.Common;
 
     public class ForumPostIndexViewModel
@@ -9,6 +11,8 @@
         }
 
         public string Id { get; set; }
+
+        public string OwnerUserName { get; set; }
 
         public string Title { get; set; }
 
@@ -25,5 +29,7 @@
         public int ViewCount { get; set; }
 
         public string Date { get; set; }
+
+        public IEnumerable<ForumPostCommentViewModel> Comments { get; set; }
     }
 }

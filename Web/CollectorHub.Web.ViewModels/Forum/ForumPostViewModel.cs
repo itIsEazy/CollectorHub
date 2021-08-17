@@ -30,8 +30,10 @@
 
         public int StarsCount { get; set; }
 
-        public ICollection<ForumPostComment> Comments { get; set; }
+        public IEnumerable<ForumPostCommentViewModel> Comments { get; set; }
 
         public ICollection<ForumStar> Stars { get; set; }
+
+        public ForumPostCommentInputModel CommentInput { get; set; }
     }
 }

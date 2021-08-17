@@ -15,5 +15,7 @@
         Task<string> CreateForumPost(string userId, string title, string content, string imageUrl, string categoryId);
 
         void IncreaseForumPostCount(string postId);
+
+        Task AddCommentToPost(string postId, string authorId, string content);
     }
 }

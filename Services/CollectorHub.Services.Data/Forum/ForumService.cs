@@ -16,17 +16,20 @@
         private readonly ICategoryService categoryService;
         private readonly ICommonService commonService;
         private readonly IDeletableEntityRepository<ForumPost> forumPostsRepository;
+        private readonly IDeletableEntityRepository<ForumPostComment> forumPostCommentsRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> allUsers;
 
         public ForumService(
             ICategoryService categoryService,
             ICommonService commonService,
             IDeletableEntityRepository<ForumPost> forumPostsRepository,
+            IDeletableEntityRepository<ForumPostComment> forumPostCommentsRepository,
             IDeletableEntityRepository<ApplicationUser> allUsers)
         {
             this.categoryService = categoryService;
             this.commonService = commonService;
             this.forumPostsRepository = forumPostsRepository;
+            this.forumPostCommentsRepository = forumPostCommentsRepository;
             this.allUsers = allUsers;
         }
 
@@ -128,12 +131,14 @@
 
                 post.Id = forumPost.Id;
                 post.Title = forumPost.Title;
+                post.OwnerUserName = forumPost.Author.UserName;
                 post.Content = forumPost.Content;
                 post.Category = forumPost.Category;
                 post.Date = forumPost.CreatedOn.ToString("MMMM dd, yyyy");
                 post.ViewCount = forumPost.ViewsCount;
                 post.StarsCount = forumPost.StarsCount;
                 post.CommentCount = forumPost.Comments.Count;
+                post.Comments = this.GetPostComments(forumPost.Id);
 
                 if (string.IsNullOrEmpty(forumPost.ImageUrl))
                 {
@@ -180,7 +185,7 @@
             model.StarsCount = postFromDatabase.StarsCount;
             model.ViewsCount = postFromDatabase.ViewsCount;
 
-            model.Comments = postFromDatabase.Comments;
+            model.Comments = this.GetPostComments(postId);
             model.Stars = postFromDatabase.Stars;
 
             return model;
@@ -233,6 +238,46 @@
             this.forumPostsRepository.SaveChanges();
 
             // await this.forumPostsRepository.SaveChangesAsync();
+        }
+
+        public async Task AddCommentToPost(string postId, string authorId, string content)
+        {
+            var comment = new ForumPostComment();
+            comment.AuthorId = authorId;
+            comment.Content = content;
+            comment.PostId = postId;
+
+            await this.forumPostCommentsRepository.AddAsync(comment);
+
+            this.forumPostCommentsRepository.SaveChanges();
+        }
+
+        private IEnumerable<ForumPostCommentViewModel> GetPostComments(string postId)
+        {
+            var list = new List<ForumPostCommentViewModel>();
+
+            var allComments = this.forumPostCommentsRepository
+                .All()
+                .Where(x => x.PostId == postId)
+                .OrderBy(x => x.CreatedOn)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Content = x.Content,
+                    AuthorUserName = x.Author.UserName,
+                });
+
+            foreach (var comment in allComments)
+            {
+                list.Add(new ForumPostCommentViewModel
+                {
+                    Id = comment.Id,
+                    Content = comment.Content,
+                    AuthorUserName = comment.AuthorUserName,
+                });
+            }
+
+            return list;
         }
     }
 }

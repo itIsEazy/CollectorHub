@@ -1,19 +1,76 @@
 ﻿@model ForumPostViewModel
 
-    <a class="btn btn-outline-secondary text-left" asp-controller="Forum" asp-action="Index" role="button">Back to Posts Main page</a>
+<div class="col-lg-12">
+    <a class="btn btn-outline-secondary text-center w-100" asp-controller="Forum" asp-action="Index" role="button">Back to Posts Main page</a>
+</div>
 
+<div class="col-lg-12 border">
+    <h1 class="text-center">@Model.Title</h1>
+    <div class="text-center">
+        <img style="width:350px; height:300px" src="@Model.ImageUrl" alt="Forum post Image" />
+    </div>
+</div>
 
-
-    <div class="col-lg-12 border">
-        <h1 class="text-center">@Model.Title</h1>
-        <div class="text-center">
-            <img style="width:350px; height:300px" src="@Model.ImageUrl" alt="Forum post Image" />
-        </div>
+<div class="col-lg-12 border">
+    <p class="text-center">@Model.Comments.Count() Comments @Model.ViewsCount Views @Model.StarsCount Stars</p>
+    <div class="col-lg-12 ">
+        <p class=" text-center">@Model.Content</p>
     </div>
 
-    <div class="col-lg-12 border">
-        <p class="text-center">@Model.Comments.Count() Comments @Model.ViewsCount Views @Model.StarsCount Stars</p>
-        <div class="col-lg-12">
-            <p class="">@Model.Content</p>
-        </div>
+    <hr />
+
+    <div class="col-lg-12 text-center">
+        <h4>Comments</h4>
     </div>
+
+    <div class="col-lg-12">
+
+        <form method="post">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <input asp-for="@Model.CommentInput.PostId" type="hidden" value="@Model.Id" />
+                    <label asp-for="@Model.CommentInput.Content"></label>
+                    <textarea asp-for="@Model.CommentInput.Content" rows="2" class="form-control" placeholder="Your comment here..."></textarea>
+                    <span asp-validation-for="@Model.CommentInput.Content" class="small text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <input class="btn btn-outline-secondary text-center w-100" asp-controller="Forum" asp-action="AddCommentToPost" type="submit" value="Post comment" />
+            </div>
+        </form>
+
+    </div>
+
+    @if (Model.Comments == null || Model.Comments.Count() <= 0)
+    {
+        <div class="col-lg-12 text-center">
+            <p>No Comments ! Check out this post to comment !</p>
+        </div>
+    }
+    else
+    {
+        <div class="">
+
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="col-lg-12">
+                    <div class="col-lg-2 d-inline-block border">
+                        <div class="text-center">
+                            <img style="width:50px; height:50px" src="http://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png" alt="User ico" />
+                        </div>
+                        <div class="text-center">
+                            <p>@comment.AuthorUserName</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-9 d-inline-block border ">
+                        <div class=" text-center">
+                            <p class="row-cols-lg-4">@comment.Content</p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    }
+</div>
