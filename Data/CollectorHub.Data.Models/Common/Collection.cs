@@ -1,7 +1,6 @@
 ﻿namespace CollectorHub.Data.Models.Common
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using CollectorHub.Data.Common.Models;
@@ -14,6 +13,10 @@
         {
             this.Id = Guid.NewGuid().ToString();
         }
+
+        public string UserId { get; set; }
+
+        public virtual ApplicationUser User { get; set; }
 
         [Required]
         [MinLength(3)]

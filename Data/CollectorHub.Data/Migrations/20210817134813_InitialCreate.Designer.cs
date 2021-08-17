@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectorHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210814205130_InitialCreate")]
+    [Migration("20210817134813_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -305,9 +305,6 @@ namespace CollectorHub.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ApplicationUser")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("CategoryId")
                         .HasColumnType("nvarchar(450)");
 
@@ -350,8 +347,6 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUser");
-
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("IsDeleted");
@@ -370,6 +365,9 @@ namespace CollectorHub.Data.Migrations
                     b.Property<string>("CollectionId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("ConditionIsNew")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -386,10 +384,13 @@ namespace CollectorHub.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PriceBoughted")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<decimal>("PriceNow")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("Profit")
+                        .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
 
@@ -437,10 +438,11 @@ namespace CollectorHub.Data.Migrations
 
             modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoCollection", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -448,7 +450,18 @@ namespace CollectorHub.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedOn")
@@ -456,12 +469,21 @@ namespace CollectorHub.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<bool>("ShowPrices")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("ViewsCount")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("IsDeleted");
 
@@ -470,49 +492,16 @@ namespace CollectorHub.Data.Migrations
                     b.ToTable("LegoCollections");
                 });
 
-            modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoCollectionLegoItem", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoMinifigure", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CollectionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CollectionId");
-
-                    b.HasIndex("ItemId");
-
-                    b.ToTable("LegoCollectionLegoItem");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.LegoItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("AvgPriceNew")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<decimal>("AvgPriceUsed")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("CatalogLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CollectionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Condition")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -529,20 +518,8 @@ namespace CollectorHub.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PriceBoughted")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("PriceGuideLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("PriceNow")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("ProductionYear")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("Profit")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SwNumber")
                         .HasColumnType("nvarchar(max)");
@@ -554,7 +531,51 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("LegoItems");
+                    b.ToTable("LegoMinifigure");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.LegoMinifigureItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("ConditionIsNew")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MinifigureId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OwnerPictureUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PriceBoughted")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("PriceNow")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("Profit")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("MinifigureId");
+
+                    b.ToTable("LegoMinifigureItems");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.User.ApplicationRole", b =>
@@ -673,7 +694,9 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FastAndFuriousPremiumCollection");
+                    b.HasIndex("FastAndFuriousPremiumCollection")
+                        .IsUnique()
+                        .HasFilter("[FastAndFuriousPremiumCollection] IS NOT NULL");
 
                     b.HasIndex("ForumStarId");
 
@@ -703,6 +726,21 @@ namespace CollectorHub.Data.Migrations
                     b.HasIndex("StarsId");
 
                     b.ToTable("ForumPostForumStar");
+                });
+
+            modelBuilder.Entity("LegoCollectionLegoMinifigureItem", b =>
+                {
+                    b.Property<string>("CollectionsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ItemsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CollectionsId", "ItemsId");
+
+                    b.HasIndex("ItemsId");
+
+                    b.ToTable("LegoCollectionLegoMinifigureItem");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -878,17 +916,11 @@ namespace CollectorHub.Data.Migrations
 
             modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUser");
-
                     b.HasOne("CollectorHub.Data.Models.Common.Category", "Category")
                         .WithMany("FastAndFuriousPremiumCollection")
                         .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumItem", b =>
@@ -908,37 +940,33 @@ namespace CollectorHub.Data.Migrations
 
             modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoCollection", b =>
                 {
+                    b.HasOne("CollectorHub.Data.Models.Common.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
                     b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
+                    b.Navigation("Category");
+
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoCollectionLegoItem", b =>
+            modelBuilder.Entity("CollectorHub.Data.Models.LegoMinifigureItem", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.Lego.LegoCollection", "Collection")
-                        .WithMany("Items")
-                        .HasForeignKey("CollectionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("CollectorHub.Data.Models.Lego.LegoMinifigure", "Minifigure")
+                        .WithMany()
+                        .HasForeignKey("MinifigureId");
 
-                    b.HasOne("CollectorHub.Data.Models.LegoItem", "Item")
-                        .WithMany("Collections")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Collection");
-
-                    b.Navigation("Item");
+                    b.Navigation("Minifigure");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.User.ApplicationUser", b =>
                 {
                     b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", "FFPremiumCollection")
-                        .WithMany()
-                        .HasForeignKey("FastAndFuriousPremiumCollection");
+                        .WithOne("User")
+                        .HasForeignKey("CollectorHub.Data.Models.User.ApplicationUser", "FastAndFuriousPremiumCollection");
 
                     b.HasOne("CollectorHub.Data.Models.Forum.ForumStar", null)
                         .WithMany("Users")
@@ -958,6 +986,21 @@ namespace CollectorHub.Data.Migrations
                     b.HasOne("CollectorHub.Data.Models.Forum.ForumStar", null)
                         .WithMany()
                         .HasForeignKey("StarsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LegoCollectionLegoMinifigureItem", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.Lego.LegoCollection", null)
+                        .WithMany()
+                        .HasForeignKey("CollectionsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CollectorHub.Data.Models.LegoMinifigureItem", null)
+                        .WithMany()
+                        .HasForeignKey("ItemsId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -1038,21 +1081,13 @@ namespace CollectorHub.Data.Migrations
             modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", b =>
                 {
                     b.Navigation("Items");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumSerie", b =>
                 {
                     b.Navigation("Cars");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoCollection", b =>
-                {
-                    b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.LegoItem", b =>
-                {
-                    b.Navigation("Collections");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.User.ApplicationUser", b =>

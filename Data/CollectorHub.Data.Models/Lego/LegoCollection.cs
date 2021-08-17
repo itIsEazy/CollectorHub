@@ -1,25 +1,18 @@
 ﻿namespace CollectorHub.Data.Models.Lego
 {
+    using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
 
-    using CollectorHub.Data.Common.Models;
-    using CollectorHub.Data.Models.User;
+    using CollectorHub.Data.Models.Common;
 
-    public class LegoCollection : BaseDeletableModel<int>
+    public class LegoCollection : Collection
     {
         public LegoCollection()
         {
-            this.Items = new HashSet<LegoCollectionLegoItem>();
+            this.Id = Guid.NewGuid().ToString();
+            this.Items = new HashSet<LegoMinifigureItem>();
         }
 
-        [Required]
-        public string Name { get; set; }
-
-        public string UserId { get; set; }
-
-        public virtual ApplicationUser User { get; set; }
-
-        public virtual ICollection<LegoCollectionLegoItem> Items { get; set; }
+        public virtual ICollection<LegoMinifigureItem> Items { get; set; }
     }
 }

@@ -203,9 +203,17 @@
             var collection = this.ffpremiumCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
 
             item.Car = this.ffpremiumCarsRepository.All().Where(x => x.Id == carId).FirstOrDefault();
-            item.OwnerPictureUrl = customUrl;
             item.Collection = collection;
             item.PriceBoughted = price;
+
+            if (customUrl == null)
+            {
+                item.OwnerPictureUrl = item.Car.PhotoCardLink;
+            }
+            else
+            {
+                item.OwnerPictureUrl = customUrl;
+            }
 
             collection.Items.Add(item);
 

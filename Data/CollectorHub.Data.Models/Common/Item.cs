@@ -1,6 +1,7 @@
 ﻿namespace CollectorHub.Data.Models.Common
 {
-    using System.ComponentModel.DataAnnotations;
+    using System;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using CollectorHub.Data.Common.Models;
     using CollectorHub.Data.Models.Interfaces;
@@ -9,17 +10,22 @@
     {
         public Item()
         {
+            this.Id = Guid.NewGuid().ToString();
         }
 
-        [Range(0, 9999999999999999.99)]
+        [Column(TypeName = "decimal(10, 2)")]
         public decimal PriceNow { get; set; }
 
-        [Range(0, 9999999999999999.99)]
+        [Column(TypeName = "decimal(10, 2)")]
         public decimal PriceBoughted { get; set; }
 
         public string OwnerPictureUrl { get; set; }
 
-        // add bool IsNewCondition (Very Important)
+        public bool ConditionIsNew { get; set; }
+
+        [Column(TypeName = "decimal(10, 2)")]
+        public decimal Profit { get; set; }
+
         // add bool UseDefaultPictureForThisItem (Important)
     }
 }

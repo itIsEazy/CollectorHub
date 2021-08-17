@@ -59,24 +59,16 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LegoItems",
+                name: "LegoMinifigure",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SwNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CatalogLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PriceGuideLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PriceNow = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AvgPriceNew = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AvgPriceUsed = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AvgPriceNew = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    AvgPriceUsed = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     ProductionYear = table.Column<int>(type: "int", nullable: false),
                     WeightInGrams = table.Column<double>(type: "float", nullable: false),
-                    Condition = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PriceBoughted = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Profit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CollectionId = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -84,7 +76,7 @@ namespace CollectorHub.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LegoItems", x => x.Id);
+                    table.PrimaryKey("PK_LegoMinifigure", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -182,6 +174,33 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LegoMinifigureItems",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MinifigureId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PriceNow = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    PriceBoughted = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    OwnerPictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConditionIsNew = table.Column<bool>(type: "bit", nullable: false),
+                    Profit = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LegoMinifigureItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LegoMinifigureItems_LegoMinifigure_MinifigureId",
+                        column: x => x.MinifigureId,
+                        principalTable: "LegoMinifigure",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -204,77 +223,15 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserRoles",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
-                    table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserClaims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserLogins",
-                columns: table => new
-                {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserTokens",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
-                });
-
-            migrationBuilder.CreateTable(
                 name: "FastAndFuriousPremiumCollections",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ApplicationUser = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
                     ViewsCount = table.Column<int>(type: "int", nullable: false),
@@ -349,9 +306,11 @@ namespace CollectorHub.Data.Migrations
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PriceNow = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PriceBoughted = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OwnerPictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    PriceNow = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    PriceBoughted = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    OwnerPictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConditionIsNew = table.Column<bool>(type: "bit", nullable: false),
+                    Profit = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -366,6 +325,91 @@ namespace CollectorHub.Data.Migrations
                         name: "FK_FastAndFuriousPremiumItems_FastAndFuriousPremiumCollections_CollectionId",
                         column: x => x.CollectionId,
                         principalTable: "FastAndFuriousPremiumCollections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -409,14 +453,19 @@ namespace CollectorHub.Data.Migrations
                 name: "LegoCollections",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
+                    ViewsCount = table.Column<int>(type: "int", nullable: false),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
+                    ShowPrices = table.Column<bool>(type: "bit", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -425,6 +474,12 @@ namespace CollectorHub.Data.Migrations
                         name: "FK_LegoCollections_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LegoCollections_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -492,27 +547,25 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LegoCollectionLegoItem",
+                name: "LegoCollectionLegoMinifigureItem",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CollectionId = table.Column<int>(type: "int", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false)
+                    CollectionsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ItemsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LegoCollectionLegoItem", x => x.Id);
+                    table.PrimaryKey("PK_LegoCollectionLegoMinifigureItem", x => new { x.CollectionsId, x.ItemsId });
                     table.ForeignKey(
-                        name: "FK_LegoCollectionLegoItem_LegoCollections_CollectionId",
-                        column: x => x.CollectionId,
+                        name: "FK_LegoCollectionLegoMinifigureItem_LegoCollections_CollectionsId",
+                        column: x => x.CollectionsId,
                         principalTable: "LegoCollections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_LegoCollectionLegoItem_LegoItems_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "LegoItems",
+                        name: "FK_LegoCollectionLegoMinifigureItem_LegoMinifigureItems_ItemsId",
+                        column: x => x.ItemsId,
+                        principalTable: "LegoMinifigureItems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -557,7 +610,9 @@ namespace CollectorHub.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_FastAndFuriousPremiumCollection",
                 table: "AspNetUsers",
-                column: "FastAndFuriousPremiumCollection");
+                column: "FastAndFuriousPremiumCollection",
+                unique: true,
+                filter: "[FastAndFuriousPremiumCollection] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_ForumStarId",
@@ -590,11 +645,6 @@ namespace CollectorHub.Data.Migrations
                 name: "IX_FastAndFuriousPremiumCars_SerieId",
                 table: "FastAndFuriousPremiumCars",
                 column: "SerieId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumCollections_ApplicationUser",
-                table: "FastAndFuriousPremiumCollections",
-                column: "ApplicationUser");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FastAndFuriousPremiumCollections_CategoryId",
@@ -672,14 +722,14 @@ namespace CollectorHub.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LegoCollectionLegoItem_CollectionId",
-                table: "LegoCollectionLegoItem",
-                column: "CollectionId");
+                name: "IX_LegoCollectionLegoMinifigureItem_ItemsId",
+                table: "LegoCollectionLegoMinifigureItem",
+                column: "ItemsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LegoCollectionLegoItem_ItemId",
-                table: "LegoCollectionLegoItem",
-                column: "ItemId");
+                name: "IX_LegoCollections_CategoryId",
+                table: "LegoCollections",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LegoCollections_IsDeleted",
@@ -692,9 +742,19 @@ namespace CollectorHub.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LegoItems_IsDeleted",
-                table: "LegoItems",
+                name: "IX_LegoMinifigure_IsDeleted",
+                table: "LegoMinifigure",
                 column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LegoMinifigureItems_IsDeleted",
+                table: "LegoMinifigureItems",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LegoMinifigureItems_MinifigureId",
+                table: "LegoMinifigureItems",
+                column: "MinifigureId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sortings_IsDeleted",
@@ -710,54 +770,10 @@ namespace CollectorHub.Data.Migrations
                 name: "IX_SubCategories_SubcategoryId1",
                 table: "SubCategories",
                 column: "SubcategoryId1");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUserRoles_AspNetUsers_UserId",
-                table: "AspNetUserRoles",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUserClaims_AspNetUsers_UserId",
-                table: "AspNetUserClaims",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUserLogins_AspNetUsers_UserId",
-                table: "AspNetUserLogins",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUserTokens_AspNetUsers_UserId",
-                table: "AspNetUserTokens",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_FastAndFuriousPremiumCollections_AspNetUsers_ApplicationUser",
-                table: "FastAndFuriousPremiumCollections",
-                column: "ApplicationUser",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_FastAndFuriousPremiumCollections_AspNetUsers_ApplicationUser",
-                table: "FastAndFuriousPremiumCollections");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -783,7 +799,7 @@ namespace CollectorHub.Data.Migrations
                 name: "ForumPostForumStar");
 
             migrationBuilder.DropTable(
-                name: "LegoCollectionLegoItem");
+                name: "LegoCollectionLegoMinifigureItem");
 
             migrationBuilder.DropTable(
                 name: "Sortings");
@@ -801,13 +817,16 @@ namespace CollectorHub.Data.Migrations
                 name: "LegoCollections");
 
             migrationBuilder.DropTable(
-                name: "LegoItems");
+                name: "LegoMinifigureItems");
 
             migrationBuilder.DropTable(
                 name: "FastAndFuriousPremiumSeries");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "LegoMinifigure");
 
             migrationBuilder.DropTable(
                 name: "FastAndFuriousPremiumCollections");
