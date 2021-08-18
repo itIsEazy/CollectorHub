@@ -28,7 +28,7 @@
         {
         }
 
-        public DbSet<LegoMinifigure> LegoMinifigure { get; set; }
+        public DbSet<LegoMinifigure> LegoMinifigures { get; set; }
 
         public DbSet<LegoMinifigureItem> LegoMinifigureItems { get; set; }
 

@@ -14,6 +14,8 @@
 
         public string ImageUrl { get; set; }
 
+        public string Action { get; set; }
+
         public ApplicationUser Owner { get; set; }
     }
 }

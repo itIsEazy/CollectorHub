@@ -44,7 +44,7 @@
             return model;
         }
 
-        public List<CollectionIndexViewModel> GetAllTrendingCollections()
+        public IEnumerable<CollectionIndexViewModel> GetAllTrendingCollections()
         {
             // VERY IMPORTANT THIS MUST HAVE ALL THE STAR COUNT IN EVERY COLLECTION
             //// GETS ALL COLLECTIONS ORDERS THEM BY STAR ? VIEW COUNT AND RETURNS ONLY 5 10 15 20 25 !
@@ -65,6 +65,8 @@
 
         public List<CollectionIndexViewModel> GetAllFFPremiumCollections()
         {
+            const string action = "HotWheelsFastAndFuriousPremium";
+
             var list = new List<CollectionIndexViewModel>();
 
             var allCollectionsAvailable = this.ffpremiumCollectionsRepository
@@ -87,6 +89,7 @@
                     Name = collection.Name,
                     ImageUrl = collection.ImageUrl,
                     Owner = collection.User,
+                    Action = action,
                 });
             }
 

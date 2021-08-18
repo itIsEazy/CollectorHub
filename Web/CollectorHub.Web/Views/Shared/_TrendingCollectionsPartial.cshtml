@@ -1,0 +1,43 @@
+﻿@model List<CollectionIndexViewModel>
+
+
+
+<div class="col-lg-12">
+    <h1 class="text-center border">Trending Collections</h1>
+    @if (Model == null || Model.Count <= 0)
+    {
+        <div class="col-lg-12">
+            <h1 class="text-center">NO TRENDING COLLECTIONS</h1>
+        </div>
+    }
+    else
+    {
+        <div class="col-lg-12 border">
+            @foreach (var collection in Model)
+            {
+                <div class="col-lg-12">
+                    <div class="text-center">
+                        <h3>@collection.Name</h3>
+                    </div>
+
+                    <div class="col-lg-12 text-center">
+                        <img style="width: 400px; height:300px" src="@collection.ImageUrl" alt="Collection Image" />
+                    </div>
+
+                    <div class="col-lg-12">
+                        <p class="text-center">Owner</p>
+                        <p class="text-center">@collection.Owner.UserName</p>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <a asp-controller="Collections"  asp-action="@collection.Action"  asp-route-collectionId="@collection.Id" class="btn btn-outline-secondary text-center w-100 " role="button">Check Out Collection</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+
+
+

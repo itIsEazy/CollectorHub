@@ -23,34 +23,7 @@
 
 <hr />
 
-<div class="col-lg-12">
-    <h1 class="text-center border">Trending Collections</h1>
-    @if (Model.TrendingCollectons == null || Model.TrendingCollectons.Count <= 0)
-    {
-        <div class="col-lg-12">
-            <h1 class="text-center">NO TRENDING COLLECTIONS</h1>
-        </div>
-    }
-    else
-    {
-        <div class="col-lg-12 border">
-            @foreach (var collection in Model.TrendingCollectons)
-            {
-                <div class="d-inline-block border">
-                    <p class="text-center">@collection.Name</p>
-                    <img style="width: 200px; height:200px" src="@collection.ImageUrl" alt="Collection Image" />
-                    <p class="text-center">Owner</p>
-                    <div class="text-center">
-                        <a class="btn btn-outline-secondary text-center w-100 " role="button">@collection.Owner.UserName</a>
-                    </div>
-                    <div>
-                        <a class="btn btn-outline-secondary text-center w-100 " role="button">Check Out Collection</a>
-                    </div>
-                </div>
-            }
-        </div>
-    }
-</div>
+<partial name="_TrendingCollectionsPartial" model="@Model.TrendingCollectons" />
 
 
 

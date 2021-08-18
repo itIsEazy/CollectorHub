@@ -13,6 +13,6 @@
 
         public IEnumerable<CategoryIndexViewModel> Categories { get; set; }
 
-        public ICollection<CollectionIndexViewModel> TrendingCollectons { get; set; }
+        public IEnumerable<CollectionIndexViewModel> TrendingCollectons { get; set; }
     }
 }
