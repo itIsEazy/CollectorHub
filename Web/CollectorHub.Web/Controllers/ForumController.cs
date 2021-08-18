@@ -36,7 +36,7 @@
                 sortingid = model.SearchModel.SortingId;
             }
 
-            if (currCategoryId != null && !this.categoryService.CategoryExists(categoryId))
+            if (currCategoryId != null && !this.categoryService.CategoryExists(currCategoryId))
             {
                 return this.BadRequest();
             }

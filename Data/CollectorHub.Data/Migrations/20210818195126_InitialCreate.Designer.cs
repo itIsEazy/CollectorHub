@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectorHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210817134813_InitialCreate")]
+    [Migration("20210818195126_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -179,8 +179,8 @@ namespace CollectorHub.Data.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -531,7 +531,7 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("LegoMinifigure");
+                    b.ToTable("LegoMinifigures");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.LegoMinifigureItem", b =>

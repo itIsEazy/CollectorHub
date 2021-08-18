@@ -59,7 +59,7 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LegoMinifigure",
+                name: "LegoMinifigures",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -76,7 +76,7 @@ namespace CollectorHub.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LegoMinifigure", x => x.Id);
+                    table.PrimaryKey("PK_LegoMinifigures", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,9 +193,9 @@ namespace CollectorHub.Data.Migrations
                 {
                     table.PrimaryKey("PK_LegoMinifigureItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LegoMinifigureItems_LegoMinifigure_MinifigureId",
+                        name: "FK_LegoMinifigureItems_LegoMinifigures_MinifigureId",
                         column: x => x.MinifigureId,
-                        principalTable: "LegoMinifigure",
+                        principalTable: "LegoMinifigures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -490,7 +490,7 @@ namespace CollectorHub.Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     LikesCount = table.Column<int>(type: "int", nullable: false),
                     PostId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ParentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
@@ -742,11 +742,6 @@ namespace CollectorHub.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LegoMinifigure_IsDeleted",
-                table: "LegoMinifigure",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_LegoMinifigureItems_IsDeleted",
                 table: "LegoMinifigureItems",
                 column: "IsDeleted");
@@ -755,6 +750,11 @@ namespace CollectorHub.Data.Migrations
                 name: "IX_LegoMinifigureItems_MinifigureId",
                 table: "LegoMinifigureItems",
                 column: "MinifigureId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LegoMinifigures_IsDeleted",
+                table: "LegoMinifigures",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sortings_IsDeleted",
@@ -826,7 +826,7 @@ namespace CollectorHub.Data.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "LegoMinifigure");
+                name: "LegoMinifigures");
 
             migrationBuilder.DropTable(
                 name: "FastAndFuriousPremiumCollections");

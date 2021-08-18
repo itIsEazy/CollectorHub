@@ -529,7 +529,7 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("LegoMinifigure");
+                    b.ToTable("LegoMinifigures");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.LegoMinifigureItem", b =>
