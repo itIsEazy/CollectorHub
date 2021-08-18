@@ -35,35 +35,31 @@
         {
             var model = new CollectionsIndexViewModel();
             model.Categories = this.categoryService.GetAllCategories();
-            model.TrendingCollectons = this.GetAllTrendingCollections();
-
-            if (categoryId != null)
-            {
-            }
+            model.TrendingCollectons = this.GetAllTrendingCollections(categoryId);
 
             return model;
         }
 
-        public IEnumerable<CollectionIndexViewModel> GetAllTrendingCollections()
+        public IEnumerable<CollectionIndexViewModel> GetAllTrendingCollections(string categoryId)
         {
             // VERY IMPORTANT THIS MUST HAVE ALL THE STAR COUNT IN EVERY COLLECTION
             //// GETS ALL COLLECTIONS ORDERS THEM BY STAR ? VIEW COUNT AND RETURNS ONLY 5 10 15 20 25 !
 
             var list = new List<CollectionIndexViewModel>();
 
-            var allHWFFPremiumCollections = this.GetAllFFPremiumCollections();
+            var allHWFFPremiumCollections = this.GetAllFFPremiumCollections(categoryId);
 
             foreach (var collection in allHWFFPremiumCollections)
             {
                 list.Add(collection);
             }
 
-            //// list = list.OrderBy(x => x.StarsCount?)
+            list = list.OrderBy(x => x.ViewsCount).ToList();
 
             return list;
         }
 
-        public List<CollectionIndexViewModel> GetAllFFPremiumCollections()
+        public List<CollectionIndexViewModel> GetAllFFPremiumCollections(string categoryId)
         {
             const string action = "HotWheelsFastAndFuriousPremium";
 
@@ -78,8 +74,15 @@
                     x.Name,
                     x.ImageUrl,
                     x.User,
+                    x.ViewsCount,
+                    x.CategoryId,
                 })
                 .ToList();
+
+            if (categoryId != null)
+            {
+                allCollectionsAvailable = allCollectionsAvailable.Where(x => x.CategoryId == categoryId).ToList();
+            }
 
             foreach (var collection in allCollectionsAvailable)
             {
@@ -89,6 +92,7 @@
                     Name = collection.Name,
                     ImageUrl = collection.ImageUrl,
                     Owner = collection.User,
+                    ViewsCount = collection.ViewsCount,
                     Action = action,
                 });
             }

@@ -8,7 +8,7 @@
     {
         CollectionsIndexViewModel GetIndexViewInformation(string categoryId);
 
-        IEnumerable<CollectionIndexViewModel> GetAllTrendingCollections();
+        IEnumerable<CollectionIndexViewModel> GetAllTrendingCollections(string categoryId);
 
         int GetAllCollectionsCount();
     }

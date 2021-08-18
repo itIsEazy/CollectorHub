@@ -1,6 +1,7 @@
 ﻿namespace CollectorHub.Services.Data.Category
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.Common;
@@ -30,6 +31,23 @@
             }
 
             return list;
+        }
+
+        public bool CategoryExists(string categoryId)
+        {
+            var category = this.categoriesRepository
+                .All()
+                .Where(x => x.Id == categoryId)
+                .FirstOrDefault();
+
+            if (category == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

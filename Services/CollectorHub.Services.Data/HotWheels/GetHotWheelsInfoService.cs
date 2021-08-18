@@ -18,6 +18,7 @@
         private readonly IDeletableEntityRepository<FastAndFuriousPremiumSerie> ffpremiumSeriesRepository;
         private readonly IDeletableEntityRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository;
         private readonly IDeletableEntityRepository<FastAndFuriousPremiumItem> ffpremiumItemsRepository;
+        private readonly IRepository<Category> categoriesRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> allUsers;
 
         public GetHotWheelsInfoService(
@@ -25,12 +26,14 @@
             IDeletableEntityRepository<FastAndFuriousPremiumSerie> ffpremiumSeriesRepository,
             IDeletableEntityRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository,
             IDeletableEntityRepository<FastAndFuriousPremiumItem> ffpremiumItemsRepository,
+            IRepository<Category> categoriesRepository,
             IDeletableEntityRepository<ApplicationUser> allUsers)
         {
             this.ffpremiumCarsRepository = ffpremiumCarsRepository;
             this.ffpremiumSeriesRepository = ffpremiumSeriesRepository;
             this.ffpremiumCollectionsRepository = ffpremiumCollectionsRepository;
             this.ffpremiumItemsRepository = ffpremiumItemsRepository;
+            this.categoriesRepository = categoriesRepository;
             this.allUsers = allUsers;
         }
 
@@ -99,6 +102,11 @@
             string defaultCollectionImageUrl = "https://previews.123rf.com/images/ratoca/ratoca1507/ratoca150700170/42144597-new-collection.jpg";
 
             var user = this.GetUser(userId);
+            var categoryId = this.categoriesRepository
+                .All()
+                .Where(x => x.Name == "Hot Wheels")
+                .Select(x => x.Id)
+                .FirstOrDefault();
 
             var collection = new FastAndFuriousPremiumCollection();
 
@@ -110,6 +118,7 @@
             collection.Name = "Hot Wheels Fast and Furious Premium";
             collection.ImageUrl = defaultCollectionImageUrl;
             collection.ViewsCount = 0;
+            collection.CategoryId = categoryId;
 
             user.FFPremiumCollectionId = collection.Id;
             user.FFPremiumCollection = collection;
@@ -280,6 +289,23 @@
             else
             {
                 return false;
+            }
+        }
+
+        public bool CollectionExists(string collectionId)
+        {
+            var collection = this.ffpremiumCollectionsRepository
+                .All()
+                .Where(x => x.Id == collectionId)
+                .FirstOrDefault();
+
+            if (collection == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
     }

@@ -16,6 +16,8 @@
 
         public string Action { get; set; }
 
+        public int ViewsCount { get; set; }
+
         public ApplicationUser Owner { get; set; }
     }
 }

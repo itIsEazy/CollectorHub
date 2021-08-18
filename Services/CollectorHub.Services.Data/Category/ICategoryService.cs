@@ -7,5 +7,7 @@
     public interface ICategoryService
     {
         IEnumerable<CategoryIndexViewModel> GetAllCategories();
+
+        bool CategoryExists(string categoryId);
     }
 }

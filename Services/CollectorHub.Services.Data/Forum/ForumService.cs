@@ -252,6 +252,23 @@
             this.forumPostCommentsRepository.SaveChanges();
         }
 
+        public bool PostExists(string postId)
+        {
+            var post = this.forumPostsRepository
+                .All()
+                .Where(x => x.Id == postId)
+                .FirstOrDefault();
+
+            if (post == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         private IEnumerable<ForumPostCommentViewModel> GetPostComments(string postId)
         {
             var list = new List<ForumPostCommentViewModel>();

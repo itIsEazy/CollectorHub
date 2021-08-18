@@ -31,5 +31,7 @@
         void ChangeShowPricesOptionForCollection(string collectionId);
 
         bool UserOwnsCollection(string userId, string collectionId);
+
+        bool CollectionExists(string collectionId);
     }
 }

@@ -17,5 +17,7 @@
         void IncreaseForumPostCount(string postId);
 
         Task AddCommentToPost(string postId, string authorId, string content);
+
+        bool PostExists(string postId);
     }
 }

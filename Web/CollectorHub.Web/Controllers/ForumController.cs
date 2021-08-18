@@ -4,7 +4,6 @@
 
     using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Forum;
-    using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Web.ViewModels.Forum;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -37,6 +36,11 @@
                 sortingid = model.SearchModel.SortingId;
             }
 
+            if (currCategoryId != null && !this.categoryService.CategoryExists(categoryId))
+            {
+                return this.BadRequest();
+            }
+
             model = this.forumService.GetIndexViewInformation(currCategoryId, searchInput, sortingid);
 
             return this.View(model);
@@ -55,6 +59,11 @@
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            if (!this.categoryService.CategoryExists(model.CategoryId))
+            {
+                return this.BadRequest();
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.View(model);
@@ -68,6 +77,11 @@
         public IActionResult Post(string postId)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.forumService.PostExists(postId))
+            {
+                return this.BadRequest();
+            }
 
             var model = this.forumService.GetForumPostViewModel(postId);
 
@@ -87,6 +101,13 @@
         public IActionResult AddCommentToPost(ForumPostViewModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.forumService.PostExists(model.CommentInput.PostId))
+            {
+                return this.BadRequest();
+            }
+
+            //// needs to add CUSTOM validation method because i m using model inside model and ModelState.IsValid() is not working
 
             this.forumService.AddCommentToPost(model.CommentInput.PostId, userId, model.CommentInput.Content);
 

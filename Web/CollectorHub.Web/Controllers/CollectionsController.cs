@@ -3,6 +3,7 @@
     using System.Linq;
     using System.Security.Claims;
 
+    using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Collections;
     using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Web.ViewModels.Collections;
@@ -15,18 +16,26 @@
     {
         private readonly IGetHotWheelsInfoService hotWheelsInfoService;
         private readonly ICollectionsService collectionsService;
+        private readonly ICategoryService categoryService;
 
         public CollectionsController(
             IGetHotWheelsInfoService hotWheelsInfoService,
-            ICollectionsService collectionsService)
+            ICollectionsService collectionsService,
+            ICategoryService categoryService)
         {
             this.hotWheelsInfoService = hotWheelsInfoService;
             this.collectionsService = collectionsService;
+            this.categoryService = categoryService;
         }
 
         [AllowAnonymous]
         public IActionResult Index(string categoryId)
         {
+            if (!this.categoryService.CategoryExists(categoryId) && categoryId != null)
+            {
+                return this.BadRequest();
+            }
+
             var model = this.collectionsService.GetIndexViewInformation(categoryId);
             return this.View(model);
         }
@@ -85,7 +94,10 @@
 
             this.ViewBag.BrowsingUserId = userId;
 
-            //// IMPORTANT SHOULD CHECK IF GIVEN ID IS VALID !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+            if (!this.hotWheelsInfoService.CollectionExists(collectionId))
+            {
+                return this.BadRequest();
+            }
 
             var model = this.hotWheelsInfoService.GetHotWheelsFastAndFuriousPremiumFullCollection(collectionId);
 
@@ -146,14 +158,12 @@
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            bool userOwnsCollection = false;
-
-            if (this.hotWheelsInfoService.UserOwnsCollection(userId, model.SelectedModel.CollectionId))
+            if (!this.hotWheelsInfoService.CollectionExists(model.SelectedModel.CollectionId))
             {
-                userOwnsCollection = true;
+                return this.BadRequest();
             }
 
-            if (!userOwnsCollection)
+            if (!this.hotWheelsInfoService.UserOwnsCollection(userId, model.SelectedModel.CollectionId))
             {
                 return this.BadRequest();
             }
@@ -167,14 +177,12 @@
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            bool userOwnsCollection = false;
-
-            if (this.hotWheelsInfoService.UserOwnsCollection(userId, model.SelectedModel.CollectionId))
+            if (!this.hotWheelsInfoService.CollectionExists(model.SelectedModel.CollectionId))
             {
-                userOwnsCollection = true;
+                return this.BadRequest();
             }
 
-            if (!userOwnsCollection)
+            if (!this.hotWheelsInfoService.UserOwnsCollection(userId, model.SelectedModel.CollectionId))
             {
                 return this.BadRequest();
             }
