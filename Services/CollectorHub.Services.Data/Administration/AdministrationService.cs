@@ -3,6 +3,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using CollectorHub.Common;
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.User;
     using Microsoft.AspNetCore.Identity;
@@ -39,7 +40,7 @@
                 return false;
             }
 
-            if (!await this.roleManager.RoleExistsAsync("Admin"))
+            if (!await this.roleManager.RoleExistsAsync(GlobalConstants.AdministratorRoleName))
             {
                 await this.roleManager.CreateAsync(new ApplicationRole
                 {
@@ -47,7 +48,7 @@
                 });
             }
 
-            await this.userManager.AddToRoleAsync(user, "Admin");
+            await this.userManager.AddToRoleAsync(user, GlobalConstants.AdministratorRoleName);
 
             return true;
         }

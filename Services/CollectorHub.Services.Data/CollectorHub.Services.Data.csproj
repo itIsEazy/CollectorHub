@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CollectorHub.Common\CollectorHub.Common.csproj" />
     <ProjectReference Include="..\..\Data\CollectorHub.Data.Common\CollectorHub.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\CollectorHub.Data.Models\CollectorHub.Data.Models.csproj" />
     <ProjectReference Include="..\..\Web\CollectorHub.Web.ViewModels\CollectorHub.Web.ViewModels.csproj" />

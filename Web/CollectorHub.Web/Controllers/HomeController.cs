@@ -45,31 +45,6 @@
             return this.View(model);
         }
 
-        [Authorize]
-        public IActionResult BecomeAdmin()
-        {
-            return this.View();
-        }
-
-        [Authorize]
-        [HttpPost]
-        public IActionResult BecomeAdmin(BecomeAdminViewModel input)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(input);
-            }
-
-            if (this.administrationService.AddNewAdmin(this.User.Identity.Name, input.UniquePassword).Result)
-            {
-                return this.RedirectToAction(nameof(this.Index));
-            }
-            else
-            {
-                return this.View(input);
-            }
-        }
-
         public IActionResult Privacy()
         {
             return this.View();
