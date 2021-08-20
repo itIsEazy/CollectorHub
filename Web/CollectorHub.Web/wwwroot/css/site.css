@@ -9,7 +9,7 @@ a.navbar-brand {
 
 /* Provide sufficient contrast against white background */
 a {
-    color: #0366d6;
+    color: #6c757d;
 }
 
 .btn-primary {
@@ -63,6 +63,11 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    background-image: url("https://images.hdqwalls.com/wallpapers/white-cube-pattern-4k-bu.jpg");
+}
+
+nav {
+    background-image: url("https://minibackground.com/wp-content/uploads/2019/01/Wilson-wood.jpg");
 }
 
 .footer {
@@ -71,4 +76,31 @@ body {
     width: 100%;
     white-space: nowrap;
     line-height: 60px; /* Vertically center the text there */
+}
+
+
+
+/*---------------------------------CUSTOMS------------------------------*/
+
+/*---------------------------------CUSTOMS------------------------------*/
+
+/*---------------------------------CUSTOMS------------------------------*/
+
+/*---------------------------------CUSTOMS------------------------------*/
+
+
+h1, h2, h3 {
+    padding-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    animation: animtext 2s steps(80, end);
+    transition: all cubic-bezier(0.1, 0.7, 1.0, 0.1);
+}
+
+@keyframes animtext {
+    from {
+        width: 0;
+        transition: all 2s ease-in-out;
+    }
 }

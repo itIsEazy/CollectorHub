@@ -4,6 +4,8 @@
     this.ViewData["Title"] = "Home Page";
 }
 
+
+
 <div class="text-center">
     <h2 class="display-4">Digitalize your collection</h2>
     <h2 class="display-4">Build FROM collectors FOR collectors!</h2>
@@ -22,6 +24,56 @@
         </div>
     </div>
 </div>
+
+<hr />
+
+<div class="col-lg-12">
+    <div class="col-lg-12 text-center">
+        <button class="btn btn-outline-secondary text-center w-100" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Search in Collection, Forum, Market...
+        </button>
+    </div>
+
+    <div class="collapse" id="collapseExample">
+        <div class="col-lg-12 border">
+            <form method="post">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <div class="form-group">
+                            <label></label>
+                            <select class="form-control">
+                                <option value="">All</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label></label>
+                        <input class="form-control" placeholder="Hot Wheels fast and furious, etc...">
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <div class="form-group">
+                            <label></label>
+                            <select class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="col-lg-12">
+                    <input class="btn btn-outline-secondary text-center w-100" asp-controller="Forum" asp-action="Index" type="submit" value="Search" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<hr />
 
 
 <partial name="_TrendingCollectionsPartial" model="@Model.TrendingCollections" />
