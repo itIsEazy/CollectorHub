@@ -2,8 +2,21 @@
 {
     using System.Threading.Tasks;
 
+    using CollectorHub.Data.Models.User;
+    using CollectorHub.Web.ViewModels.Administration.Info;
+
     public interface IAdministrationService
     {
-        Task<bool> AddNewAdmin(string userName, string password);
+        Task AddNewAdminAsync(ApplicationUser user, string password);
+
+        Task<bool> AddNewAdmin(string userId, string password);
+
+        IndexViewModel GetIndexInfo();
+
+        EditForumPostModel GetEditForumPostModel(string postId);
+
+        void VerifyForumPost(string postId);
+
+        void ShutDownForumPost(string postId);
     }
 }

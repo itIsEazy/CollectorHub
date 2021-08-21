@@ -419,18 +419,19 @@ namespace CollectorHub.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IsVerified = table.Column<bool>(type: "bit", nullable: false),
                     ViewsCount = table.Column<int>(type: "int", nullable: false),
                     LikesCount = table.Column<int>(type: "int", nullable: false),
                     StarsCount = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

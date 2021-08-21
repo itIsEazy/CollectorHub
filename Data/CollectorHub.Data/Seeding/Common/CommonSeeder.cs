@@ -2,9 +2,15 @@
 {
     using System;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
 
+    using CollectorHub.Common;
+    using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.Common;
+    using CollectorHub.Data.Models.User;
+    using CollectorHub.Services.Data.Administration;
+    using Microsoft.AspNetCore.Identity;
 
     public class CommonSeeder : ISeeder
     {

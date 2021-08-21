@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectorHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210818195126_InitialCreate")]
+    [Migration("20210820162107_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -122,12 +122,15 @@ namespace CollectorHub.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AuthorId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CategoryId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
@@ -142,6 +145,9 @@ namespace CollectorHub.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LikesCount")
                         .HasColumnType("int");
 
@@ -152,6 +158,7 @@ namespace CollectorHub.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ViewsCount")
@@ -869,11 +876,15 @@ namespace CollectorHub.Data.Migrations
                 {
                     b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "Author")
                         .WithMany("ForumPosts")
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("CollectorHub.Data.Models.Common.Category", "Category")
                         .WithMany("Posts")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Author");
 

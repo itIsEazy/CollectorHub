@@ -47,7 +47,7 @@
             model.Categories = this.categoryService.GetAllCategories();
             model.Sortings = this.commonService.GetAllSortings();
 
-            var allPosts = this.forumPostsRepository.All().ToList();
+            var allPosts = this.forumPostsRepository.All().Where(x => x.IsVerified == true).ToList();
 
             //// if User is getting collection by CATEGORY Button
             if (categoryId != null)

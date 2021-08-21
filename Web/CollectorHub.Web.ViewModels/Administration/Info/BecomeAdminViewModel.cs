@@ -1,4 +1,4 @@
-﻿namespace CollectorHub.Web.ViewModels.Administration
+﻿namespace CollectorHub.Web.ViewModels.Administration.Info
 {
     using System.ComponentModel.DataAnnotations;
 

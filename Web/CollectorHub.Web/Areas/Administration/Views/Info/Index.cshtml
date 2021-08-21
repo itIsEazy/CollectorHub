@@ -1,0 +1,159 @@
+﻿@model IndexViewModel
+
+<script src="~/js/site.js"></script>
+
+<h1 class="text-center">Overall site statistics Here</h1>
+
+<hr />
+
+@if (Model.PendingForumPosts == null || Model.PendingForumPosts.Count() <= 0)
+{
+    <div class="col-lg-12">
+        <div class="col-lg-12 text-center">
+            <button class="btn btn-outline-secondary text-center w-100" type="button" data-toggle="collapse" data-target="#tst" aria-expanded="false" aria-controls="collapseExample">
+                Want to loose some time ? here you go
+            </button>
+        </div>
+
+        <div class="collapse" id="tst">
+            <div class="col-lg-12 text-center">
+                <iframe src="https://typing-speed-test.aoeu.eu/?iframe=1;lang=en"
+                        width="700"
+                        height="300"
+                        style="border: 0;">
+                </iframe>
+            </div>
+
+            <hr />
+
+            <div class="text-center">
+                <a class="btn btn-outline-secondary text-center w-100" role="button" id="tstBtn">Refresh</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="offset-3 col-lg-6">
+
+        <div class="text-center">
+            <button class="btn btn-outline-secondary text-danger w-100" type="button" data-toggle="collapse" data-target="#pendingPosts" aria-expanded="false" aria-controls="collapseExample">
+                Pending posts
+            </button>
+        </div>
+
+        <div class="collapse" id="pendingPosts">
+            <div class="offset-lg-1 col-lg-10">
+                <div class="text-center">
+                    <h2>All Posts - Orderd by oldest - Count @Model.PendingForumPosts.Count()</h2>
+                </div>
+
+                <hr />
+
+                @foreach (var post in Model.PendingForumPosts)
+                {
+                    <div class="border d-inline-block">
+                        <div class="text-center">
+                            <img class="text-center" style="height:60px; width:110px" src="@post.ImageUrl" alt="Post photo" />
+                        </div>
+                        <p class="text-center">@post.Title</p>
+                        <div class="text-center">
+                            <a class="btn btn-outline-secondary text-center w-100" asp-area="Administration" asp-controller="Info" asp-action="EditForumPost" asp-route-postId="@post.Id" role="button">Edit</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+
+}
+
+<hr />
+
+<div class="offset-3 col-lg-6">
+
+    <div class="text-center">
+        <button class="btn btn-outline-secondary text-center w-100" type="button" data-toggle="collapse" data-target="#allUsers" aria-expanded="false" aria-controls="collapseExample">
+            All Users
+        </button>
+    </div>
+
+    <div class="collapse" id="allUsers">
+        <div class="offset-lg-1 col-lg-10">
+            @if (Model.AllUsers == null || Model.AllUsers.Count() <= 0)
+            {
+                <div class="text-center">
+                    <h2>No Users Available</h2>
+                </div>
+            }
+            else
+            {
+                <div class="text-center">
+                    <h2>All Users - Orderd by Traffic - Count @Model.AllUsers.Count()</h2>
+                </div>
+
+                <hr />
+
+                foreach (var user in Model.AllUsers)
+                {
+                    <div class="border d-inline-block">
+                        <div class="text-center">
+                            <img class="text-center" style="height:50px; width:50px" src="https://cdn.pixabay.com/photo/2017/06/13/12/53/profile-2398782_1280.png" alt="User photo" />
+                        </div>
+                        <p class="text-center">@user.UserName</p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+</div>
+
+<hr />
+
+<div class="offset-3 col-lg-6">
+
+    <div class="text-center">
+        <button class="btn btn-outline-secondary text-center w-100" type="button" data-toggle="collapse" data-target="#allPosts" aria-expanded="false" aria-controls="collapseExample">
+            All Posts
+        </button>
+    </div>
+
+    <div class="collapse" id="allPosts">
+        <div class="offset-lg-1 col-lg-10">
+            @if (Model.AllForumPosts == null || Model.AllForumPosts.Count() <= 0)
+            {
+                <div class="text-center">
+                    <h2>No Posts Available</h2>
+                </div>
+            }
+            else
+            {
+                <div class="text-center">
+                    <h2>All Posts - Orderd by Stars - Count @Model.AllForumPosts.Count()</h2>
+                </div>
+
+                <hr />
+
+                foreach (var post in Model.AllForumPosts)
+                {
+                    <div class="border d-inline-block">
+                        <div class="text-center">
+                            <img class="text-center" style="height:60px; width:110px" src="@post.ImageUrl" alt="Post photo" />
+                        </div>
+                        <p class="text-center">@post.Title</p>
+                        <div class="text-center">
+                            <a class="btn btn-outline-secondary text-center w-100" asp-area="Administration" asp-controller="Info" asp-action="EditForumPost" asp-route-postId="@post.Id" role="button">Edit</a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+</div>
+
+
+
+

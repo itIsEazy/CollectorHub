@@ -1,20 +1,30 @@
-﻿@model CreateForumPostInputModel
+﻿@model EditForumPostModel
 
 <div class="col-lg-12">
-    <a class="btn btn-outline-secondary text-center w-100" asp-controller="Forum" asp-action="Index" role="button">Back to Forum Main Page</a>
+    <a class="btn btn-outline-secondary text-center w-100" asp-area="Administration" asp-controller="Info" asp-action="Index" role="button">Back to Administration</a>
 </div>
 
 <div class="offset-lg-2 col-lg-8">
-    <h2 class="text-center">Create your Forum post</h2>
+    <h2 class="text-center">AuthorName's post</h2>
+
+    @if (Model.IsVerified)
+    {
+        <div class="text-center">
+            <a class="btn btn-outline-danger text-center w-100" asp-area="Administration" asp-controller="Info" asp-action="ShutDownForumPost" asp-route-postId="@Model.Id" role="button">Shut Down</a>
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <a class="btn btn-outline-success text-center w-100" asp-area="Administration" asp-controller="Info" asp-action="VerifyForumPost" asp-route-postId="@Model.Id" role="button">Verify</a>
+        </div>
+    }
+
     <form method="post">
 
         <div class="form-group">
             <label asp-for="@Model.CategoryId"></label>
             <select asp-for="@Model.CategoryId" class="form-control">
-                @foreach (var category in Model.Categories)
-                {
-                    <option value="@category.Id">@category.Name</option>
-                }
             </select>
             <span asp-validation-for="CategoryId" class="small text-danger"></span>
         </div>
@@ -34,11 +44,6 @@
             <textarea asp-for="ImageUrl" rows="1" class="form-control" placeholder="Your url there"></textarea>
             <span asp-validation-for="ImageUrl" class="small text-danger"></span>
         </div>
-        <div class="col-lg-12">
-            <input class="btn btn-outline-secondary text-center w-100" type="submit" value="Create" />
-        </div>
+        <input class="btn btn-primary mt-3" type="submit" value="Create" />
     </form>
 </div>
-
-
-
