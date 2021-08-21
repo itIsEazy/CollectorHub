@@ -13,5 +13,7 @@
         public string UserId { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public string DateCreated { get; set; }
     }
 }

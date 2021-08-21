@@ -15,6 +15,9 @@ namespace CollectorHub.Data.Models.User
         public ApplicationUser()
         {
             this.Id = Guid.NewGuid().ToString();
+
+            this.CreatedOn = DateTime.UtcNow;
+
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();

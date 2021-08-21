@@ -176,10 +176,12 @@
             var postAuthour = this.allUsers.All().Where(x => x.Id == postFromDatabase.AuthorId).FirstOrDefault();
 
             model.Id = postFromDatabase.Id;
+            model.AuthorId = postFromDatabase.AuthorId;
             model.Author = postAuthour;
             model.Title = postFromDatabase.Title;
             model.Content = postFromDatabase.Content;
             model.ImageUrl = postFromDatabase.ImageUrl;
+            model.IsVerified = postFromDatabase.IsVerified;
 
             model.LikesCount = postFromDatabase.LikesCount;
             model.StarsCount = postFromDatabase.StarsCount;
@@ -228,6 +230,77 @@
             return post.Id;
         }
 
+        public void EditForumPost(string postId, string title, string content, string imageUrl, string categoryId)
+        {
+            var post = this.forumPostsRepository
+                .All()
+                .Where(x => x.Id == postId)
+                .FirstOrDefault();
+
+            if (post != null)
+            {
+                post.Title = title;
+                post.Content = content;
+                post.CategoryId = categoryId;
+
+                if (imageUrl != null)
+                {
+                    post.ImageUrl = imageUrl;
+                }
+            }
+
+            this.forumPostsRepository.SaveChanges();
+        }
+
+        public IEnumerable<ForumPostViewModel> GetMyPostsAllPosts(string userId)
+        {
+            var allPosts = new List<ForumPostViewModel>();
+
+            var allUsersPostsIds = this.forumPostsRepository
+                .All()
+                .Where(x => x.AuthorId == userId)
+                .Select(x => x.Id);
+
+            if (allUsersPostsIds != null && allUsersPostsIds.Count() > 0)
+            {
+                foreach (var postId in allUsersPostsIds)
+                {
+                    allPosts.Add(this.GetForumPostViewModel(postId));
+                }
+            }
+
+            return allPosts;
+        }
+
+        public EditForumPostViewModel GetEditForumPostViewModel(string postId)
+        {
+            var post = this.forumPostsRepository
+                .All()
+                .Where(x => x.Id == postId)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    AuthorId = x.AuthorId,
+                    Title = x.Title,
+                    Content = x.Content,
+                    ImageUrl = x.ImageUrl,
+                    CategoryId = x.CategoryId,
+                })
+                .FirstOrDefault();
+
+            var model = new EditForumPostViewModel
+            {
+                Id = post.Id,
+                AuthorId = post.AuthorId,
+                Title = post.Title,
+                Content = post.Content,
+                ImageUrl = post.ImageUrl,
+                CategoryId = post.CategoryId,
+            };
+
+            return model;
+        }
+
         // NICE TO HAVE u may collect all the users that have seen this post in some hashset (this information can be used later in the game for statistics ML.NET :))
         public void IncreaseForumPostCount(string postId)
         {
@@ -267,6 +340,17 @@
             {
                 return true;
             }
+        }
+
+        public string GetAuthorId(string postId)
+        {
+            var authorId = this.forumPostsRepository
+                .All()
+                .Where(x => x.Id == postId)
+                .Select(x => x.AuthorId)
+                .FirstOrDefault();
+
+            return authorId;
         }
 
         private IEnumerable<ForumPostCommentViewModel> GetPostComments(string postId)

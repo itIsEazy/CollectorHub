@@ -1,8 +1,30 @@
 ﻿@model ForumPostViewModel
 
+
 <div class="col-lg-12">
     <a class="btn btn-outline-secondary text-center w-100" asp-controller="Forum" asp-action="Index" role="button">Back to Posts Main page</a>
 </div>
+
+@if (this.ViewBag.UserIsAuthor)
+{
+    <div class="col-lg-12">
+        <div class="text-center">
+            @if (!Model.IsVerified)
+            {
+                <h2 class="display-2 text-danger">NOT Verified</h2>
+            }
+        </div>
+    </div>
+}
+
+<hr />
+
+@if (this.ViewBag.UserIsAuthor)
+{
+    <div class="col-lg-12">
+        <a asp-controller="Forum" asp-action="EditPost" asp-route-postId="@Model.Id" class="btn btn-outline-secondary text-center w-100" role="button">Edit</a>
+    </div>
+}
 
 <div class="col-lg-12 border">
     <h1 class="text-center">@Model.Title</h1>
@@ -44,7 +66,7 @@
     @if (Model.Comments == null || Model.Comments.Count() <= 0)
     {
         <div class="col-lg-12 text-center">
-            <p>No Comments ! Check out this post to comment !</p>
+            <p>No Comments !</p>
         </div>
     }
     else

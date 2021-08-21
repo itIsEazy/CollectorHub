@@ -1,0 +1,85 @@
+﻿
+@model MyPostsViewModel
+
+
+@if (Model.AllPosts == null || Model.AllPosts.Count() <= 0)
+{
+    <div class="col-lg-12 text-center">
+        <h3>You have no Forum Posts</h3>
+    </div>
+
+    <hr />
+
+    <div class="col-lg-12">
+        <a asp-controller="Forum" asp-action="Create" class="btn btn-outline-secondary text-center w-100" role="button">Create Post</a>
+    </div>
+}
+else
+{
+    <div class="col-lg-12">
+        @foreach (var post in Model.AllPosts)
+        {
+            <div class=" col-lg-12 ">
+                <div class="col-lg-12 text-center ">
+                    <h3>@post.Title - CatgoryName - Date </h3>
+                </div>
+                <div class="col-lg-12 ">
+
+                    <div class="text-center" st>
+                        <img style="width:500px; height:350px" src="@post.ImageUrl" alt="Post image" />
+                    </div>
+
+                    <hr />
+
+                    <div class="col-lg-12 text-center">
+                        <p class="align-content-center text-center">@post.Comments.Count() Comments | @post.ViewsCount Views | @post.StarsCount Stars</p>
+                    </div>
+
+                    <hr />
+
+                    <div class="col-lg-12">
+
+                        <div class="col-lg-2 d-inline-block border">
+                            <div class="text-center">
+                                <img style="width:100px; height:100px" src="https://freesvg.org/img/abstract-user-flat-1.png" alt="User ico" />
+                            </div>
+                            <div class="text-center">
+                                <p>@post.Author.UserName</p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-9 d-inline-block border ">
+                            <div class=" text-center">
+                                <p>@post.Content</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <div class="col-lg-12">
+                        <a asp-controller="Forum" asp-action="Post" asp-route-postId="@post.Id" class="btn btn-outline-secondary text-center w-100" role="button">Check out this Post</a>
+                    </div>
+
+                    <hr />
+
+                </div>
+            </div>
+        }
+    </div>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -78,6 +78,8 @@
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            this.ViewBag.UserIsAuthor = false;
+
             if (!this.forumService.PostExists(postId))
             {
                 return this.BadRequest();
@@ -85,17 +87,86 @@
 
             var model = this.forumService.GetForumPostViewModel(postId);
 
+            if (userId == model.AuthorId)
+            {
+                this.ViewBag.UserIsAuthor = true;
+            }
+
             if (model == null)
             {
                 return this.RedirectToAction(nameof(this.Index));
             }
 
-            if (model.Author.Id != userId)
+            if (model.AuthorId != userId)
             {
                 this.forumService.IncreaseForumPostCount(model.Id);
             }
 
             return this.View(model);
+        }
+
+        public IActionResult MyPosts()
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var model = new MyPostsViewModel();
+
+            model.AllPosts = this.forumService.GetMyPostsAllPosts(userId);
+
+            return this.View(model);
+        }
+
+        public IActionResult EditPost(string postId)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.forumService.PostExists(postId))
+            {
+                return this.BadRequest();
+            }
+
+            var model = this.forumService.GetEditForumPostViewModel(postId);
+
+            if (model.AuthorId != userId)
+            {
+                return this.BadRequest();
+            }
+
+            model.Categories = this.categoryService.GetAllCategories();
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public IActionResult EditPost(EditForumPostViewModel model)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.forumService.PostExists(model.Id))
+            {
+                return this.BadRequest();
+            }
+
+            if (!this.categoryService.CategoryExists(model.CategoryId))
+            {
+                return this.BadRequest();
+            }
+
+            var postAuthorId = this.forumService.GetAuthorId(model.Id);
+
+            if (postAuthorId != userId)
+            {
+                return this.BadRequest();
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            this.forumService.EditForumPost(model.Id, model.Title, model.Content, model.ImageUrl, model.CategoryId);
+
+            return this.RedirectToAction(nameof(this.MyPosts));
         }
 
         public IActionResult AddCommentToPost(ForumPostViewModel model)

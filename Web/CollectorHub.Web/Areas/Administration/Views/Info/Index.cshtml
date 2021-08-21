@@ -38,7 +38,7 @@ else
 
         <div class="text-center">
             <button class="btn btn-outline-secondary text-danger w-100" type="button" data-toggle="collapse" data-target="#pendingPosts" aria-expanded="false" aria-controls="collapseExample">
-                Pending posts
+                @Model.PendingForumPosts.Count() Pending posts
             </button>
         </div>
 
@@ -53,6 +53,9 @@ else
                 @foreach (var post in Model.PendingForumPosts)
                 {
                     <div class="border d-inline-block">
+                        <div class="text-center">
+                            <p>@post.DateCreated</p>
+                        </div>
                         <div class="text-center">
                             <img class="text-center" style="height:60px; width:110px" src="@post.ImageUrl" alt="Post photo" />
                         </div>
@@ -71,16 +74,15 @@ else
 
 <hr />
 
-<div class="offset-3 col-lg-6">
+<div class="offset-lg-3 col-lg-6 text-center">
+    <button class="btn btn-outline-secondary text-center w-100" type="button" data-toggle="collapse" data-target="#allUsers" aria-expanded="false" aria-controls="collapseExample">
+        All Users
+    </button>
+</div>
 
-    <div class="text-center">
-        <button class="btn btn-outline-secondary text-center w-100" type="button" data-toggle="collapse" data-target="#allUsers" aria-expanded="false" aria-controls="collapseExample">
-            All Users
-        </button>
-    </div>
-
+<div class="offset-lg-1 col-lg-10">
     <div class="collapse" id="allUsers">
-        <div class="offset-lg-1 col-lg-10">
+        <div class="text-center">
             @if (Model.AllUsers == null || Model.AllUsers.Count() <= 0)
             {
                 <div class="text-center">
@@ -99,6 +101,9 @@ else
                 {
                     <div class="border d-inline-block">
                         <div class="text-center">
+                            <p>@user.DateCreated</p>
+                        </div>
+                        <div class="text-center">
                             <img class="text-center" style="height:50px; width:50px" src="https://cdn.pixabay.com/photo/2017/06/13/12/53/profile-2398782_1280.png" alt="User photo" />
                         </div>
                         <p class="text-center">@user.UserName</p>
@@ -112,16 +117,15 @@ else
 
 <hr />
 
-<div class="offset-3 col-lg-6">
+<div class="offset-lg-3 col-lg-6 text-center">
+    <button class="btn btn-outline-secondary text-center w-100" type="button" data-toggle="collapse" data-target="#allPosts" aria-expanded="false" aria-controls="collapseExample">
+        All Posts
+    </button>
+</div>
 
-    <div class="text-center">
-        <button class="btn btn-outline-secondary text-center w-100" type="button" data-toggle="collapse" data-target="#allPosts" aria-expanded="false" aria-controls="collapseExample">
-            All Posts
-        </button>
-    </div>
-
+<div class="offset-lg-1 col-lg-10">
     <div class="collapse" id="allPosts">
-        <div class="offset-lg-1 col-lg-10">
+        <div class="text-center">
             @if (Model.AllForumPosts == null || Model.AllForumPosts.Count() <= 0)
             {
                 <div class="text-center">
@@ -136,9 +140,12 @@ else
 
                 <hr />
 
-                foreach (var post in Model.AllForumPosts)
+                @foreach (var post in Model.AllForumPosts)
                 {
                     <div class="border d-inline-block">
+                        <div class="text-center">
+                            <p>@post.DateCreated</p>
+                        </div>
                         <div class="text-center">
                             <img class="text-center" style="height:60px; width:110px" src="@post.ImageUrl" alt="Post photo" />
                         </div>

@@ -14,6 +14,8 @@
 
         public string Id { get; set; }
 
+        public string AuthorId { get; set; }
+
         public virtual ApplicationUser Author { get; set; }
 
         public string Title { get; set; }
@@ -21,6 +23,8 @@
         public string Content { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public bool IsVerified { get; set; }
 
         public virtual Category Category { get; set; }
 

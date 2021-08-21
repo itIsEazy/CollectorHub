@@ -154,6 +154,7 @@
                     Title = post.Title,
                     ImageUrl = post.ImageUrl,
                     UserId = post.AuthorId,
+                    DateCreated = post.CreatedOn.ToString("MM/dd/yyyy H:mm"),
                 });
             }
 
@@ -170,6 +171,7 @@
                 {
                     Id = user.Id,
                     UserName = user.UserName,
+                    DateCreated = user.CreatedOn.ToString("MM/dd/yyyy H:mm"),
                 });
             }
 
@@ -188,6 +190,7 @@
                     Title = post.Title,
                     ImageUrl = post.ImageUrl,
                     UserId = post.AuthorId,
+                    DateCreated = post.CreatedOn.ToString("MM/dd/yyyy H:mm"),
                 });
             }
 
