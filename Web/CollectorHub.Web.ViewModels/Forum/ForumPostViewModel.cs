@@ -28,6 +28,10 @@
 
         public virtual Category Category { get; set; }
 
+        public string CategoryName { get; set; }
+
+        public string DateCreated { get; set; }
+
         public int ViewsCount { get; set; }
 
         public int LikesCount { get; set; }

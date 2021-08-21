@@ -108,6 +108,8 @@
                     Content = x.Content,
                     ImageUrl = x.ImageUrl,
                     IsVerified = x.IsVerified,
+                    CategoryId = x.CategoryId,
+                    CategoryName = x.Category.Name,
                 })
                 .FirstOrDefault();
 
@@ -116,6 +118,8 @@
             model.Content = post.Content;
             model.ImageUrl = post.ImageUrl;
             model.IsVerified = post.IsVerified;
+            model.CategoryId = post.CategoryId;
+            model.CategoryName = post.CategoryName;
 
             return model;
         }
@@ -158,6 +162,8 @@
                 });
             }
 
+            posts = posts.OrderByDescending(x => x.DateCreated).ToList();
+
             return posts;
         }
 
@@ -174,6 +180,8 @@
                     DateCreated = user.CreatedOn.ToString("MM/dd/yyyy H:mm"),
                 });
             }
+
+            users = users.OrderByDescending(x => x.DateCreated).ToList();
 
             return users;
         }
@@ -193,6 +201,8 @@
                     DateCreated = post.CreatedOn.ToString("MM/dd/yyyy H:mm"),
                 });
             }
+
+            posts = posts.OrderByDescending(x => x.DateCreated).ToList();
 
             return posts;
         }

@@ -4,12 +4,20 @@
 
     using CollectorHub.Data.Models.Common;
     using CollectorHub.Data.Models.Forum;
+    using CollectorHub.Web.ViewModels.Common;
 
     public class EditForumPostModel
     {
         public EditForumPostModel()
         {
+            this.Stars = new HashSet<ForumStar>();
+            this.Categories = new HashSet<CategoryIndexViewModel>();
         }
+
+        /// <summary>
+        /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Needs to have atributes
+        /// </summary>
 
         public string Id { get; set; }
 
@@ -31,8 +39,12 @@
 
         public string CategoryId { get; set; }
 
+        public string CategoryName { get; set; }
+
         public virtual Category Category { get; set; }
 
         public virtual IEnumerable<ForumStar> Stars { get; set; }
+
+        public IEnumerable<CategoryIndexViewModel> Categories { get; set; }
     }
 }

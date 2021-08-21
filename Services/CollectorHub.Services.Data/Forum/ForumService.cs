@@ -182,6 +182,8 @@
             model.Content = postFromDatabase.Content;
             model.ImageUrl = postFromDatabase.ImageUrl;
             model.IsVerified = postFromDatabase.IsVerified;
+            model.CategoryName = postFromDatabase.Category.Name;
+            model.DateCreated = postFromDatabase.CreatedOn.ToString("MM/dd/yyyy H:mm");
 
             model.LikesCount = postFromDatabase.LikesCount;
             model.StarsCount = postFromDatabase.StarsCount;
