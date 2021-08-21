@@ -94,6 +94,10 @@ nav {
 /*---------------------------------CUSTOMS------------------------------*/
 
 
+.customBody {
+    background-image: url("https://wallpaperaccess.com/full/666625.jpg");
+}
+
 h1, h2, h3 {
     padding-bottom: 5px;
     white-space: nowrap;

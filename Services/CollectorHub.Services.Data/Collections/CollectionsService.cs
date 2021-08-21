@@ -6,18 +6,22 @@
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.HotWheels;
     using CollectorHub.Services.Data.Category;
+    using CollectorHub.Services.Data.Common;
     using CollectorHub.Web.ViewModels.Collections;
 
     public class CollectionsService : ICollectionsService
     {
         private readonly ICategoryService categoryService;
+        private readonly ICommonService commonService;
         private readonly IDeletableEntityRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository;
 
         public CollectionsService(
             ICategoryService categoryService,
+            ICommonService commonService,
             IDeletableEntityRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository)
         {
             this.categoryService = categoryService;
+            this.commonService = commonService;
             this.ffpremiumCollectionsRepository = ffpremiumCollectionsRepository;
         }
 
@@ -34,6 +38,8 @@
         public CollectionsIndexViewModel GetIndexViewInformation(string categoryId)
         {
             var model = new CollectionsIndexViewModel();
+
+            model.Sortings = this.commonService.GetAllSortings();
             model.Categories = this.categoryService.GetAllCategories();
             model.TrendingCollectons = this.GetAllTrendingCollections(categoryId);
 
