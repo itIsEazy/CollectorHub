@@ -11,9 +11,9 @@
             this.Items = new HashSet<HotWheelsCarItem>();
         }
 
-        public string TypeId { get; set; }
+        public string HotWheelsTypeId { get; set; }
 
-        public virtual HotWheelsType Type { get; set; }
+        public virtual HotWheelsType HotWheelsType { get; set; }
 
         public string CollectionTypeId { get; set; }
 

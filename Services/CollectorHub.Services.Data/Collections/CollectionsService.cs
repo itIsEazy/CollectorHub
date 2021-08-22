@@ -12,6 +12,7 @@
     using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Common;
     using CollectorHub.Web.ViewModels.Collections;
+    using CollectorHub.Web.ViewModels.Collections.Hot_Wheels;
 
     public class CollectionsService : ICollectionsService
     {
@@ -22,6 +23,8 @@
         private readonly IDeletableEntityRepository<HotWheelsType> hotWheelsTypesRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
         private readonly IDeletableEntityRepository<HotWheelsCollection> hotWheelsCollectionsRepository;
+        private readonly IDeletableEntityRepository<HotWheelsCar> hotWheelsCarsRepository;
+        private readonly IDeletableEntityRepository<HotWheelsCarItem> hotWheelsCarItemsRepository;
 
         public CollectionsService(
             ICategoryService categoryService,
@@ -30,7 +33,9 @@
             IDeletableEntityRepository<CollectionType> collectionTypesRepository,
             IDeletableEntityRepository<HotWheelsType> hotWheelsTypesRepository,
             IDeletableEntityRepository<ApplicationUser> usersRepository,
-            IDeletableEntityRepository<HotWheelsCollection> hotWheelsCollectionsRepository)
+            IDeletableEntityRepository<HotWheelsCollection> hotWheelsCollectionsRepository,
+            IDeletableEntityRepository<HotWheelsCar> hotWheelsCarsRepository,
+            IDeletableEntityRepository<HotWheelsCarItem> hotWheelsCarItemsRepository)
         {
             this.categoryService = categoryService;
             this.commonService = commonService;
@@ -39,6 +44,8 @@
             this.hotWheelsTypesRepository = hotWheelsTypesRepository;
             this.usersRepository = usersRepository;
             this.hotWheelsCollectionsRepository = hotWheelsCollectionsRepository;
+            this.hotWheelsCarsRepository = hotWheelsCarsRepository;
+            this.hotWheelsCarItemsRepository = hotWheelsCarItemsRepository;
         }
 
         public int GetAllCollectionsCount()
@@ -99,6 +106,18 @@
             return list;
         }
 
+        public IEnumerable<HotWheelsCollectionViewModel> GetHotWheelsCollections(string userId)
+        {
+            string defaultImageUrl = "http://hwcollectorsnews.com/wp-content/uploads/2019/09/Fat-original-Box-Set-1024x508.jpg";
+
+            var collections = this.hotWheelsCollectionsRepository
+                .All()
+                .Where(x => x.UserId == userId)
+                .ToList();
+
+            return null;
+        }
+
         public List<CollectionIndexViewModel> GetAllFFPremiumCollections(string categoryId)
         {
             const string action = "HotWheelsFastAndFuriousPremium";
@@ -140,6 +159,43 @@
             return list;
         }
 
+        public IEnumerable<MyCollectionHotWheelsCollectionViewModel> GetMyCollectionHotWheelsCollections(string userId)
+        {
+            var collections = this.hotWheelsCollectionsRepository
+                .All()
+                .Where(x => x.UserId == userId)
+                .ToList();
+
+            var list = new List<MyCollectionHotWheelsCollectionViewModel>();
+
+            foreach (var collection in collections)
+            {
+                var currCollection = new MyCollectionHotWheelsCollectionViewModel();
+
+                int totalCarsCount = this.hotWheelsCarsRepository
+                    .All()
+                    .Where(x => x.HotWheelsTypeId == collection.HotWheelsTypeId)
+                    .Count();
+
+                var ownedCarsCount = this.hotWheelsCarItemsRepository
+                    .All()
+                    .Where(x => x.CollectionId == collection.Id)
+                    .GroupBy(x => x.CarId)
+                    .Count();
+
+                currCollection.Id = collection.Id;
+                currCollection.Name = collection.Name;
+                currCollection.ViewsCount = collection.ViewsCount;
+                currCollection.Description = collection.Description;
+                currCollection.Progression = ownedCarsCount.ToString() + " / " + totalCarsCount.ToString() + " Cars owned";
+                currCollection.ImageUrl = collection.ImageUrl;
+
+                list.Add(currCollection);
+            }
+
+            return list;
+        }
+
         public async Task CreateHotWheelsCollection(string userId, string hotWheelsTypeId, string description, bool isPublic, bool showPrices)
         {
             var collection = new HotWheelsCollection();
@@ -153,7 +209,7 @@
             collection.ViewsCount = 0;
             collection.CategoryId = this.GetHotWheelsCategoryId();
             collection.CollectionTypeId = this.GetHotWheelsCollectionTypeId();
-            collection.TypeId = hotWheelsTypeId;
+            collection.HotWheelsTypeId = hotWheelsTypeId;
 
             Task.WaitAll(this.hotWheelsCollectionsRepository.AddAsync(collection));
 
@@ -206,7 +262,7 @@
         {
             var collection = this.hotWheelsCollectionsRepository
                 .All()
-                .Where(x => x.UserId == userId && x.TypeId == hotWheelsTypeId)
+                .Where(x => x.UserId == userId && x.HotWheelsTypeId == hotWheelsTypeId)
                 .FirstOrDefault();
 
             if (collection == null)

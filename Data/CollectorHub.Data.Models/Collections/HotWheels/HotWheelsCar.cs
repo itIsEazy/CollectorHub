@@ -38,9 +38,9 @@
 
         public virtual HotWheelsSerie Serie { get; set; }
 
-        public string TypeId { get; set; }
+        public string HotWheelsTypeId { get; set; }
 
-        public virtual HotWheelsType Type { get; set; }
+        public virtual HotWheelsType HotWheelsType { get; set; }
 
         public virtual IEnumerable<HotWheelsCarItem> Items { get; set; }
     }

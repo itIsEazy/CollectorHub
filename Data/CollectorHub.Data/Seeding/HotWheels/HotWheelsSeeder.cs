@@ -71,7 +71,7 @@
 
             foreach (var car in allPremiumHWCars)
             {
-                car.TypeId = hotWheelsPremiumTypeId;
+                car.HotWheelsTypeId = hotWheelsPremiumTypeId;
             }
 
             int indexer = 0;

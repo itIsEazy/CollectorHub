@@ -232,11 +232,13 @@
             return this.RedirectToAction(nameof(this.HotWheelsFastAndFuriousPremium), new { collectionId = model.SelectedModel.CollectionId });
         }
 
-        public IActionResult MyCollections(HotWheelsFastAndFuriousPremiumCollectionMyCollectionsViewModel model)
+        public IActionResult MyCollections()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            model = this.hotWheelsInfoService.GetHotWheelsFastAndFuriousPremiumCollection(userId);
+            var model = new MyCollectionIndexViewModel();
+            model.HotWheelsCollections = this.collectionsService.GetMyCollectionHotWheelsCollections(userId);
+
             return this.View(model);
         }
     }

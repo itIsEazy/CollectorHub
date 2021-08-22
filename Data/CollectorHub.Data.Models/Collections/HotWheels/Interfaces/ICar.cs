@@ -24,6 +24,6 @@
 
         public string SerieId { get; set; }
 
-        public string TypeId { get; set; }
+        public string HotWheelsTypeId { get; set; }
     }
 }

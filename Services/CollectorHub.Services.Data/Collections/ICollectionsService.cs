@@ -7,6 +7,7 @@
     using CollectorHub.Data.Models.Collections.HotWheels;
     using CollectorHub.Data.Models.User;
     using CollectorHub.Web.ViewModels.Collections;
+    using CollectorHub.Web.ViewModels.Collections.Hot_Wheels;
 
     public interface ICollectionsService
     {
@@ -19,6 +20,10 @@
         IEnumerable<HotWheelsType> GetAllHotWheelsTypes();
 
         IEnumerable<CollectionIndexViewModel> GetAllTrendingCollections(string categoryId);
+
+        IEnumerable<HotWheelsCollectionViewModel> GetHotWheelsCollections(string userId);
+
+        IEnumerable<MyCollectionHotWheelsCollectionViewModel> GetMyCollectionHotWheelsCollections(string userId);
 
         Task CreateHotWheelsCollection(string userId, string hotWheelsTypeId, string description, bool isPublic, bool showPrices);
 
