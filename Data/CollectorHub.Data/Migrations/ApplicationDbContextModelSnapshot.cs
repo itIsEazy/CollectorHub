@@ -30,6 +30,9 @@ namespace CollectorHub.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -147,7 +150,7 @@ namespace CollectorHub.Data.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ViewsCount")
                         .HasColumnType("int");
@@ -157,6 +160,8 @@ namespace CollectorHub.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("FastAndFuriousPremiumCollections");
                 });
@@ -364,6 +369,9 @@ namespace CollectorHub.Data.Migrations
                     b.Property<string>("CategoryId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CollectionTypeId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -408,6 +416,8 @@ namespace CollectorHub.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("CollectionTypeId");
 
                     b.HasIndex("IsDeleted");
 
@@ -461,6 +471,9 @@ namespace CollectorHub.Data.Migrations
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -915,12 +928,6 @@ namespace CollectorHub.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FFPremiumCollectionId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FastAndFuriousPremiumCollection")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ForumStarId")
                         .HasColumnType("nvarchar(450)");
 
@@ -964,10 +971,6 @@ namespace CollectorHub.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FastAndFuriousPremiumCollection")
-                        .IsUnique()
-                        .HasFilter("[FastAndFuriousPremiumCollection] IS NOT NULL");
 
                     b.HasIndex("ForumStarId");
 
@@ -1133,7 +1136,15 @@ namespace CollectorHub.Data.Migrations
                         .WithMany("FastAndFuriousPremiumCollection")
                         .HasForeignKey("CategoryId");
 
+                    b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumItem", b =>
@@ -1187,17 +1198,23 @@ namespace CollectorHub.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CategoryId");
 
+                    b.HasOne("CollectorHub.Data.Models.Collections.CollectionType", "CollectionType")
+                        .WithMany()
+                        .HasForeignKey("CollectionTypeId");
+
                     b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId");
 
                     b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("HotWheelsCollections")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("CollectionType");
 
                     b.Navigation("Type");
 
@@ -1294,15 +1311,9 @@ namespace CollectorHub.Data.Migrations
 
             modelBuilder.Entity("CollectorHub.Data.Models.User.ApplicationUser", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumCollection", "FFPremiumCollection")
-                        .WithOne("User")
-                        .HasForeignKey("CollectorHub.Data.Models.User.ApplicationUser", "FastAndFuriousPremiumCollection");
-
                     b.HasOne("CollectorHub.Data.Models.Forum.ForumStar", null)
                         .WithMany("Users")
                         .HasForeignKey("ForumStarId");
-
-                    b.Navigation("FFPremiumCollection");
                 });
 
             modelBuilder.Entity("ForumPostForumStar", b =>
@@ -1394,8 +1405,6 @@ namespace CollectorHub.Data.Migrations
             modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumCollection", b =>
                 {
                     b.Navigation("Items");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumSerie", b =>
@@ -1440,6 +1449,8 @@ namespace CollectorHub.Data.Migrations
                     b.Navigation("Claims");
 
                     b.Navigation("ForumPosts");
+
+                    b.Navigation("HotWheelsCollections");
 
                     b.Navigation("Logins");
 

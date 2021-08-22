@@ -22,14 +22,12 @@ namespace CollectorHub.Data.Models.User
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+
+            this.HotWheelsCollections = new HashSet<HotWheelsCollection>();
             this.ForumPosts = new HashSet<ForumPost>();
         }
 
-        // needs to FIX THIS NOW
-        public string FFPremiumCollectionId { get; set; }
-
-        [ForeignKey(nameof(FastAndFuriousPremiumCollection))]
-        public virtual FastAndFuriousPremiumCollection FFPremiumCollection { get; set; }
+        public virtual IEnumerable<HotWheelsCollection> HotWheelsCollections { get; set; }
 
         public virtual ICollection<ForumPost> ForumPosts { get; set; }
 

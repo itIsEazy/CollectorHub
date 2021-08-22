@@ -15,6 +15,10 @@
 
         public virtual HotWheelsType Type { get; set; }
 
+        public string CollectionTypeId { get; set; }
+
+        public virtual CollectionType CollectionType { get; set; }
+
         public virtual IEnumerable<HotWheelsCarItem> Items { get; set; }
     }
 }

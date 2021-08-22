@@ -14,5 +14,8 @@
 
         [Required]
         public string Name { get; set; }
+
+        [Url]
+        public string ImageUrl { get; set; }
     }
 }

@@ -87,7 +87,7 @@
         {
             var user = this.GetUser(userId);
 
-            if (user.FFPremiumCollectionId == null)
+            if (true)
             {
                 return true;
             }
@@ -119,9 +119,6 @@
             collection.ImageUrl = defaultCollectionImageUrl;
             collection.ViewsCount = 0;
             collection.CategoryId = categoryId;
-
-            user.FFPremiumCollectionId = collection.Id;
-            user.FFPremiumCollection = collection;
 
             Task.WaitAll(this.ffpremiumCollectionsRepository.AddAsync(collection));
             Task.WaitAll(this.allUsers.SaveChangesAsync());

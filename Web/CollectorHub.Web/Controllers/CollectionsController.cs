@@ -7,7 +7,7 @@
     using CollectorHub.Services.Data.Collections;
     using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Web.ViewModels.Collections;
-
+    using CollectorHub.Web.ViewModels.Collections.Hot_Wheels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -42,18 +42,58 @@
 
         public IActionResult Create()
         {
-            return this.View();
+            var model = new CreateIndexViewModel();
+            model.AllCollectionTypes = this.collectionsService.GetAllCollectionTypes();
+            model.AllHotWheelsTypes = this.collectionsService.GetAllHotWheelsTypes();
+
+            return this.View(model);
         }
 
-        public IActionResult CreateHotWheelsFastAndFurious()
+        public IActionResult CreateHotWheelsCollection(string hotWheelsTypeId)
         {
-            return this.View();
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.collectionsService.HotWheelsTypeExist(hotWheelsTypeId))
+            {
+                return this.BadRequest();
+            }
+
+            if (!this.collectionsService.CheckIfUserCanCreateHotWheelsCollection(userId, hotWheelsTypeId))
+            {
+                return this.RedirectToAction(nameof(this.Create));
+            }
+
+            var model = new CreateHotWheelsInputModel();
+            model.HotWheelsTypeId = hotWheelsTypeId;
+            model.HotWheelsTypeName = this.collectionsService.GetHotWheelsTypeName(hotWheelsTypeId);
+
+            return this.View(model);
         }
 
         [HttpPost]
-        public IActionResult CreateHotWheelsFastAndFurious(CreateHotWheelsFastAndFuriousCollectionInputModel model)
+        public IActionResult CreateHotWheelsCollection(CreateHotWheelsInputModel model)
         {
-            return this.View();
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.collectionsService.HotWheelsTypeExist(model.HotWheelsTypeId))
+            {
+                return this.BadRequest();
+            }
+
+            if (!this.collectionsService.CheckIfUserCanCreateHotWheelsCollection(userId, model.HotWheelsTypeId))
+            {
+                return this.BadRequest();
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            // TODO : this returns bool if it is false means something went wrong in the service and show message to user 'Collection not created please try again later'
+            this.collectionsService.CreateHotWheelsCollection(userId, model.HotWheelsTypeId, model.Description, model.IsPublic, model.ShowPrices);
+
+            return this.RedirectToAction(nameof(this.MyCollections));
         }
 
         public IActionResult CreateHotWheelsFastAndFuriousPremium()

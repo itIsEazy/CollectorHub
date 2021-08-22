@@ -34,9 +34,11 @@
         {
             var type = new HotWheelsType();
             type.Name = GlobalConstants.FastAndFuriousTypeName;
+            type.ImageUrl = "https://static.wikia.nocookie.net/hotwheels/images/5/5a/2014.jpg";
 
             var type2 = new HotWheelsType();
             type2.Name = GlobalConstants.FastAndFuriousPremiumTypeName;
+            type2.ImageUrl = "https://m.media-amazon.com/images/I/81RtuAIDeqL._AC_SL1500_.jpg";
 
             db.HotWheelsTypes.Add(type);
             db.HotWheelsTypes.Add(type2);

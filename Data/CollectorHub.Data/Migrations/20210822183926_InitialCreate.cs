@@ -26,6 +26,23 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CollectionTypes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CollectionTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FastAndFuriousPremiumSeries",
                 columns: table => new
                 {
@@ -85,7 +102,8 @@ namespace CollectorHub.Data.Migrations
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -208,6 +226,42 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ForumStarId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_ForumStars_ForumStarId",
+                        column: x => x.ForumStarId,
+                        principalTable: "ForumStars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "HotWheelsCars",
                 columns: table => new
                 {
@@ -291,113 +345,6 @@ namespace CollectorHub.Data.Migrations
                         name: "FK_Categories_SubCategories_SubCategoryId",
                         column: x => x.SubCategoryId,
                         principalTable: "SubCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FastAndFuriousPremiumCollections",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
-                    ViewsCount = table.Column<int>(type: "int", nullable: false),
-                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
-                    ShowPrices = table.Column<bool>(type: "bit", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FastAndFuriousPremiumCollections", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumCollections_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FFPremiumCollectionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FastAndFuriousPremiumCollection = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ForumStarId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_FastAndFuriousPremiumCollections_FastAndFuriousPremiumCollection",
-                        column: x => x.FastAndFuriousPremiumCollection,
-                        principalTable: "FastAndFuriousPremiumCollections",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_ForumStars_ForumStarId",
-                        column: x => x.ForumStarId,
-                        principalTable: "ForumStars",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FastAndFuriousPremiumItems",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CarId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CollectionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PriceNow = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    PriceBoughted = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    OwnerPictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConditionIsNew = table.Column<bool>(type: "bit", nullable: false),
-                    Profit = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FastAndFuriousPremiumItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumItems_FastAndFuriousPremiumCars_CarId",
-                        column: x => x.CarId,
-                        principalTable: "FastAndFuriousPremiumCars",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumItems_FastAndFuriousPremiumCollections_CollectionId",
-                        column: x => x.CollectionId,
-                        principalTable: "FastAndFuriousPremiumCollections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -488,6 +435,41 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FastAndFuriousPremiumCollections",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
+                    ViewsCount = table.Column<int>(type: "int", nullable: false),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
+                    ShowPrices = table.Column<bool>(type: "bit", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FastAndFuriousPremiumCollections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FastAndFuriousPremiumCollections_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FastAndFuriousPremiumCollections_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ForumPosts",
                 columns: table => new
                 {
@@ -529,6 +511,7 @@ namespace CollectorHub.Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TypeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CollectionTypeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -555,6 +538,12 @@ namespace CollectorHub.Data.Migrations
                         name: "FK_HotWheelsCollections_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HotWheelsCollections_CollectionTypes_CollectionTypeId",
+                        column: x => x.CollectionTypeId,
+                        principalTable: "CollectionTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -596,6 +585,40 @@ namespace CollectorHub.Data.Migrations
                         name: "FK_LegoCollections_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FastAndFuriousPremiumItems",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CarId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CollectionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PriceNow = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    PriceBoughted = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    OwnerPictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConditionIsNew = table.Column<bool>(type: "bit", nullable: false),
+                    Profit = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FastAndFuriousPremiumItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FastAndFuriousPremiumItems_FastAndFuriousPremiumCars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "FastAndFuriousPremiumCars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FastAndFuriousPremiumItems_FastAndFuriousPremiumCollections_CollectionId",
+                        column: x => x.CollectionId,
+                        principalTable: "FastAndFuriousPremiumCollections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -758,13 +781,6 @@ namespace CollectorHub.Data.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_FastAndFuriousPremiumCollection",
-                table: "AspNetUsers",
-                column: "FastAndFuriousPremiumCollection",
-                unique: true,
-                filter: "[FastAndFuriousPremiumCollection] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_ForumStarId",
                 table: "AspNetUsers",
                 column: "ForumStarId");
@@ -787,6 +803,11 @@ namespace CollectorHub.Data.Migrations
                 column: "SubCategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CollectionTypes_IsDeleted",
+                table: "CollectionTypes",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FastAndFuriousPremiumCars_IsDeleted",
                 table: "FastAndFuriousPremiumCars",
                 column: "IsDeleted");
@@ -805,6 +826,11 @@ namespace CollectorHub.Data.Migrations
                 name: "IX_FastAndFuriousPremiumCollections_IsDeleted",
                 table: "FastAndFuriousPremiumCollections",
                 column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FastAndFuriousPremiumCollections_UserId",
+                table: "FastAndFuriousPremiumCollections",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FastAndFuriousPremiumItems_CarId",
@@ -905,6 +931,11 @@ namespace CollectorHub.Data.Migrations
                 name: "IX_HotWheelsCollections_CategoryId",
                 table: "HotWheelsCollections",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotWheelsCollections_CollectionTypeId",
+                table: "HotWheelsCollections",
+                column: "CollectionTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HotWheelsCollections_IsDeleted",
@@ -1024,6 +1055,9 @@ namespace CollectorHub.Data.Migrations
                 name: "FastAndFuriousPremiumCars");
 
             migrationBuilder.DropTable(
+                name: "FastAndFuriousPremiumCollections");
+
+            migrationBuilder.DropTable(
                 name: "ForumPosts");
 
             migrationBuilder.DropTable(
@@ -1045,22 +1079,22 @@ namespace CollectorHub.Data.Migrations
                 name: "HotWheelsSeries");
 
             migrationBuilder.DropTable(
+                name: "CollectionTypes");
+
+            migrationBuilder.DropTable(
                 name: "HotWheelsTypes");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
                 name: "LegoMinifigures");
 
             migrationBuilder.DropTable(
-                name: "FastAndFuriousPremiumCollections");
-
-            migrationBuilder.DropTable(
                 name: "ForumStars");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "SubCategories");

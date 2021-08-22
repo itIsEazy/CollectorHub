@@ -23,4 +23,8 @@
     <ProjectReference Include="..\..\Services\CollectorHub.Services.Mapping\CollectorHub.Services.Mapping.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Collections\Lego\" />
+  </ItemGroup>
+
 </Project>
