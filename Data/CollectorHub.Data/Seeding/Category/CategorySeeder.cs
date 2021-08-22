@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using CollectorHub.Common;
     using CollectorHub.Data.Models.Common;
 
     public class CategorySeeder : ISeeder
@@ -28,12 +29,12 @@
         {
             var legoCategory = new Category();
 
-            legoCategory.Name = "Lego";
+            legoCategory.Name = GlobalConstants.LegoCategoryName;
             legoCategory.ImageUrl = "https://logos-world.net/wp-content/uploads/2020/09/LEGO-Logo.png";
 
             var hotWheelsCategory = new Category();
 
-            hotWheelsCategory.Name = "Hot Wheels";
+            hotWheelsCategory.Name = GlobalConstants.HotWheelsCategoryName;
             hotWheelsCategory.ImageUrl = "https://w7.pngwing.com/pngs/281/543/png-transparent-hot-wheels-logo-hot-wheels-world-s-best-driver-car-logo-hot-wheels-hot-wheels-world-best.png";
 
             dbContext.Categories.Add(legoCategory);

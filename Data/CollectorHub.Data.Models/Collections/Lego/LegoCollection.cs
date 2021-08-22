@@ -1,4 +1,4 @@
-﻿namespace CollectorHub.Data.Models.Lego
+﻿namespace CollectorHub.Data.Models.Collections.Lego
 {
     using System;
     using System.Collections.Generic;

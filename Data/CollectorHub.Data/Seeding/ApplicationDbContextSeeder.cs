@@ -30,7 +30,7 @@
             var seeders = new List<ISeeder>
                           {
                               new RolesSeeder(),
-                              new FastAndFuriousPremiumSeeder(),
+                              new HotWheelsSeeder(),
                               new CategorySeeder(),
                               new CommonSeeder(),
                           };

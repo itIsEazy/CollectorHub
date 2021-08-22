@@ -1,4 +1,4 @@
-﻿namespace CollectorHub.Data.Models.HotWheels
+﻿namespace CollectorHub.Data.Models.Collections.HotWheels
 {
     using System;
 

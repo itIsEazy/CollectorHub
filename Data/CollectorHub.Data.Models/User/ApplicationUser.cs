@@ -6,8 +6,9 @@ namespace CollectorHub.Data.Models.User
     using System.ComponentModel.DataAnnotations.Schema;
 
     using CollectorHub.Data.Common.Models;
+    using CollectorHub.Data.Models.Collections.HotWheels;
     using CollectorHub.Data.Models.Forum;
-    using CollectorHub.Data.Models.HotWheels;
+
     using Microsoft.AspNetCore.Identity;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity

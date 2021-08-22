@@ -59,6 +59,40 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "HotWheelsSeries",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Year = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OrderOfApperance = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HotWheelsSeries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HotWheelsTypes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HotWheelsTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LegoMinifigures",
                 columns: table => new
                 {
@@ -174,6 +208,45 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "HotWheelsCars",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Col = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ToyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tampos = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WheelType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Movie = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhotoLooseLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhotoCardLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SerieId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    TypeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HotWheelsCars", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HotWheelsCars_HotWheelsSeries_SerieId",
+                        column: x => x.SerieId,
+                        principalTable: "HotWheelsSeries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HotWheelsCars_HotWheelsTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "HotWheelsTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LegoMinifigureItems",
                 columns: table => new
                 {
@@ -231,7 +304,7 @@ namespace CollectorHub.Data.Migrations
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
                     ViewsCount = table.Column<int>(type: "int", nullable: false),
@@ -451,6 +524,48 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "HotWheelsCollections",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TypeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
+                    ViewsCount = table.Column<int>(type: "int", nullable: false),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
+                    ShowPrices = table.Column<bool>(type: "bit", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HotWheelsCollections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HotWheelsCollections_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HotWheelsCollections_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HotWheelsCollections_HotWheelsTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "HotWheelsTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LegoCollections",
                 columns: table => new
                 {
@@ -459,7 +574,7 @@ namespace CollectorHub.Data.Migrations
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
                     ViewsCount = table.Column<int>(type: "int", nullable: false),
@@ -543,6 +658,40 @@ namespace CollectorHub.Data.Migrations
                         name: "FK_ForumPostForumStar_ForumStars_StarsId",
                         column: x => x.StarsId,
                         principalTable: "ForumStars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HotWheelsCarItems",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CarId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CollectionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PriceNow = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    PriceBoughted = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    OwnerPictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConditionIsNew = table.Column<bool>(type: "bit", nullable: false),
+                    Profit = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HotWheelsCarItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HotWheelsCarItems_HotWheelsCars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "HotWheelsCars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HotWheelsCarItems_HotWheelsCollections_CollectionId",
+                        column: x => x.CollectionId,
+                        principalTable: "HotWheelsCollections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -723,6 +872,66 @@ namespace CollectorHub.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
+                name: "IX_HotWheelsCarItems_CarId",
+                table: "HotWheelsCarItems",
+                column: "CarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotWheelsCarItems_CollectionId",
+                table: "HotWheelsCarItems",
+                column: "CollectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotWheelsCarItems_IsDeleted",
+                table: "HotWheelsCarItems",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotWheelsCars_IsDeleted",
+                table: "HotWheelsCars",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotWheelsCars_SerieId",
+                table: "HotWheelsCars",
+                column: "SerieId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotWheelsCars_TypeId",
+                table: "HotWheelsCars",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotWheelsCollections_CategoryId",
+                table: "HotWheelsCollections",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotWheelsCollections_IsDeleted",
+                table: "HotWheelsCollections",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotWheelsCollections_TypeId",
+                table: "HotWheelsCollections",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotWheelsCollections_UserId",
+                table: "HotWheelsCollections",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotWheelsSeries_IsDeleted",
+                table: "HotWheelsSeries",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotWheelsTypes_IsDeleted",
+                table: "HotWheelsTypes",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LegoCollectionLegoMinifigureItem_ItemsId",
                 table: "LegoCollectionLegoMinifigureItem",
                 column: "ItemsId");
@@ -800,6 +1009,9 @@ namespace CollectorHub.Data.Migrations
                 name: "ForumPostForumStar");
 
             migrationBuilder.DropTable(
+                name: "HotWheelsCarItems");
+
+            migrationBuilder.DropTable(
                 name: "LegoCollectionLegoMinifigureItem");
 
             migrationBuilder.DropTable(
@@ -815,6 +1027,12 @@ namespace CollectorHub.Data.Migrations
                 name: "ForumPosts");
 
             migrationBuilder.DropTable(
+                name: "HotWheelsCars");
+
+            migrationBuilder.DropTable(
+                name: "HotWheelsCollections");
+
+            migrationBuilder.DropTable(
                 name: "LegoCollections");
 
             migrationBuilder.DropTable(
@@ -822,6 +1040,12 @@ namespace CollectorHub.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "FastAndFuriousPremiumSeries");
+
+            migrationBuilder.DropTable(
+                name: "HotWheelsSeries");
+
+            migrationBuilder.DropTable(
+                name: "HotWheelsTypes");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

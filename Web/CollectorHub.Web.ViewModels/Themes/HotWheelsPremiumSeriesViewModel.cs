@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using CollectorHub.Data.Models.HotWheels;
+    using CollectorHub.Data.Models.Collections.HotWheels;
 
     public class HotWheelsPremiumSeriesViewModel
     {

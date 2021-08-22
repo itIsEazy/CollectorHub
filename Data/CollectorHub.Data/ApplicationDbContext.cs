@@ -7,11 +7,11 @@
     using System.Threading.Tasks;
 
     using CollectorHub.Data.Common.Models;
-    using CollectorHub.Data.Models;
+    using CollectorHub.Data.Models.Collections;
+    using CollectorHub.Data.Models.Collections.HotWheels;
+    using CollectorHub.Data.Models.Collections.Lego;
     using CollectorHub.Data.Models.Common;
     using CollectorHub.Data.Models.Forum;
-    using CollectorHub.Data.Models.HotWheels;
-    using CollectorHub.Data.Models.Lego;
     using CollectorHub.Data.Models.User;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
@@ -28,11 +28,26 @@
         {
         }
 
+        // ------------------------------Collections--------------------------
+        public DbSet<CollectionType> CollectionTypes { get; set; }
+
+        // ------------------------------Lego---------------------------------
         public DbSet<LegoMinifigure> LegoMinifigures { get; set; }
 
         public DbSet<LegoMinifigureItem> LegoMinifigureItems { get; set; }
 
         public DbSet<LegoCollection> LegoCollections { get; set; }
+
+        // ------------------------------HotWheels---------------------------------
+        public DbSet<HotWheelsCar> HotWheelsCars { get; set; }
+
+        public DbSet<HotWheelsCarItem> HotWheelsCarItems { get; set; }
+
+        public DbSet<HotWheelsCollection> HotWheelsCollections { get; set; }
+
+        public DbSet<HotWheelsSerie> HotWheelsSeries { get; set; }
+
+        public DbSet<HotWheelsType> HotWheelsTypes { get; set; }
 
         public DbSet<FastAndFuriousPremiumCar> FastAndFuriousPremiumCars { get; set; }
 
@@ -42,15 +57,17 @@
 
         public DbSet<FastAndFuriousPremiumItem> FastAndFuriousPremiumItems { get; set; }
 
-        public DbSet<Category> Categories { get; set; }
-
-        public DbSet<SubCategory> SubCategories { get; set; }
-
+        // ------------------------------Forum---------------------------------
         public DbSet<ForumPost> ForumPosts { get; set; }
 
         public DbSet<ForumPostComment> ForumPostComments { get; set; }
 
         public DbSet<ForumStar> ForumStars { get; set; }
+
+        // ------------------------------Common---------------------------------
+        public DbSet<Category> Categories { get; set; }
+
+        public DbSet<SubCategory> SubCategories { get; set; }
 
         public DbSet<Sorting> Sortings { get; set; }
 

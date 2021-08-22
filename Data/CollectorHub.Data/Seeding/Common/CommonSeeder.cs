@@ -7,6 +7,7 @@
 
     using CollectorHub.Common;
     using CollectorHub.Data.Common.Repositories;
+    using CollectorHub.Data.Models.Collections;
     using CollectorHub.Data.Models.Common;
     using CollectorHub.Data.Models.User;
     using CollectorHub.Services.Data.Administration;
@@ -20,6 +21,11 @@
 
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
+            if (!dbContext.CollectionTypes.Any())
+            {
+                this.SeedCollectionTypes(dbContext);
+            }
+
             if (dbContext.Sortings.Any())
             {
                 return;
@@ -30,25 +36,39 @@
             }
         }
 
+        private void SeedCollectionTypes(ApplicationDbContext dbContext)
+        {
+            var legoType = new CollectionType();
+            legoType.Name = GlobalConstants.LegoCollectionTypeName;
+
+            var hotHWeelsType = new CollectionType();
+            hotHWeelsType.Name = GlobalConstants.HotWheelsCollectionTypeName;
+
+            dbContext.CollectionTypes.Add(legoType);
+            dbContext.CollectionTypes.Add(hotHWeelsType);
+
+            dbContext.SaveChanges();
+        }
+
         private async Task SeedSorting(ApplicationDbContext dbContext)
         {
             var priceSortASC = new Sorting();
-            priceSortASC.Name = "Cheapest";
+            priceSortASC.Name = GlobalConstants.SortingCheapestName;
 
             var priceSortDESC = new Sorting();
-            priceSortDESC.Name = "Expensivest";
+            priceSortDESC.Name = GlobalConstants.SortingExpensivestName;
 
             var dateCreatedASC = new Sorting();
-            dateCreatedASC.Name = "Oldest";
+            dateCreatedASC.Name = GlobalConstants.SortingOldestName;
 
             var dateCreatedDESC = new Sorting();
-            dateCreatedDESC.Name = "Newest";
+            dateCreatedDESC.Name = GlobalConstants.SortingNewestName;
 
             var viewCountASC = new Sorting();
-            viewCountASC.Name = "Less viewed";
+            viewCountASC.Name = GlobalConstants.SortingLessViewedName;
 
             var viewCountDESC = new Sorting();
-            viewCountDESC.Name = "Most viewed";
+            viewCountDESC.Name = GlobalConstants.SortingMostViewedName;
 
             await dbContext.Sortings.AddAsync(priceSortASC);
             await dbContext.Sortings.AddAsync(priceSortDESC);

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectorHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210820162107_InitialCreate")]
+    [Migration("20210822135504_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,581 @@ namespace CollectorHub.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumCar", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Col")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Movie")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoCardLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoLooseLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SerieId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Tampos")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ToyId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WheelType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("SerieId");
+
+                    b.ToTable("FastAndFuriousPremiumCars");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumCollection", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<bool>("ShowPrices")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ViewsCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("FastAndFuriousPremiumCollections");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CarId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CollectionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("ConditionIsNew")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OwnerPictureUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PriceBoughted")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("PriceNow")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("Profit")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("CollectionId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("FastAndFuriousPremiumItems");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumSerie", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderOfApperance")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Year")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("FastAndFuriousPremiumSeries");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsCar", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Col")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Movie")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoCardLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoLooseLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SerieId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Tampos")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ToyId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TypeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WheelType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("SerieId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("HotWheelsCars");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsCarItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CarId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CollectionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("ConditionIsNew")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OwnerPictureUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PriceBoughted")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("PriceNow")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("Profit")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("CollectionId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("HotWheelsCarItems");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsCollection", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<bool>("ShowPrices")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TypeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ViewsCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("TypeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("HotWheelsCollections");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsSerie", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderOfApperance")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Year")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("HotWheelsSeries");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsType", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("HotWheelsTypes");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.Lego.LegoCollection", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<bool>("ShowPrices")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ViewsCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LegoCollections");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.Lego.LegoMinifigure", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("AvgPriceNew")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("AvgPriceUsed")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductionYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SwNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("WeightInGrams")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("LegoMinifigures");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.Lego.LegoMinifigureItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("ConditionIsNew")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MinifigureId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OwnerPictureUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PriceBoughted")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("PriceNow")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("Profit")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("MinifigureId");
+
+                    b.ToTable("LegoMinifigureItems");
+                });
 
             modelBuilder.Entity("CollectorHub.Data.Models.Common.Category", b =>
                 {
@@ -246,343 +821,6 @@ namespace CollectorHub.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("ForumStars");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCar", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Col")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Movie")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhotoCardLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhotoLooseLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SerieId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Tampos")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ToyId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WheelType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("SerieId");
-
-                    b.ToTable("FastAndFuriousPremiumCars");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CategoryId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(400)
-                        .HasColumnType("nvarchar(400)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<bool>("ShowPrices")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ViewsCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.ToTable("FastAndFuriousPremiumCollections");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumItem", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CarId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CollectionId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("ConditionIsNew")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OwnerPictureUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("PriceBoughted")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<decimal>("PriceNow")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<decimal>("Profit")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CarId");
-
-                    b.HasIndex("CollectionId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.ToTable("FastAndFuriousPremiumItems");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumSerie", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderOfApperance")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Year")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.ToTable("FastAndFuriousPremiumSeries");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoCollection", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CategoryId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(400)
-                        .HasColumnType("nvarchar(400)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<bool>("ShowPrices")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ViewsCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("LegoCollections");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoMinifigure", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("AvgPriceNew")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<decimal>("AvgPriceUsed")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductionYear")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SwNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("WeightInGrams")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.ToTable("LegoMinifigures");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.LegoMinifigureItem", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("ConditionIsNew")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("MinifigureId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OwnerPictureUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("PriceBoughted")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<decimal>("PriceNow")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<decimal>("Profit")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("MinifigureId");
-
-                    b.ToTable("LegoMinifigureItems");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.User.ApplicationRole", b =>
@@ -854,6 +1092,118 @@ namespace CollectorHub.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumCar", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumSerie", "Serie")
+                        .WithMany("Cars")
+                        .HasForeignKey("SerieId");
+
+                    b.Navigation("Serie");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumCollection", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.Common.Category", "Category")
+                        .WithMany("FastAndFuriousPremiumCollection")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumItem", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumCar", "Car")
+                        .WithMany("Items")
+                        .HasForeignKey("CarId");
+
+                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumCollection", "Collection")
+                        .WithMany("Items")
+                        .HasForeignKey("CollectionId");
+
+                    b.Navigation("Car");
+
+                    b.Navigation("Collection");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsCar", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsSerie", "Serie")
+                        .WithMany("Cars")
+                        .HasForeignKey("SerieId");
+
+                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId");
+
+                    b.Navigation("Serie");
+
+                    b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsCarItem", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsCar", "Car")
+                        .WithMany("Items")
+                        .HasForeignKey("CarId");
+
+                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsCollection", "Collection")
+                        .WithMany("Items")
+                        .HasForeignKey("CollectionId");
+
+                    b.Navigation("Car");
+
+                    b.Navigation("Collection");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsCollection", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.Common.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId");
+
+                    b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Type");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.Lego.LegoCollection", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.Common.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.Lego.LegoMinifigureItem", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.Collections.Lego.LegoMinifigure", "Minifigure")
+                        .WithMany()
+                        .HasForeignKey("MinifigureId");
+
+                    b.Navigation("Minifigure");
+                });
+
             modelBuilder.Entity("CollectorHub.Data.Models.Common.Category", b =>
                 {
                     b.HasOne("CollectorHub.Data.Models.Common.SubCategory", "SubCategory")
@@ -916,66 +1266,9 @@ namespace CollectorHub.Data.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCar", b =>
-                {
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumSerie", "Serie")
-                        .WithMany("Cars")
-                        .HasForeignKey("SerieId");
-
-                    b.Navigation("Serie");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", b =>
-                {
-                    b.HasOne("CollectorHub.Data.Models.Common.Category", "Category")
-                        .WithMany("FastAndFuriousPremiumCollection")
-                        .HasForeignKey("CategoryId");
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumItem", b =>
-                {
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCar", "Car")
-                        .WithMany("Items")
-                        .HasForeignKey("CarId");
-
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", "Collection")
-                        .WithMany("Items")
-                        .HasForeignKey("CollectionId");
-
-                    b.Navigation("Car");
-
-                    b.Navigation("Collection");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.Lego.LegoCollection", b =>
-                {
-                    b.HasOne("CollectorHub.Data.Models.Common.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Category");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.LegoMinifigureItem", b =>
-                {
-                    b.HasOne("CollectorHub.Data.Models.Lego.LegoMinifigure", "Minifigure")
-                        .WithMany()
-                        .HasForeignKey("MinifigureId");
-
-                    b.Navigation("Minifigure");
-                });
-
             modelBuilder.Entity("CollectorHub.Data.Models.User.ApplicationUser", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", "FFPremiumCollection")
+                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumCollection", "FFPremiumCollection")
                         .WithOne("User")
                         .HasForeignKey("CollectorHub.Data.Models.User.ApplicationUser", "FastAndFuriousPremiumCollection");
 
@@ -1003,13 +1296,13 @@ namespace CollectorHub.Data.Migrations
 
             modelBuilder.Entity("LegoCollectionLegoMinifigureItem", b =>
                 {
-                    b.HasOne("CollectorHub.Data.Models.Lego.LegoCollection", null)
+                    b.HasOne("CollectorHub.Data.Models.Collections.Lego.LegoCollection", null)
                         .WithMany()
                         .HasForeignKey("CollectionsId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CollectorHub.Data.Models.LegoMinifigureItem", null)
+                    b.HasOne("CollectorHub.Data.Models.Collections.Lego.LegoMinifigureItem", null)
                         .WithMany()
                         .HasForeignKey("ItemsId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1067,6 +1360,38 @@ namespace CollectorHub.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumCar", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumCollection", b =>
+                {
+                    b.Navigation("Items");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.FastAndFuriousPremiumSerie", b =>
+                {
+                    b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsCar", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsCollection", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsSerie", b =>
+                {
+                    b.Navigation("Cars");
+                });
+
             modelBuilder.Entity("CollectorHub.Data.Models.Common.Category", b =>
                 {
                     b.Navigation("FastAndFuriousPremiumCollection");
@@ -1082,23 +1407,6 @@ namespace CollectorHub.Data.Migrations
             modelBuilder.Entity("CollectorHub.Data.Models.Forum.ForumStar", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCar", b =>
-                {
-                    b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumCollection", b =>
-                {
-                    b.Navigation("Items");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CollectorHub.Data.Models.HotWheels.FastAndFuriousPremiumSerie", b =>
-                {
-                    b.Navigation("Cars");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.User.ApplicationUser", b =>

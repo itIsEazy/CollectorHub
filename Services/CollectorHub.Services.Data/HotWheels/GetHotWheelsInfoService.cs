@@ -6,7 +6,7 @@
 
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.Common;
-    using CollectorHub.Data.Models.HotWheels;
+    using CollectorHub.Data.Models.Collections.HotWheels;
     using CollectorHub.Data.Models.User;
     using CollectorHub.Web.ViewModels.Collections;
     using CollectorHub.Web.ViewModels.Home;

@@ -1,16 +1,16 @@
-﻿namespace CollectorHub.Data.Models.HotWheels
+﻿namespace CollectorHub.Data.Models.Collections.HotWheels
 {
     using System;
     using System.Collections.Generic;
 
     using CollectorHub.Data.Common.Models;
 
-    public class FastAndFuriousPremiumSerie : BaseDeletableModel<string>
+    public class HotWheelsSerie : BaseDeletableModel<string>
     {
-        public FastAndFuriousPremiumSerie()
+        public HotWheelsSerie()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.Cars = new HashSet<FastAndFuriousPremiumCar>();
+            this.Cars = new HashSet<HotWheelsCar>();
         }
 
         public string Year { get; set; }
@@ -19,6 +19,6 @@
 
         public int OrderOfApperance { get; set; }
 
-        public virtual ICollection<FastAndFuriousPremiumCar> Cars { get; set; }
+        public virtual ICollection<HotWheelsCar> Cars { get; set; }
     }
 }

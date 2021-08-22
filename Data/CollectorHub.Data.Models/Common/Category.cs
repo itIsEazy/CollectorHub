@@ -5,8 +5,8 @@
     using System.ComponentModel.DataAnnotations;
 
     using CollectorHub.Data.Common.Models;
+    using CollectorHub.Data.Models.Collections.HotWheels;
     using CollectorHub.Data.Models.Forum;
-    using CollectorHub.Data.Models.HotWheels;
 
     public class Category : BaseModel<string>
     {

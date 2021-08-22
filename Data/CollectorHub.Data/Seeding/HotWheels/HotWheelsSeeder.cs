@@ -8,13 +8,19 @@
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
-    using CollectorHub.Data.Models.HotWheels;
+    using CollectorHub.Common;
+    using CollectorHub.Data.Models.Collections.HotWheels;
 
-    public class FastAndFuriousPremiumSeeder : ISeeder
+    public class HotWheelsSeeder : ISeeder
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
-            if (dbContext.FastAndFuriousPremiumCars.Any())
+            if (!dbContext.HotWheelsTypes.Any())
+            {
+                this.SeedHotWheelsTypes(dbContext);
+            }
+
+            if (dbContext.HotWheelsCars.Any())
             {
                 return;
             }
@@ -22,6 +28,20 @@
             {
                 await this.CallForHotWHeels(dbContext);
             }
+        }
+
+        public void SeedHotWheelsTypes(ApplicationDbContext db)
+        {
+            var type = new HotWheelsType();
+            type.Name = GlobalConstants.FastAndFuriousTypeName;
+
+            var type2 = new HotWheelsType();
+            type2.Name = GlobalConstants.FastAndFuriousPremiumTypeName;
+
+            db.HotWheelsTypes.Add(type);
+            db.HotWheelsTypes.Add(type2);
+
+            db.SaveChanges();
         }
 
         public async Task<string> CallForHotWHeels(ApplicationDbContext db) // shoud use try catch
@@ -39,8 +59,18 @@
 
             sb.AppendLine("Fast and Furious Premium Link Called");
 
-            List<FastAndFuriousPremiumSerie> allPremiumHWSeries = this.CollectYearAndNames(html);
-            List<FastAndFuriousPremiumCar> allPremiumHWCars = this.CollectInfoForCars(htmlForAllCars);
+            List<HotWheelsSerie> allPremiumHWSeries = this.CollectYearAndNames(html);
+            List<HotWheelsCar> allPremiumHWCars = this.CollectInfoForCars(htmlForAllCars);
+
+            var hotWheelsPremiumTypeId = db.HotWheelsTypes
+                .Where(x => x.Name == GlobalConstants.FastAndFuriousPremiumTypeName)
+                .Select(x => x.Id)
+                .FirstOrDefault();
+
+            foreach (var car in allPremiumHWCars)
+            {
+                car.TypeId = hotWheelsPremiumTypeId;
+            }
 
             int indexer = 0;
             foreach (var serie in allPremiumHWSeries)
@@ -56,12 +86,12 @@
 
             foreach (var serie in allPremiumHWSeries)
             {
-                await db.FastAndFuriousPremiumSeries.AddAsync(serie);
+                await db.HotWheelsSeries.AddAsync(serie);
             }
 
             foreach (var car in allPremiumHWCars)
             {
-                await db.FastAndFuriousPremiumCars.AddAsync(car);
+                await db.HotWheelsCars.AddAsync(car);
             }
 
             await db.SaveChangesAsync();
@@ -71,17 +101,17 @@
             return sb.ToString();
         }
 
-        public List<FastAndFuriousPremiumCar> CollectInfoForCars(string html)
+        public List<HotWheelsCar> CollectInfoForCars(string html)
         {
-            List<FastAndFuriousPremiumCar> allCars = new List<FastAndFuriousPremiumCar>();
+            List<HotWheelsCar> allCars = new List<HotWheelsCar>();
 
             // string tdInfoPattern = @"<td>.*?<\/td>";
             var mathes = this.GetMatchesFrom(html, @"<td>.*?<\/td>");
 
             List<string> clearInformation = this.ClearTheInfoForCars(mathes);
 
-            FastAndFuriousPremiumCar currCar = new FastAndFuriousPremiumCar();
-            FastAndFuriousPremiumCar lastCar = new FastAndFuriousPremiumCar();
+            HotWheelsCar currCar = new HotWheelsCar();
+            HotWheelsCar lastCar = new HotWheelsCar();
             lastCar.ToyId = "this is id to not dail null ref except";
 
             int counter = 1; // counts ++ until last model column
@@ -153,7 +183,7 @@
                     }
 
                     lastCar = currCar;
-                    currCar = new FastAndFuriousPremiumCar();
+                    currCar = new HotWheelsCar();
                 }
 
                 counter++;
@@ -212,7 +242,7 @@
             return resultList;
         }
 
-        public List<FastAndFuriousPremiumSerie> CollectYearAndNames(string html)
+        public List<HotWheelsSerie> CollectYearAndNames(string html)
         {
             List<string> yearsAndNames = new List<string>();
 
@@ -230,7 +260,7 @@
                 // Console.WriteLine(match);
             }
 
-            List<FastAndFuriousPremiumSerie> allPremiumHWSeries = new List<FastAndFuriousPremiumSerie>();
+            List<HotWheelsSerie> allPremiumHWSeries = new List<HotWheelsSerie>();
 
             int yearCounter = 0;
             int orderCounter = 1;
@@ -254,7 +284,7 @@
                     continue;
                 }
 
-                FastAndFuriousPremiumSerie currSerie = new FastAndFuriousPremiumSerie();
+                HotWheelsSerie currSerie = new HotWheelsSerie();
 
                 currSerie.Year = year;
                 currSerie.Name = item;

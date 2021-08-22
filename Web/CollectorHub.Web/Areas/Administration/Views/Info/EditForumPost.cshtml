@@ -1,5 +1,10 @@
 ﻿@model EditForumPostModel
 
+    <div class="col-lg-12">
+        <p class="text-danger"> TODO : Fix AuthorUsername</p>
+        <p class="text-danger"> TODO : add Edit button and when edited return same view ONLY on Vierify button escape page or go back btn</p>
+    </div>
+
 <div class="col-lg-12">
     <a class="btn btn-outline-secondary text-center w-100" asp-area="Administration" asp-controller="Info" asp-action="Index" role="button">Back to Administration</a>
 </div>
@@ -51,6 +56,5 @@
         <textarea asp-for="ImageUrl" rows="1" class="form-control" placeholder="Your url there"></textarea>
         <span asp-validation-for="ImageUrl" class="small text-danger"></span>
     </div>
-    <input class="btn btn-primary mt-3" type="submit" value="Create" />
 </form>
 </div>

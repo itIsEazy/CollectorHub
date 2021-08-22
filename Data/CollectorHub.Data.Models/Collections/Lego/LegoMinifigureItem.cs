@@ -1,9 +1,8 @@
-﻿namespace CollectorHub.Data.Models
+﻿namespace CollectorHub.Data.Models.Collections.Lego
 {
     using System.Collections.Generic;
 
     using CollectorHub.Data.Models.Common;
-    using CollectorHub.Data.Models.Lego;
 
     public class LegoMinifigureItem : Item
     {

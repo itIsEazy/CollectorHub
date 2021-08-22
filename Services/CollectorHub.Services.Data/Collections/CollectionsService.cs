@@ -4,7 +4,7 @@
     using System.Linq;
 
     using CollectorHub.Data.Common.Repositories;
-    using CollectorHub.Data.Models.HotWheels;
+    using CollectorHub.Data.Models.Collections.HotWheels;
     using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Common;
     using CollectorHub.Web.ViewModels.Collections;
