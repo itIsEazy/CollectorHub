@@ -15,6 +15,8 @@
 
         CollectionsIndexViewModel GetIndexViewInformation(string categoryId);
 
+        HotWheelsCollectionViewModel GetHotWheelsCollectionViewInformation(string collectionId);
+
         IEnumerable<CollectionType> GetAllCollectionTypes();
 
         IEnumerable<HotWheelsType> GetAllHotWheelsTypes();
@@ -27,14 +29,24 @@
 
         Task CreateHotWheelsCollection(string userId, string hotWheelsTypeId, string description, bool isPublic, bool showPrices);
 
+        void ChangePrivateOptionForHotWheelsCollection(string collectionId);
+
+        void ChangeShowPricesOptionForHotWheelsCollection(string collectionId);
+
         string GetHotWheelsTypeName(string hotWheelsTypeId);
 
         string GetHotWheelsTypeImageUrl(string hotWheelsTypeId);
+
+        string GetHotWheelsCollectionUserId(string collectionId);
 
         int GetAllCollectionsCount();
 
         bool HotWheelsTypeExist(string typeId);
 
+        bool HotWheelsCollectionExists(string collectionId);
+
         bool CheckIfUserCanCreateHotWheelsCollection(string userId, string hotWheelsTypeId);
+
+        bool CollectionIsPublic(string collectionId);
     }
 }

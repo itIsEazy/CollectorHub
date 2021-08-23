@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectorHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210822183926_InitialCreate")]
+    [Migration("20210823014622_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -267,6 +267,9 @@ namespace CollectorHub.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("HotWheelsTypeId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -297,19 +300,16 @@ namespace CollectorHub.Data.Migrations
                     b.Property<string>("ToyId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TypeId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("WheelType")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("HotWheelsTypeId");
+
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("SerieId");
-
-                    b.HasIndex("TypeId");
 
                     b.ToTable("HotWheelsCars");
                 });
@@ -385,6 +385,9 @@ namespace CollectorHub.Data.Migrations
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)");
 
+                    b.Property<string>("HotWheelsTypeId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -405,9 +408,6 @@ namespace CollectorHub.Data.Migrations
                     b.Property<bool>("ShowPrices")
                         .HasColumnType("bit");
 
-                    b.Property<string>("TypeId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -421,9 +421,9 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasIndex("CollectionTypeId");
 
-                    b.HasIndex("IsDeleted");
+                    b.HasIndex("HotWheelsTypeId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("UserId");
 
@@ -441,6 +441,9 @@ namespace CollectorHub.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("HotWheelsTypeId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -457,6 +460,8 @@ namespace CollectorHub.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HotWheelsTypeId");
 
                     b.HasIndex("IsDeleted");
 
@@ -1166,17 +1171,17 @@ namespace CollectorHub.Data.Migrations
 
             modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsCar", b =>
                 {
+                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsType", "HotWheelsType")
+                        .WithMany()
+                        .HasForeignKey("HotWheelsTypeId");
+
                     b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsSerie", "Serie")
                         .WithMany("Cars")
                         .HasForeignKey("SerieId");
 
-                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsType", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeId");
+                    b.Navigation("HotWheelsType");
 
                     b.Navigation("Serie");
-
-                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsCarItem", b =>
@@ -1204,9 +1209,9 @@ namespace CollectorHub.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CollectionTypeId");
 
-                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsType", "Type")
+                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsType", "HotWheelsType")
                         .WithMany()
-                        .HasForeignKey("TypeId");
+                        .HasForeignKey("HotWheelsTypeId");
 
                     b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
                         .WithMany("HotWheelsCollections")
@@ -1218,9 +1223,18 @@ namespace CollectorHub.Data.Migrations
 
                     b.Navigation("CollectionType");
 
-                    b.Navigation("Type");
+                    b.Navigation("HotWheelsType");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsSerie", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsType", "HotWheelsType")
+                        .WithMany()
+                        .HasForeignKey("HotWheelsTypeId");
+
+                    b.Navigation("HotWheelsType");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.Collections.Lego.LegoCollection", b =>

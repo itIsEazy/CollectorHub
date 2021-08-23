@@ -439,6 +439,9 @@ namespace CollectorHub.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("HotWheelsTypeId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -455,6 +458,8 @@ namespace CollectorHub.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HotWheelsTypeId");
 
                     b.HasIndex("IsDeleted");
 
@@ -1219,6 +1224,15 @@ namespace CollectorHub.Data.Migrations
                     b.Navigation("HotWheelsType");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsSerie", b =>
+                {
+                    b.HasOne("CollectorHub.Data.Models.Collections.HotWheels.HotWheelsType", "HotWheelsType")
+                        .WithMany()
+                        .HasForeignKey("HotWheelsTypeId");
+
+                    b.Navigation("HotWheelsType");
                 });
 
             modelBuilder.Entity("CollectorHub.Data.Models.Collections.Lego.LegoCollection", b =>

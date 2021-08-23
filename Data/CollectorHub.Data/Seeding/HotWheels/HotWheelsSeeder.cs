@@ -74,6 +74,11 @@
                 car.HotWheelsTypeId = hotWheelsPremiumTypeId;
             }
 
+            foreach (var serie in allPremiumHWSeries)
+            {
+                serie.HotWheelsTypeId = hotWheelsPremiumTypeId;
+            }
+
             int indexer = 0;
             foreach (var serie in allPremiumHWSeries)
             {

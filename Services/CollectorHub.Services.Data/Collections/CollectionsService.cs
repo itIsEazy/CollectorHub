@@ -25,6 +25,7 @@
         private readonly IDeletableEntityRepository<HotWheelsCollection> hotWheelsCollectionsRepository;
         private readonly IDeletableEntityRepository<HotWheelsCar> hotWheelsCarsRepository;
         private readonly IDeletableEntityRepository<HotWheelsCarItem> hotWheelsCarItemsRepository;
+        private readonly IDeletableEntityRepository<HotWheelsSerie> hotWheelsSeriesRepository;
 
         public CollectionsService(
             ICategoryService categoryService,
@@ -35,7 +36,8 @@
             IDeletableEntityRepository<ApplicationUser> usersRepository,
             IDeletableEntityRepository<HotWheelsCollection> hotWheelsCollectionsRepository,
             IDeletableEntityRepository<HotWheelsCar> hotWheelsCarsRepository,
-            IDeletableEntityRepository<HotWheelsCarItem> hotWheelsCarItemsRepository)
+            IDeletableEntityRepository<HotWheelsCarItem> hotWheelsCarItemsRepository,
+            IDeletableEntityRepository<HotWheelsSerie> hotWheelsSeriesRepository)
         {
             this.categoryService = categoryService;
             this.commonService = commonService;
@@ -46,6 +48,7 @@
             this.hotWheelsCollectionsRepository = hotWheelsCollectionsRepository;
             this.hotWheelsCarsRepository = hotWheelsCarsRepository;
             this.hotWheelsCarItemsRepository = hotWheelsCarItemsRepository;
+            this.hotWheelsSeriesRepository = hotWheelsSeriesRepository;
         }
 
         public int GetAllCollectionsCount()
@@ -73,6 +76,123 @@
             model.Sortings = this.commonService.GetAllSortings();
             model.Categories = this.categoryService.GetAllCategories();
             model.TrendingCollectons = this.GetAllTrendingCollections(categoryId);
+
+            return model;
+        }
+
+        public HotWheelsCollectionViewModel GetHotWheelsCollectionViewInformation(string collectionId)
+        {
+            var model = new HotWheelsCollectionViewModel();
+
+            var collection = this.hotWheelsCollectionsRepository
+                .All()
+                .Where(x => x.Id == collectionId)
+                .FirstOrDefault();
+
+            var collectionHotWheelsTypeId = collection.HotWheelsTypeId;
+
+            model.Id = collection.Id;
+            model.UserName = collection.User.UserName;
+            model.Name = collection.Name;
+            model.ImageUrl = collection.ImageUrl;
+            model.Description = collection.Description;
+            model.IsPublic = collection.IsPublic;
+            model.ShowPrices = collection.ShowPrices;
+
+            var collectionSeries = this.hotWheelsSeriesRepository
+                .All()
+                .Where(x => x.HotWheelsTypeId == collectionHotWheelsTypeId)
+                .OrderBy(x => x.OrderOfApperance)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Year = x.Year,
+                });
+
+            var allSeries = new List<HotWheelsCollectionSerieViewModel>();
+
+            foreach (var serie in collectionSeries)
+            {
+                allSeries.Add(new HotWheelsCollectionSerieViewModel
+                {
+                    Id = serie.Id,
+                    Name = serie.Name,
+                    Year = serie.Year,
+                });
+            }
+
+            var allCars = this.hotWheelsCarsRepository
+                .All()
+                .Where(x => x.HotWheelsTypeId == collectionHotWheelsTypeId)
+                .ToList();
+
+            foreach (var serie in allSeries)
+            {
+                var cars = allCars.Where(x => x.SerieId == serie.Id);
+
+                foreach (var car in cars)
+                {
+                    var carViewModel = new HotWheelsCollectionCarViewModel
+                    {
+                        Id = car.Id,
+                        Col = car.Col,
+                        Name = car.Name,
+                        Movie = car.Movie,
+                    };
+
+                    if (car.PhotoCardLink != null)
+                    {
+                        carViewModel.ImageUrl = car.PhotoCardLink;
+                    }
+                    else
+                    {
+                        carViewModel.ImageUrl = car.PhotoLooseLink;
+                    }
+
+                    serie.Cars.Add(carViewModel);
+                }
+
+                serie.Cars = serie.Cars.OrderBy(x => x.Col).ToList();
+            }
+
+            model.AllSeries = allSeries;
+
+            var collectionItems = this.hotWheelsCarItemsRepository
+                .All()
+                .Where(x => x.CollectionId == collectionId)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    PriceBoughted = x.PriceBoughted,
+                    CarId = x.CarId,
+                    Col = x.Car.Col,
+                    Name = x.Car.Name,
+                    Movie = x.Car.Movie,
+                });
+
+            var allItems = new List<HotWheelsCollectionCarItemViewModel>();
+
+            foreach (var item in collectionItems)
+            {
+                var currItem = new HotWheelsCollectionCarItemViewModel
+                {
+                    Id = item.Id,
+                    PriceBoughted = item.PriceBoughted,
+                };
+
+                currItem.Car = new HotWheelsCollectionCarViewModel
+                {
+                    Id = item.CarId,
+                    Col = item.Col,
+                    Name = item.Name,
+                    Movie = item.Movie,
+                };
+
+                allItems.Add(currItem);
+            }
+
+            model.Items = allItems;
 
             return model;
         }
@@ -216,6 +336,38 @@
             this.hotWheelsCollectionsRepository.SaveChanges();
         }
 
+        public void ChangePrivateOptionForHotWheelsCollection(string collectionId)
+        {
+            var collection = this.hotWheelsCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
+
+            if (collection.IsPublic)
+            {
+                collection.IsPublic = false;
+            }
+            else
+            {
+                collection.IsPublic = true;
+            }
+
+            this.hotWheelsCollectionsRepository.SaveChanges();
+        }
+
+        public void ChangeShowPricesOptionForHotWheelsCollection(string collectionId)
+        {
+            var collection = this.hotWheelsCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
+
+            if (collection.ShowPrices)
+            {
+                collection.ShowPrices = false;
+            }
+            else
+            {
+                collection.ShowPrices = true;
+            }
+
+            this.hotWheelsCollectionsRepository.SaveChanges();
+        }
+
         public string GetHotWheelsTypeName(string hotWheelsTypeId)
         {
             if (this.HotWheelsTypeExist(hotWheelsTypeId))
@@ -244,11 +396,34 @@
             return null;
         }
 
+        public string GetHotWheelsCollectionUserId(string collectionId)
+        {
+            return this.hotWheelsCollectionsRepository
+                .All()
+                .Where(x => x.Id == collectionId)
+                .Select(x => x.UserId)
+                .FirstOrDefault();
+        }
+
         public bool HotWheelsTypeExist(string typeId)
         {
             var type = this.hotWheelsTypesRepository.All().Where(x => x.Id == typeId).FirstOrDefault();
 
             if (type == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public bool HotWheelsCollectionExists(string collectionId)
+        {
+            var collection = this.hotWheelsCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
+
+            if (collection == null)
             {
                 return false;
             }
@@ -273,6 +448,15 @@
             {
                 return false;
             }
+        }
+
+        public bool CollectionIsPublic(string collectionId)
+        {
+            return this.hotWheelsCollectionsRepository
+                .All()
+                .Where(x => x.Id == collectionId)
+                .Select(x => x.IsPublic)
+                .FirstOrDefault();
         }
 
         private int GetAllHotWHeelsCollectionsCount()

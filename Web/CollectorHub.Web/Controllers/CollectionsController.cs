@@ -191,45 +191,49 @@
 
             this.hotWheelsInfoService.RemoveItemFromFastAndFuriousPremiumCollection(model.SelectedModel.ItemId, model.SelectedModel.CollectionId);
 
-            return this.RedirectToAction(nameof(this.HotWheelsFastAndFuriousPremium), new { collectionId = model.SelectedModel.CollectionId });
+            return this.RedirectToAction(nameof(this.HotWheelsCollection), new { collectionId = model.SelectedModel.CollectionId });
         }
 
-        public IActionResult ChangePrivateOptionForCollection(HotWheelsFastAndFuriousPremiumCollectionViewModel model)
+        public IActionResult ChangePrivateOptionForHotWheelsCollection(HotWheelsCollectionViewModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (!this.hotWheelsInfoService.CollectionExists(model.SelectedModel.CollectionId))
+            if (!this.collectionsService.HotWheelsCollectionExists(model.SelectedModel.CollectionId))
             {
                 return this.BadRequest();
             }
 
-            if (!this.hotWheelsInfoService.UserOwnsCollection(userId, model.SelectedModel.CollectionId))
+            var collectionUserId = this.collectionsService.GetHotWheelsCollectionUserId(model.SelectedModel.CollectionId);
+
+            if (userId != collectionUserId)
             {
                 return this.BadRequest();
             }
 
-            this.hotWheelsInfoService.ChangePrivateOptionForCollection(model.SelectedModel.CollectionId);
+            this.collectionsService.ChangePrivateOptionForHotWheelsCollection(model.SelectedModel.CollectionId);
 
-            return this.RedirectToAction(nameof(this.HotWheelsFastAndFuriousPremium), new { collectionId = model.SelectedModel.CollectionId });
+            return this.RedirectToAction(nameof(this.HotWheelsCollection), new { collectionId = model.SelectedModel.CollectionId });
         }
 
-        public IActionResult ChangeShowPricesOptionForCollection(HotWheelsFastAndFuriousPremiumCollectionViewModel model)
+        public IActionResult ChangeShowPricesOptionForHotWheelsCollection(HotWheelsFastAndFuriousPremiumCollectionViewModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (!this.hotWheelsInfoService.CollectionExists(model.SelectedModel.CollectionId))
+            if (!this.collectionsService.HotWheelsCollectionExists(model.SelectedModel.CollectionId))
             {
                 return this.BadRequest();
             }
 
-            if (!this.hotWheelsInfoService.UserOwnsCollection(userId, model.SelectedModel.CollectionId))
+            var collectionUserId = this.collectionsService.GetHotWheelsCollectionUserId(model.SelectedModel.CollectionId);
+
+            if (userId != collectionUserId)
             {
                 return this.BadRequest();
             }
 
-            this.hotWheelsInfoService.ChangeShowPricesOptionForCollection(model.SelectedModel.CollectionId);
+            this.collectionsService.ChangeShowPricesOptionForHotWheelsCollection(model.SelectedModel.CollectionId);
 
-            return this.RedirectToAction(nameof(this.HotWheelsFastAndFuriousPremium), new { collectionId = model.SelectedModel.CollectionId });
+            return this.RedirectToAction(nameof(this.HotWheelsCollection), new { collectionId = model.SelectedModel.CollectionId });
         }
 
         public IActionResult MyCollections()
@@ -238,6 +242,33 @@
 
             var model = new MyCollectionIndexViewModel();
             model.HotWheelsCollections = this.collectionsService.GetMyCollectionHotWheelsCollections(userId);
+
+            return this.View(model);
+        }
+
+        public IActionResult HotWheelsCollection(string collectionId)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var collectionUserId = this.collectionsService.GetHotWheelsCollectionUserId(collectionId);
+
+            if (!this.collectionsService.HotWheelsCollectionExists(collectionId))
+            {
+                return this.BadRequest();
+            }
+
+            // Collection is private AND user IS NOT owner
+            if (!this.collectionsService.CollectionIsPublic(collectionId) && userId != collectionUserId)
+            {
+                return this.RedirectToAction(nameof(this.Index));
+            }
+
+            this.ViewBag.UserIsOwner = false;
+            if (userId == collectionUserId)
+            {
+                this.ViewBag.UserIsOwner = true;
+            }
+
+            var model = this.collectionsService.GetHotWheelsCollectionViewInformation(collectionId);
 
             return this.View(model);
         }

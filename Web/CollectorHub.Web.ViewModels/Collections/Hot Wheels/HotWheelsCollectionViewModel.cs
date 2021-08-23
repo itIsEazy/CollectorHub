@@ -6,8 +6,11 @@
     {
         public HotWheelsCollectionViewModel()
         {
-            //this.Items = new HashSet<HotWheelsCarItem>();
+            this.Items = new HashSet<HotWheelsCollectionCarItemViewModel>();
+            this.AllSeries = new HashSet<HotWheelsCollectionSerieViewModel>();
         }
+
+        public string Id { get; set; }
 
         public string UserId { get; set; }
 
@@ -37,6 +40,10 @@
 
         public string CollectionTypeName { get; set; }
 
-        //public virtual IEnumerable<HotWheelsCarItem> Items { get; set; }
+        public IEnumerable<HotWheelsCollectionCarItemViewModel> Items { get; set; }
+
+        public IEnumerable<HotWheelsCollectionSerieViewModel> AllSeries { get; set; }
+
+        public TransferHotWheelsCarItemInputModel SelectedModel { get; set; }
     }
 }

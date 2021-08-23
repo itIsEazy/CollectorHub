@@ -19,6 +19,10 @@
 
         public int OrderOfApperance { get; set; }
 
+        public string HotWheelsTypeId { get; set; }
+
+        public virtual HotWheelsType HotWheelsType { get; set; }
+
         public virtual ICollection<HotWheelsCar> Cars { get; set; }
     }
 }
