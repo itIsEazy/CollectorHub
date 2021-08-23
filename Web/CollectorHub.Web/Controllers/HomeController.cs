@@ -3,7 +3,9 @@
     using System.Diagnostics;
 
     using CollectorHub.Services.Data.Administration;
+    using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Collections;
+    using CollectorHub.Services.Data.Common;
     using CollectorHub.Services.Data.Forum;
     using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Services.Data.User;
@@ -19,19 +21,25 @@
         private readonly IUserService userService;
         private readonly ICollectionsService collectionsService;
         private readonly IForumService forumService;
+        private readonly ICategoryService categoryService;
+        private readonly ICommonService commonService;
 
         public HomeController(
             IGetHotWheelsInfoService hotWheelsInfoService,
             IAdministrationService administrationService,
             IUserService userService,
             ICollectionsService collectionsService,
-            IForumService forumService)
+            IForumService forumService,
+            ICategoryService categoryService,
+            ICommonService commonService)
         {
             this.hotWheelsInfoService = hotWheelsInfoService;
             this.administrationService = administrationService;
             this.userService = userService;
             this.collectionsService = collectionsService;
             this.forumService = forumService;
+            this.categoryService = categoryService;
+            this.commonService = commonService;
         }
 
         public IActionResult Index()
@@ -40,6 +48,10 @@
             model.TotalUsersCount = this.userService.TotalUsersCount();
             model.TotalCollectionsCount = this.collectionsService.GetAllCollectionsCount();
             model.TotalForumPostsCount = this.forumService.TotalForumPostsCount();
+
+            model.Categories = this.categoryService.GetAllCategories();
+            model.Sortings = this.commonService.GetAllSortings();
+
             model.TrendingCollections = this.collectionsService.GetTrendingCollections(null);
 
             return this.View(model);

@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using CollectorHub.Common;
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.Forum;
     using CollectorHub.Data.Models.User;
@@ -75,13 +76,13 @@
 
                     foreach (var word in words)
                     {
-                        if (post.Title.Contains(word))
+                        if (post.Title.ToLower().Contains(word))
                         {
                             removeCurrentPost = false;
                             wordMatchedCount += 1;
                         }
 
-                        if (post.Content.Contains(word))
+                        if (post.Content.ToLower().Contains(word))
                         {
                             removeCurrentPost = false;
                             wordMatchedCount += 1;
@@ -107,19 +108,19 @@
             {
                 var sorting = this.commonService.GetAllSortings().Where(x => x.Id == sortingId).FirstOrDefault();
 
-                if (sorting.Name == "Newest")
+                if (sorting.Name == GlobalConstants.SortingNewestName)
                 {
                     allPosts = allPosts.OrderByDescending(x => x.CreatedOn).ToList();
                 }
-                else if (sorting.Name == "Oldest")
+                else if (sorting.Name == GlobalConstants.SortingOldestName)
                 {
                     allPosts = allPosts.OrderBy(x => x.CreatedOn).ToList();
                 }
-                else if (sorting.Name == "Most viewed")
+                else if (sorting.Name == GlobalConstants.SortingMostViewedName)
                 {
                     allPosts = allPosts.OrderByDescending(x => x.ViewsCount).ToList();
                 }
-                else if (sorting.Name == "Less viewed")
+                else if (sorting.Name == GlobalConstants.SortingLessViewedName)
                 {
                     allPosts = allPosts.OrderBy(x => x.ViewsCount).ToList();
                 }

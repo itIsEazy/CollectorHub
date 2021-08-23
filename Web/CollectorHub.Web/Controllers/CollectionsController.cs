@@ -29,14 +29,26 @@
         }
 
         [AllowAnonymous]
-        public IActionResult Index(string categoryId)
+        public IActionResult Index(string categoryId, CollectionsIndexViewModel model)
         {
-            if (!this.categoryService.CategoryExists(categoryId) && categoryId != null)
+            var currCategoryId = categoryId;
+            string searchInput = null;
+            int sortingid = 0;
+
+            if (categoryId == null && model.SearchModel != null)
+            {
+                currCategoryId = model.SearchModel.CategoryId;
+                searchInput = model.SearchModel.SearchInput;
+                sortingid = model.SearchModel.SortingId;
+            }
+
+            if (currCategoryId != null && !this.categoryService.CategoryExists(currCategoryId))
             {
                 return this.BadRequest();
             }
 
-            var model = this.collectionsService.GetIndexViewInformation(categoryId);
+            model = this.collectionsService.GetIndexViewInformation(currCategoryId, searchInput, sortingid);
+
             return this.View(model);
         }
 

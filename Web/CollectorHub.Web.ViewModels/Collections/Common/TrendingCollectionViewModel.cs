@@ -27,5 +27,7 @@
         public string CategoryId { get; set; }
 
         public string Action { get; set; }
+
+        public string DateCreated { get; set; }
     }
 }

@@ -8,6 +8,7 @@
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.Collections;
     using CollectorHub.Data.Models.Collections.HotWheels;
+    using CollectorHub.Data.Models.Collections.Lego;
     using CollectorHub.Data.Models.User;
     using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Common;
@@ -27,6 +28,7 @@
         private readonly IDeletableEntityRepository<HotWheelsCar> hotWheelsCarsRepository;
         private readonly IDeletableEntityRepository<HotWheelsCarItem> hotWheelsCarItemsRepository;
         private readonly IDeletableEntityRepository<HotWheelsSerie> hotWheelsSeriesRepository;
+        private readonly IDeletableEntityRepository<LegoCollection> legoCollectionsRepository;
 
         public CollectionsService(
             ICategoryService categoryService,
@@ -38,7 +40,8 @@
             IDeletableEntityRepository<HotWheelsCollection> hotWheelsCollectionsRepository,
             IDeletableEntityRepository<HotWheelsCar> hotWheelsCarsRepository,
             IDeletableEntityRepository<HotWheelsCarItem> hotWheelsCarItemsRepository,
-            IDeletableEntityRepository<HotWheelsSerie> hotWheelsSeriesRepository)
+            IDeletableEntityRepository<HotWheelsSerie> hotWheelsSeriesRepository,
+            IDeletableEntityRepository<LegoCollection> legoCollectionsRepository)
         {
             this.categoryService = categoryService;
             this.commonService = commonService;
@@ -50,14 +53,18 @@
             this.hotWheelsCarsRepository = hotWheelsCarsRepository;
             this.hotWheelsCarItemsRepository = hotWheelsCarItemsRepository;
             this.hotWheelsSeriesRepository = hotWheelsSeriesRepository;
+            this.legoCollectionsRepository = legoCollectionsRepository;
         }
 
         public int GetAllCollectionsCount()
         {
             int totalCount = 0;
 
-            int allHotWheelsCollections = this.GetAllHotWHeelsCollectionsCount();
-            totalCount += allHotWheelsCollections;
+            int allHotWheelsCollectionsCount = this.GetAllHotWHeelsCollectionsCount();
+            int allLegoCollectionsCount = this.GetAllLegoCollectionsCount();
+
+            totalCount += allHotWheelsCollectionsCount;
+            totalCount += allLegoCollectionsCount;
 
             return totalCount;
         }
@@ -70,13 +77,181 @@
                 .FirstOrDefault();
         }
 
-        public CollectionsIndexViewModel GetIndexViewInformation(string categoryId)
+        public List<TrendingCollectionViewModel> GetAllCollections()
+        {
+            const string hotWheelsCollectionAction = "HotWheelsCollection";
+            const string legoCollectionAction = "LegoCollection";
+
+            var allCollections = new List<TrendingCollectionViewModel>();
+
+            //------------------------------- GET Collection----------------------------
+            var hotWheelsCollections = this.hotWheelsCollectionsRepository
+                .All()
+                .Where(x => x.IsPublic)
+                .OrderBy(x => x.ViewsCount)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    Name = x.Name,
+                    UserName = x.User.UserName,
+                    Description = x.Description,
+                    ViewsCount = x.ViewsCount,
+                    IsPublic = x.IsPublic,
+                    ShowPrices = x.ShowPrices,
+                    ImageUrl = x.ImageUrl,
+                    CategoryId = x.CategoryId,
+                    DateCreated = x.CreatedOn.ToString("MM/dd/yyyy H:mm"),
+                });
+
+            var legoCollections = this.legoCollectionsRepository
+               .All()
+               .Where(x => x.IsPublic)
+               .OrderBy(x => x.ViewsCount)
+               .Select(x => new
+               {
+                   Id = x.Id,
+                   UserId = x.UserId,
+                   Name = x.Name,
+                   UserName = x.User.UserName,
+                   Description = x.Description,
+                   ViewsCount = x.ViewsCount,
+                   IsPublic = x.IsPublic,
+                   ShowPrices = x.ShowPrices,
+                   ImageUrl = x.ImageUrl,
+                   CategoryId = x.CategoryId,
+                   DateCreated = x.CreatedOn.ToString("MM/dd/yyyy H:mm"),
+               });
+
+            //------------------------------- ADD Collection----------------------------
+            foreach (var collection in hotWheelsCollections)
+            {
+                allCollections.Add(new TrendingCollectionViewModel
+                {
+                    Id = collection.Id,
+                    UserId = collection.UserId,
+                    Name = collection.Name,
+                    UserName = collection.UserName,
+                    Description = collection.Description,
+                    ViewsCount = collection.ViewsCount,
+                    IsPublic = collection.IsPublic,
+                    ShowPrices = collection.ShowPrices,
+                    ImageUrl = collection.ImageUrl,
+                    CategoryId = collection.CategoryId,
+                    Action = hotWheelsCollectionAction,
+                    DateCreated = collection.DateCreated,
+                });
+            }
+
+            foreach (var collection in legoCollections)
+            {
+                allCollections.Add(new TrendingCollectionViewModel
+                {
+                    Id = collection.Id,
+                    UserId = collection.UserId,
+                    Name = collection.Name,
+                    UserName = collection.UserName,
+                    Description = collection.Description,
+                    ViewsCount = collection.ViewsCount,
+                    IsPublic = collection.IsPublic,
+                    ShowPrices = collection.ShowPrices,
+                    ImageUrl = collection.ImageUrl,
+                    CategoryId = collection.CategoryId,
+                    Action = legoCollectionAction,
+                    DateCreated = collection.DateCreated,
+                });
+            }
+
+            return allCollections;
+        }
+
+        public CollectionsIndexViewModel GetIndexViewInformation(string categoryId, string searchInput, int sortingId)
         {
             var model = new CollectionsIndexViewModel();
 
             model.Sortings = this.commonService.GetAllSortings();
             model.Categories = this.categoryService.GetAllCategories();
-            model.TrendingCollectons = this.GetTrendingCollections(categoryId);
+
+            var allCollections = this.GetAllCollections();
+
+            //// if User is getting collection by CATEGORY Button
+            if (categoryId != null)
+            {
+                allCollections = allCollections.Where(x => x.CategoryId == categoryId).ToList();
+
+                model.CategoryName = this.categoryService
+                    .GetAllCategories()
+                    .Where(x => x.Id == categoryId)
+                    .Select(x => x.Name)
+                    .FirstOrDefault()
+                    .ToString();
+            }
+
+            //// if User has Typed somethign in searchInput
+            if (searchInput != null)
+            {
+                var searchedList = new List<TrendingCollectionViewModel>();
+                List<string> words = searchInput.Split().ToList();
+
+                foreach (var collection in allCollections)
+                {
+                    int wordMatchedCount = 0;
+
+                    bool removeCurrentCollection = true;
+
+                    foreach (var word in words)
+                    {
+                        if (collection.Name.ToLower().Contains(word))
+                        {
+                            removeCurrentCollection = false;
+                            wordMatchedCount += 1;
+                        }
+
+                        if (collection.Description.ToLower().Contains(word))
+                        {
+                            removeCurrentCollection = false;
+                            wordMatchedCount += 1;
+                        }
+
+                        if (wordMatchedCount >= 3)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (!removeCurrentCollection)
+                    {
+                        searchedList.Add(collection);
+                    }
+                }
+
+                allCollections = searchedList;
+            }
+
+            //// if User is using sorting option
+            if (sortingId != 0)
+            {
+                var sorting = this.commonService.GetAllSortings().Where(x => x.Id == sortingId).FirstOrDefault();
+
+                if (sorting.Name == GlobalConstants.SortingNewestName)
+                {
+                    allCollections = allCollections.OrderByDescending(x => x.DateCreated).ToList();
+                }
+                else if (sorting.Name == GlobalConstants.SortingOldestName)
+                {
+                    allCollections = allCollections.OrderBy(x => x.DateCreated).ToList();
+                }
+                else if (sorting.Name == GlobalConstants.SortingMostViewedName)
+                {
+                    allCollections = allCollections.OrderByDescending(x => x.ViewsCount).ToList();
+                }
+                else if (sorting.Name == GlobalConstants.SortingLessViewedName)
+                {
+                    allCollections = allCollections.OrderBy(x => x.ViewsCount).ToList();
+                }
+            }
+
+            model.TrendingCollectons = allCollections;
 
             return model;
         }
@@ -610,12 +785,12 @@
 
         private int GetAllHotWHeelsCollectionsCount()
         {
-            int totalCount = 0;
+            return this.hotWheelsCollectionsRepository.All().Count();
+        }
 
-            var allHWFFPremiumCollectionsCount = this.ffpremiumCollectionsRepository.All().Count();
-            totalCount += allHWFFPremiumCollectionsCount;
-
-            return totalCount;
+        private int GetAllLegoCollectionsCount()
+        {
+            return this.legoCollectionsRepository.All().Count();
         }
 
         private string GetHotWheelsCategoryId()

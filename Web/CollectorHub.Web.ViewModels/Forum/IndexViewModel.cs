@@ -10,9 +10,10 @@
         public IndexViewModel()
         {
             this.Categories = new HashSet<CategoryIndexViewModel>();
+            this.Sortings = new HashSet<SortingIndexViewModel>();
+
             this.TrendingPosts = new HashSet<ForumPostIndexViewModel>();
             this.PostsByCategory = new HashSet<ForumPostIndexViewModel>();
-            this.Sortings = new HashSet<SortingIndexViewModel>();
         }
 
         public string CategoryId { get; set; }

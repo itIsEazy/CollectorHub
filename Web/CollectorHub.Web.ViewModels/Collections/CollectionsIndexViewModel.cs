@@ -14,6 +14,8 @@
             this.TrendingCollectons = new HashSet<TrendingCollectionViewModel>();
         }
 
+        public string CategoryName { get; set; }
+
         public IEnumerable<SortingIndexViewModel> Sortings { get; set; }
 
         public IEnumerable<CategoryIndexViewModel> Categories { get; set; }

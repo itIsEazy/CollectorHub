@@ -14,7 +14,7 @@
     {
         ApplicationUser GetUser(string userId);
 
-        CollectionsIndexViewModel GetIndexViewInformation(string categoryId);
+        CollectionsIndexViewModel GetIndexViewInformation(string categoryId, string searchInput, int sortingId);
 
         HotWheelsCollectionViewModel GetHotWheelsCollectionViewInformation(string collectionId);
 
