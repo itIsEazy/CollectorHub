@@ -151,47 +151,68 @@
             return this.View(model);
         }
 
-        public IActionResult AddHotWheelsFastAndFuriousPremiumItemToCollection(HotWheelsFastAndFuriousPremiumCollectionViewModel model)
+        public IActionResult AddHotWheelsCarItemToCollection(HotWheelsCollectionViewModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            bool userOwnsCollection = false;
-
-            if (this.hotWheelsInfoService.UserOwnsCollection(userId, model.SelectedModel.CollectionId))
-            {
-                userOwnsCollection = true;
-            }
-
-            if (!userOwnsCollection)
+            if (!this.collectionsService.HotWheelsCollectionExists(model.SelectedModel.CollectionId))
             {
                 return this.BadRequest();
             }
 
-            this.hotWheelsInfoService.AddItemToFastAndFuriousPremiumCollection(model.SelectedModel.CarId, model.SelectedModel.CollectionId, model.SelectedModel.PriceBoughted, model.SelectedModel.OwnerPictureUrl);
+            if (!this.collectionsService.HotWheelsCarExists(model.SelectedModel.CarId))
+            {
+                return this.BadRequest();
+            }
 
-            return this.RedirectToAction(nameof(this.HotWheelsFastAndFuriousPremium), new { collectionId = model.SelectedModel.CollectionId });
+            var collectionUserId = this.collectionsService.GetHotWheelsCollectionUserId(model.SelectedModel.CollectionId);
+
+            if (userId != collectionUserId)
+            {
+                return this.BadRequest();
+            }
+
+            if (!this.collectionsService.HotWheelsCarIsFromHotWHeelCollection(model.SelectedModel.CollectionId, model.SelectedModel.CarId))
+            {
+                return this.BadRequest();
+            }
+
+            this.collectionsService.AddHotWheelsCarItemToCollection(model.SelectedModel.CarId, model.SelectedModel.CollectionId, model.SelectedModel.PriceBoughted, model.SelectedModel.OwnerImageUrl);
+
+            return this.RedirectToAction(nameof(this.HotWheelsCollection), new { collectionId = model.SelectedModel.CollectionId });
             //// Redirects to : Collections/HotWheelsFastAndFuriousPremium?collectionId
         }
 
-        public IActionResult RemoveHotWheelsFastAndFuriousPremiumItemFromCollection(HotWheelsFastAndFuriousPremiumCollectionViewModel model)
+        public IActionResult RemoveHotWheelsCarItemFromCollection(HotWheelsCollectionViewModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            bool userOwnsCollection = false;
-
-            if (this.hotWheelsInfoService.UserOwnsCollection(userId, model.SelectedModel.CollectionId))
-            {
-                userOwnsCollection = true;
-            }
-
-            if (!userOwnsCollection)
+            if (!this.collectionsService.HotWheelsCollectionExists(model.SelectedModel.CollectionId))
             {
                 return this.BadRequest();
             }
 
-            this.hotWheelsInfoService.RemoveItemFromFastAndFuriousPremiumCollection(model.SelectedModel.ItemId, model.SelectedModel.CollectionId);
+            if (!this.collectionsService.HotWheelsCarExists(model.SelectedModel.CarId))
+            {
+                return this.BadRequest();
+            }
+
+            var collectionUserId = this.collectionsService.GetHotWheelsCollectionUserId(model.SelectedModel.CollectionId);
+
+            if (userId != collectionUserId)
+            {
+                return this.BadRequest();
+            }
+
+            if (!this.collectionsService.HotWheelsCarIsFromHotWHeelCollection(model.SelectedModel.CollectionId, model.SelectedModel.CarId))
+            {
+                return this.BadRequest();
+            }
+
+            this.collectionsService.RemoveHotWheelsCarItemFromCollection(model.SelectedModel.ItemId);
 
             return this.RedirectToAction(nameof(this.HotWheelsCollection), new { collectionId = model.SelectedModel.CollectionId });
+            //// Redirects to : Collections/HotWheelsFastAndFuriousPremium?collectionId
         }
 
         public IActionResult ChangePrivateOptionForHotWheelsCollection(HotWheelsCollectionViewModel model)

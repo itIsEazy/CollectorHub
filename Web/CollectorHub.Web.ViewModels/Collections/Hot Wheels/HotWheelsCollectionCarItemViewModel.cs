@@ -10,6 +10,10 @@
 
         public decimal PriceBoughted { get; set; }
 
+        public string ImageUrl { get; set; }
+
+        public string SerieId { get; set; }
+
         public virtual HotWheelsCollectionCarViewModel Car { get; set; }
     }
 }

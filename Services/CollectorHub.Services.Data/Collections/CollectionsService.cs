@@ -108,6 +108,7 @@
                     Id = x.Id,
                     Name = x.Name,
                     Year = x.Year,
+                    OrderOfAppeareance = x.OrderOfApperance,
                 });
 
             var allSeries = new List<HotWheelsCollectionSerieViewModel>();
@@ -119,6 +120,7 @@
                     Id = serie.Id,
                     Name = serie.Name,
                     Year = serie.Year,
+                    OrderOfAppearance = serie.OrderOfAppeareance,
                 });
             }
 
@@ -166,9 +168,11 @@
                     Id = x.Id,
                     PriceBoughted = x.PriceBoughted,
                     CarId = x.CarId,
+                    CarSerieId = x.Car.SerieId,
                     Col = x.Car.Col,
                     Name = x.Car.Name,
                     Movie = x.Car.Movie,
+                    ImageUrl = x.OwnerPictureUrl,
                 });
 
             var allItems = new List<HotWheelsCollectionCarItemViewModel>();
@@ -179,6 +183,8 @@
                 {
                     Id = item.Id,
                     PriceBoughted = item.PriceBoughted,
+                    ImageUrl = item.ImageUrl,
+                    SerieId = item.CarSerieId,
                 };
 
                 currItem.Car = new HotWheelsCollectionCarViewModel
@@ -192,6 +198,21 @@
                 allItems.Add(currItem);
             }
 
+            var ownedSeries = new List<HotWheelsCollectionSerieViewModel>();
+
+            foreach (var item in allItems)
+            {
+                var serie = allSeries
+                    .Where(x => x.Id == item.SerieId)
+                    .FirstOrDefault();
+
+                if (!ownedSeries.Contains(serie))
+                {
+                    ownedSeries.Add(serie);
+                }
+            }
+
+            model.OwnedSeries = ownedSeries.OrderBy(x => x.OrderOfAppearance).ToList();
             model.Items = allItems;
 
             return model;
@@ -336,6 +357,44 @@
             this.hotWheelsCollectionsRepository.SaveChanges();
         }
 
+        public async Task AddHotWheelsCarItemToCollection(string carId, string collectionId, decimal price, string customUrl)
+        {
+            var item = new HotWheelsCarItem();
+            var collection = this.hotWheelsCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
+
+            item.CarId = carId;
+            item.CollectionId = collectionId;
+            item.PriceBoughted = price;
+
+            string carImageUrl = this.hotWheelsCarsRepository
+                .All()
+                .Where(x => x.Id == carId)
+                .Select(x => x.PhotoCardLink)
+                .FirstOrDefault();
+
+            if (customUrl == null)
+            {
+                item.OwnerPictureUrl = carImageUrl;
+            }
+            else
+            {
+                item.OwnerPictureUrl = customUrl;
+            }
+
+            Task.WaitAll(this.hotWheelsCarItemsRepository.AddAsync(item));
+
+            this.hotWheelsCarItemsRepository.SaveChanges();
+        }
+
+        public void RemoveHotWheelsCarItemFromCollection(string itemId)
+        {
+            var item = this.hotWheelsCarItemsRepository.All().Where(x => x.Id == itemId).FirstOrDefault();
+
+            this.hotWheelsCarItemsRepository.Delete(item);
+
+            this.hotWheelsCarItemsRepository.SaveChanges();
+        }
+
         public void ChangePrivateOptionForHotWheelsCollection(string collectionId)
         {
             var collection = this.hotWheelsCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
@@ -405,6 +464,7 @@
                 .FirstOrDefault();
         }
 
+        //---------------------------THESE ALL MUST BE ABSTRACTED_ WHEN U PASS THE CLASS NAME IT SEARCHES IN ITS REPOSITORY-----------------------------------
         public bool HotWheelsTypeExist(string typeId)
         {
             var type = this.hotWheelsTypesRepository.All().Where(x => x.Id == typeId).FirstOrDefault();
@@ -424,6 +484,20 @@
             var collection = this.hotWheelsCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
 
             if (collection == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public bool HotWheelsCarExists(string carId)
+        {
+            var car = this.hotWheelsCarsRepository.All().Where(x => x.Id == carId).FirstOrDefault();
+
+            if (car == null)
             {
                 return false;
             }
@@ -457,6 +531,30 @@
                 .Where(x => x.Id == collectionId)
                 .Select(x => x.IsPublic)
                 .FirstOrDefault();
+        }
+
+        public bool HotWheelsCarIsFromHotWHeelCollection(string collectionId, string carId)
+        {
+            var collectionHotWheelsTypeId = this.hotWheelsCollectionsRepository
+                .All()
+                .Where(x => x.Id == collectionId)
+                .Select(x => x.HotWheelsTypeId)
+                .FirstOrDefault();
+
+            var carHotWheelsTypeId = this.hotWheelsCarsRepository
+                .All()
+                .Where(x => x.Id == carId)
+                .Select(x => x.HotWheelsTypeId)
+                .FirstOrDefault();
+
+            if (collectionHotWheelsTypeId == carHotWheelsTypeId)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private int GetAllHotWHeelsCollectionsCount()

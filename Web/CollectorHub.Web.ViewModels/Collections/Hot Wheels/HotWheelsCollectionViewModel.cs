@@ -7,6 +7,7 @@
         public HotWheelsCollectionViewModel()
         {
             this.Items = new HashSet<HotWheelsCollectionCarItemViewModel>();
+            this.OwnedSeries = new HashSet<HotWheelsCollectionSerieViewModel>();
             this.AllSeries = new HashSet<HotWheelsCollectionSerieViewModel>();
         }
 
@@ -41,6 +42,8 @@
         public string CollectionTypeName { get; set; }
 
         public IEnumerable<HotWheelsCollectionCarItemViewModel> Items { get; set; }
+
+        public IEnumerable<HotWheelsCollectionSerieViewModel> OwnedSeries { get; set; }
 
         public IEnumerable<HotWheelsCollectionSerieViewModel> AllSeries { get; set; }
 

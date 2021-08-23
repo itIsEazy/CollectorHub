@@ -15,6 +15,8 @@
 
         public string Year { get; set; }
 
+        public int OrderOfAppearance { get; set; }
+
         public ICollection<HotWheelsCollectionCarViewModel> Cars { get; set; }
     }
 }

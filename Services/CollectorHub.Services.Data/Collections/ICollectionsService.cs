@@ -29,6 +29,10 @@
 
         Task CreateHotWheelsCollection(string userId, string hotWheelsTypeId, string description, bool isPublic, bool showPrices);
 
+        Task AddHotWheelsCarItemToCollection(string carId, string collectionId, decimal price, string customUrl);
+
+        void RemoveHotWheelsCarItemFromCollection(string itemId);
+
         void ChangePrivateOptionForHotWheelsCollection(string collectionId);
 
         void ChangeShowPricesOptionForHotWheelsCollection(string collectionId);
@@ -45,8 +49,12 @@
 
         bool HotWheelsCollectionExists(string collectionId);
 
+        bool HotWheelsCarExists(string carId);
+
         bool CheckIfUserCanCreateHotWheelsCollection(string userId, string hotWheelsTypeId);
 
         bool CollectionIsPublic(string collectionId);
+
+        bool HotWheelsCarIsFromHotWHeelCollection(string collectionId, string carId);
     }
 }
