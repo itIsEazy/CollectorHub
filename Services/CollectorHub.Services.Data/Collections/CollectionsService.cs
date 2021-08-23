@@ -12,6 +12,7 @@
     using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Common;
     using CollectorHub.Web.ViewModels.Collections;
+    using CollectorHub.Web.ViewModels.Collections.Common;
     using CollectorHub.Web.ViewModels.Collections.Hot_Wheels;
 
     public class CollectionsService : ICollectionsService
@@ -75,7 +76,7 @@
 
             model.Sortings = this.commonService.GetAllSortings();
             model.Categories = this.categoryService.GetAllCategories();
-            model.TrendingCollectons = this.GetAllTrendingCollections(categoryId);
+            model.TrendingCollectons = this.GetTrendingCollections(categoryId);
 
             return model;
         }
@@ -335,6 +336,56 @@
             }
 
             return list;
+        }
+
+        public IEnumerable<TrendingCollectionViewModel> GetTrendingCollections(string categoryId)
+        {
+            const string hotWheelsCollectionAction = "HotWheelsCollection";
+
+            var allTrendingCollections = new List<TrendingCollectionViewModel>();
+
+            var hotWheelsCollections = this.hotWheelsCollectionsRepository
+                .All()
+                .Where(x => x.IsPublic)
+                .OrderBy(x => x.ViewsCount)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    Name = x.Name,
+                    UserName = x.User.UserName,
+                    Description = x.Description,
+                    ViewsCount = x.ViewsCount,
+                    IsPublic = x.IsPublic,
+                    ShowPrices = x.ShowPrices,
+                    ImageUrl = x.ImageUrl,
+                    CategoryId = x.CategoryId,
+                });
+
+            if (categoryId != null)
+            {
+                hotWheelsCollections = hotWheelsCollections.Where(x => x.CategoryId == categoryId);
+            }
+
+            foreach (var collection in hotWheelsCollections)
+            {
+                allTrendingCollections.Add(new TrendingCollectionViewModel
+                {
+                    Id = collection.Id,
+                    UserId = collection.UserId,
+                    Name = collection.Name,
+                    UserName = collection.UserName,
+                    Description = collection.Description,
+                    ViewsCount = collection.ViewsCount,
+                    IsPublic = collection.IsPublic,
+                    ShowPrices = collection.ShowPrices,
+                    ImageUrl = collection.ImageUrl,
+                    CategoryId = collection.CategoryId,
+                    Action = hotWheelsCollectionAction,
+                });
+            }
+
+            return allTrendingCollections.Take(5);
         }
 
         public async Task CreateHotWheelsCollection(string userId, string hotWheelsTypeId, string description, bool isPublic, bool showPrices)

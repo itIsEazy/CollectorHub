@@ -40,7 +40,7 @@
             model.TotalUsersCount = this.userService.TotalUsersCount();
             model.TotalCollectionsCount = this.collectionsService.GetAllCollectionsCount();
             model.TotalForumPostsCount = this.forumService.TotalForumPostsCount();
-            model.TrendingCollections = this.collectionsService.GetAllTrendingCollections(null);
+            model.TrendingCollections = this.collectionsService.GetTrendingCollections(null);
 
             return this.View(model);
         }
