@@ -1,19 +1,15 @@
 ﻿namespace CollectorHub.Web.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using CollectorHub.Services.Data.HotWheels;
-    using CollectorHub.Web.ViewModels.Themes;
+    using CollectorHub.Services.Data.Themes;
     using Microsoft.AspNetCore.Mvc;
 
     public class ThemesController : Controller
     {
-        private readonly IGetHotWheelsInfoService hotWheelsInfoService;
+        private readonly IThemesService themesService;
 
-        public ThemesController(IGetHotWheelsInfoService hotWheelsInfoService)
+        public ThemesController(IThemesService themesService)
         {
-            this.hotWheelsInfoService = hotWheelsInfoService;
+            this.themesService = themesService;
         }
 
         public IActionResult Index()
@@ -23,7 +19,7 @@
 
         public IActionResult HotWheelsAll()
         {
-            List<HotWheelsPremiumSeriesViewModel> model = this.hotWheelsInfoService.GetAllPremiumSeriesAndCars().ToList();
+            var model = this.themesService.GetAllHotWheelsInfo();
 
             return this.View(model);
         }

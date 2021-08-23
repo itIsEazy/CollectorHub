@@ -48,7 +48,7 @@
         </nav>
     </header>
 
-    @if (true)
+    @if (User.IsInRole(GlobalConstants.AdministratorRoleName))
     {
         <div class="col-lg-12 text-center">
             <a a asp-area="Administration" asp-controller="Info" asp-action="Index" class="btn btn-outline-secondary text-center w-100" role="button">Administration</a>

@@ -14,6 +14,7 @@
     using CollectorHub.Services.Data.Common;
     using CollectorHub.Services.Data.Forum;
     using CollectorHub.Services.Data.HotWheels;
+    using CollectorHub.Services.Data.Themes;
     using CollectorHub.Services.Data.User;
     using CollectorHub.Services.Mapping;
     using CollectorHub.Services.Messaging;
@@ -78,6 +79,7 @@
             services.AddTransient<ICollectionsService, CollectionsService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICommonService, CommonService>();
+            services.AddTransient<IThemesService, ThemesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

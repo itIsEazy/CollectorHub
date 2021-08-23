@@ -33,17 +33,6 @@
             return this.View(model);
         }
 
-        public IActionResult AddAdmin()
-        {
-            return this.View();
-        }
-
-        [HttpPost]
-        public IActionResult AddAdmin(string s)
-        {
-            return this.View();
-        }
-
         public IActionResult BecomeAdmin()
         {
             return this.View();

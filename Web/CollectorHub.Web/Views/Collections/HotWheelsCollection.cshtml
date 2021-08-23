@@ -78,7 +78,7 @@
 
         @foreach (var serie in Model.OwnedSeries)
         {
-            var collapseId = "s" + serie.Id.ToString();
+            var collapseId = "os" + serie.Id.ToString();
 
             var items = Model.Items
                 .Where(x => x.SerieId == serie.Id)

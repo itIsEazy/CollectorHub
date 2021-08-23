@@ -47,7 +47,7 @@
                 return;
             }
 
-            if (!this.userManager.IsInRoleAsync(user, GlobalConstants.AdministratorRoleName).Result)
+            if (this.userManager.IsInRoleAsync(user, GlobalConstants.AdministratorRoleName).Result)
             {
                 return;
             }

@@ -396,7 +396,7 @@
             collection.Description = description;
             collection.IsPublic = isPublic;
             collection.ShowPrices = showPrices;
-            collection.Name = GlobalConstants.HotWheelsCategoryName + this.GetHotWheelsTypeName(hotWheelsTypeId);
+            collection.Name = GlobalConstants.HotWheelsCategoryName + string.Empty + this.GetHotWheelsTypeName(hotWheelsTypeId);
             collection.ImageUrl = this.GetCollectionImageByHotWheelsType(hotWheelsTypeId);
             collection.ViewsCount = 0;
             collection.CategoryId = this.GetHotWheelsCategoryId();

@@ -1,31 +1,45 @@
 ﻿
 
-@model IEnumerable<HotWheelsPremiumSeriesViewModel>
+@model HotWheelsThemeViewModel
 
-<a class="btn btn-outline-secondary text-left" asp-controller="Themes" asp-action="Index" role="button">Back to all themes</a>
-
-
-<h1> all hot wheels items here</h1>
-
-
-@foreach (var serie in Model)
-{
-    <div>
-        <h2>@serie.Name - @serie.Year</h2>
-        <div>
-            @foreach (var car in serie.Cars)
-            {
-                <div id="@serie.Year" class="  col-md-4 d-inline-block" style="width: 200px; height:500px">
-                    <p class=" text-center">@car.Col</p>
-                    <img class="card-img-top col-md-12" src="@car.PhotoCardLink" alt="Car Card photo">
-                    <div class="card-body">
-                        <h5 class="card-title">@car.Name</h5>
-                        <p class="card-textx">@car.Movie</p>
-                        <a asp-controller="Marketplace" asp-action="Index" class="btn btn-primary">Check market for this item</a>
-                    </div>
-                </div>
-            }
-        </div>
+    <div class="col-lg-12">
+        <a class="btn btn-outline-secondary text-center w-100" asp-controller="Themes" asp-action="Index" role="button">Back to all themes</a>
     </div>
-}
+
+    <div class="col-lg-12">
+        <h1 class="text-center display-3">These are all Hot Wheels available</h1>
+    </div>
+
+
+    @foreach (var hotWheelsType in Model.AllHotWheelsTypes)
+    {
+        <div class="col-lg-12">
+            <h1 class="text-center display-4">@hotWheelsType.Name</h1>
+        </div>
+
+        foreach (var serie in Model.AllSeries.Where(x => x.HotWheelsTypeId == hotWheelsType.Id).OrderBy(x => x.OrderOfAppearence))
+        {
+            <div>
+                <h2 class="text-center">@serie.Name - @serie.Year</h2>
+            </div>
+
+            <div class="col-lg-12 text-center">
+
+                @foreach (var car in Model.AllCars.Where(x => x.SerieId == serie.Id).OrderBy(x => x.Col))
+                {
+                    <div id="@serie.Year" class="  col-md-4 d-inline-block" style="width: 200px; height:500px">
+                        <p class=" text-center">@car.Col</p>
+                        <img class="card-img-top col-md-12" src="@car.ImageUrl" alt="Car Card photo">
+                        <div class="card-body">
+                            <h5 class="card-title">@car.Name</h5>
+                            <p class="card-textx">@car.Movie</p>
+                            <a asp-controller="Marketplace" asp-action="Index" class="btn btn-outline-secondary">Check market for this item</a>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        }
+
+    }
 
