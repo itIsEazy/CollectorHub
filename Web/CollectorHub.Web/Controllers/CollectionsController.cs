@@ -179,6 +179,32 @@
             //// Redirects to : Collections/HotWheelsFastAndFuriousPremium?collectionId
         }
 
+        public IActionResult AddLegoMinifigureItemToCollection(LegoCollectionViewModel model)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.collectionsService.LegoCollectionExists(model.SelectedModel.CollectionId))
+            {
+                return this.BadRequest();
+            }
+
+            if (!this.collectionsService.LegoMinifigureExists(model.SelectedModel.MinifigureId))
+            {
+                return this.BadRequest();
+            }
+
+            var collectionUserId = this.collectionsService.GetLegoCollectionUserId(model.SelectedModel.CollectionId);
+
+            if (userId != collectionUserId)
+            {
+                return this.BadRequest();
+            }
+
+            this.collectionsService.AddLegoMinifigureItemToCollection(model.SelectedModel.MinifigureId, model.SelectedModel.CollectionId, model.SelectedModel.PriceBoughted, model.SelectedModel.OwnerImageUrl);
+
+            return this.RedirectToAction(nameof(this.LegoCollection), new { collectionId = model.SelectedModel.CollectionId });
+        }
+
         public IActionResult RemoveHotWheelsCarItemFromCollection(HotWheelsCollectionViewModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -211,6 +237,32 @@
             //// Redirects to : Collections/HotWheelsFastAndFuriousPremium?collectionId
         }
 
+        public IActionResult RemoveLegoMinifigureItemFromCollection(LegoCollectionViewModel model)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.collectionsService.LegoCollectionExists(model.SelectedModel.CollectionId))
+            {
+                return this.BadRequest();
+            }
+
+            if (!this.collectionsService.LegoMinifigureExists(model.SelectedModel.MinifigureId))
+            {
+                return this.BadRequest();
+            }
+
+            var collectionUserId = this.collectionsService.GetLegoCollectionUserId(model.SelectedModel.CollectionId);
+
+            if (userId != collectionUserId)
+            {
+                return this.BadRequest();
+            }
+
+            this.collectionsService.RemoveLegoMinifigureItemFromCollection(model.SelectedModel.ItemId);
+
+            return this.RedirectToAction(nameof(this.LegoCollection), new { collectionId = model.SelectedModel.CollectionId });
+        }
+
         public IActionResult ChangePrivateOptionForHotWheelsCollection(HotWheelsCollectionViewModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -232,7 +284,28 @@
             return this.RedirectToAction(nameof(this.HotWheelsCollection), new { collectionId = model.SelectedModel.CollectionId });
         }
 
-        public IActionResult ChangeShowPricesOptionForHotWheelsCollection(HotWheelsFastAndFuriousPremiumCollectionViewModel model)
+        public IActionResult ChangePrivateOptionForLegoCollection(LegoCollectionViewModel model)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.collectionsService.LegoCollectionExists(model.SelectedModel.CollectionId))
+            {
+                return this.BadRequest();
+            }
+
+            var collectionUserId = this.collectionsService.GetLegoCollectionUserId(model.SelectedModel.CollectionId);
+
+            if (userId != collectionUserId)
+            {
+                return this.BadRequest();
+            }
+
+            this.collectionsService.ChangePrivateOptionForLegoCollection(model.SelectedModel.CollectionId);
+
+            return this.RedirectToAction(nameof(this.LegoCollection), new { collectionId = model.SelectedModel.CollectionId });
+        }
+
+        public IActionResult ChangeShowPricesOptionForHotWheelsCollection(HotWheelsCollectionViewModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -253,6 +326,27 @@
             return this.RedirectToAction(nameof(this.HotWheelsCollection), new { collectionId = model.SelectedModel.CollectionId });
         }
 
+        public IActionResult ChangeShowPricesOptionForLegoCollection(LegoCollectionViewModel model)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.collectionsService.LegoCollectionExists(model.SelectedModel.CollectionId))
+            {
+                return this.BadRequest();
+            }
+
+            var collectionUserId = this.collectionsService.GetLegoCollectionUserId(model.SelectedModel.CollectionId);
+
+            if (userId != collectionUserId)
+            {
+                return this.BadRequest();
+            }
+
+            this.collectionsService.ChangeShowPricesOptionForLegoCollection(model.SelectedModel.CollectionId);
+
+            return this.RedirectToAction(nameof(this.LegoCollection), new { collectionId = model.SelectedModel.CollectionId });
+        }
+
         public IActionResult MyCollections()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -267,12 +361,13 @@
         public IActionResult HotWheelsCollection(string collectionId)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var collectionUserId = this.collectionsService.GetHotWheelsCollectionUserId(collectionId);
 
             if (!this.collectionsService.HotWheelsCollectionExists(collectionId))
             {
                 return this.BadRequest();
             }
+
+            var collectionUserId = this.collectionsService.GetHotWheelsCollectionUserId(collectionId);
 
             // Collection is private AND user IS NOT owner
             if (!this.collectionsService.CollectionIsPublic(collectionId) && userId != collectionUserId)
@@ -293,9 +388,33 @@
 
         public IActionResult LegoCollection(string collectionId)
         {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            if (!this.collectionsService.LegoCollectionExists(collectionId))
+            {
+                return this.BadRequest();
+            }
 
-            return this.View();
+            var collectionUserId = this.collectionsService.GetLegoCollectionUserId(collectionId);
+
+            // Collection is private AND user IS NOT owner
+            if (!this.collectionsService.LegoCollectionIsPublic(collectionId) && userId != collectionUserId)
+            {
+                return this.RedirectToAction(nameof(this.Index));
+            }
+
+            this.ViewBag.UserIsOwner = false;
+            if (userId == collectionUserId)
+            {
+                this.ViewBag.UserIsOwner = true;
+            }
+
+            var model = this.collectionsService.GetLegoCollectionViewModel(collectionId);
+
+            model.AllMinifigures = this.collectionsService.GetAllLegoMinifigure();
+            model.Items = this.collectionsService.GetAllLegoItems(collectionId);
+
+            return this.View(model);
         }
     }
 }

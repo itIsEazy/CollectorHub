@@ -8,13 +8,14 @@
     {
         public LegoMinifigureItem()
         {
-            this.Collections = new HashSet<LegoCollection>();
         }
 
         public string MinifigureId { get; set; }
 
         public virtual LegoMinifigure Minifigure { get; set; }
 
-        public virtual ICollection<LegoCollection> Collections { get; set; }
+        public string CollectionId { get; set; }
+
+        public virtual LegoCollection Collection { get; set; }
     }
 }

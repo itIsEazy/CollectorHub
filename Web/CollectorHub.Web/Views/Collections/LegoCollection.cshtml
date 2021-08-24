@@ -1,0 +1,156 @@
+﻿@model LegoCollectionViewModel
+
+@{
+    string privPublCollectionBtn = "Make Private";
+    string privPublItemsBtn = "Hide Prices";
+    bool UserIsOwner = ViewBag.UserIsOwner;
+
+    if (Model.IsPublic == false)
+    {
+        privPublCollectionBtn = "Make Public";
+    }
+
+    if (Model.ShowPrices == false)
+    {
+        privPublItemsBtn = "Show Prices";
+    }
+}
+
+<div class="col-lg-12 text-center">
+    <a class="btn btn-outline-secondary text-center w-100" asp-controller="Collections" asp-action="MyCollections" role="button">Back to My Collections</a>
+</div>
+
+@if (!UserIsOwner)
+{
+    <h1 class="text-center">@Model.UserName 's Collection</h1>
+}
+
+<div class="col-lg-12">
+    <h1 class="text-center display-2">@Model.Name</h1>
+
+    <div class="col-lg-12">
+        <div class="text-center">
+            <img style="width: 450px; height:300px" src="@Model.ImageUrl" alt="Collection IMAGE" />
+        </div>
+    </div>
+
+    <hr />
+    <div class="text-center">
+        <p class="text-center">@Model.Description</p>
+    </div>
+</div>
+
+@if (UserIsOwner)
+{
+    <div class="col-lg-12 text-center">
+        <form method="post">
+            <div class="d-inline-block">
+                <input asp-for="@Model.SelectedModel.CollectionId" type="hidden" value="@Model.Id" />
+                <input asp-controller="Collections" asp-action="ChangePrivateOptionForLegoCollection" class="btn btn-outline-secondary" type="submit" value="@privPublCollectionBtn" />
+            </div>
+            <div class="d-inline-block">
+                <input asp-for="@Model.SelectedModel.CollectionId" type="hidden" value="@Model.Id" />
+                <input asp-controller="Collections" asp-action="ChangeShowPricesOptionForLegoCollection" class="btn btn-outline-secondary" type="submit" value="@privPublItemsBtn" />
+            </div>
+        </form>
+    </div>
+}
+
+<div class="col-lg-12 border">
+    <h2 class="text-center">@Model.Items.Count() Figures Owned</h2>
+    @if (Model.Items == null || Model.Items.Count() == 0)
+    {
+        <h3 class="text-center">NO ITEMS FOR NOW</h3>
+    }
+    else
+    {
+
+        @foreach (var item in Model.Items)
+        {
+            <div class="col-lg-2 d-inline-block">
+                <div class=" d-inline-block ">
+                    <p class=" text-center">@item.Minifigure.SwNumber</p>
+                    <div class="text-center">
+                        <img class="card-img-top col-md-12" style="width: 200px; height:200px" src="@item.ImageUrl" alt="Car Card photo">
+                    </div>
+                    <div>
+                        <h5 class="text-center">@item.Minifigure.Name</h5>
+                        @if (!UserIsOwner && Model.ShowPrices == true || UserIsOwner)
+                        {
+                            <p class="text-center">@item.PriceBoughted lv.</p>
+                        }
+                        @if (UserIsOwner)
+                        {
+                            <form method="post">
+                                <input asp-for="@Model.SelectedModel.ItemId" type="hidden" value="@item.Id" />
+                                <input asp-for="@Model.SelectedModel.CollectionId" type="hidden" value="@Model.Id" />
+                                <input asp-for="@Model.SelectedModel.MinifigureId" type="hidden" value="@item.Minifigure.Id" />
+                                <input asp-controller="Collections" asp-action="RemoveLegoMinifigureItemFromCollection" class="btn btn-outline-secondary text-center w-100" type="submit" value="Remove" />
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+</div>
+
+@if (UserIsOwner)
+{
+    <div class="col-lg-12 text-center">
+        <button class="btn btn-outline-secondary text-center w-100 " type="button" data-toggle="collapse" data-target="#allfigs" aria-expanded="false" aria-controls="collapseExample">
+            Add items in your collection
+        </button>
+    </div>
+
+    <hr />
+
+    <div class="collapse text-center" id="allfigs">
+
+        @foreach (var fig in Model.AllMinifigures)
+        {
+            <div class=" d-inline-block" style="width: 200px; height:500px">
+                <p class=" text-center">@fig.SwNumber</p>
+                <img class="card-img-top col-md-12" src="@fig.ImageUrl" alt="Car Card photo">
+                <div class="card-body">
+                    <div class="text-center">
+                        <h5 class="card-title">@fig.Name</h5>
+                    </div>
+
+                    @if (1 == 0)
+                    {
+                        <div class="text-center">
+                            <a asp-controller="Marketplace" asp-action="Index" class="btn btn-outline-secondary text-center w-100">Check market for this item</a>
+                        </div>
+                    }
+
+                    <form method="post">
+                        <div class="form-check">
+                            <div class="text-center">
+                                <p>Price :</p>
+                            </div>
+                            <div class="text-center">
+                                <input class="form-control w-100" asp-for="@Model.SelectedModel.PriceBoughted" type="number" value="0" step=".01">
+                                <span asp-validation-for="@Model.SelectedModel.PriceBoughted" class="small text-danger"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <input asp-for="@Model.SelectedModel.MinifigureId" type="hidden" value="@fig.Id" />
+                            <input asp-for="@Model.SelectedModel.CollectionId" type="hidden" value="@Model.Id" />
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="@Model.SelectedModel.OwnerImageUrl" type="text" class="form-control" placeholder="Add custom picture if u want">
+                            <span asp-validation-for="@Model.SelectedModel.OwnerImageUrl" class="small text-danger"></span>
+                        </div>
+                        <input asp-controller="Collections" asp-action="AddLegoMinifigureItemToCollection" class="btn btn-outline-secondary text-center w-100" type="submit" value="Add" />
+                    </form>
+                </div>
+            </div>
+        }
+
+    </div>
+
+}
+
+

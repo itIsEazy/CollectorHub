@@ -22,11 +22,17 @@
 
         HotWheelsCollectionViewModel GetHotWheelsCollectionViewInformation(string collectionId);
 
+        LegoCollectionViewModel GetLegoCollectionViewModel(string collectionId);
+
         IEnumerable<CollectionType> GetAllCollectionTypes();
 
         IEnumerable<HotWheelsType> GetAllHotWheelsTypes();
 
         IEnumerable<LegoType> GetAllLegoTypes();
+
+        IEnumerable<LegoCollectionMinifigureViewModel> GetAllLegoMinifigure();
+
+        IEnumerable<LegoCollectionMinifigureItemViewModel> GetAllLegoItems(string collectionId);
 
         IEnumerable<CollectionIndexViewModel> GetAllTrendingCollections(string categoryId);
 
@@ -44,11 +50,19 @@
 
         Task AddHotWheelsCarItemToCollection(string carId, string collectionId, decimal price, string customUrl);
 
+        Task AddLegoMinifigureItemToCollection(string minifigureId, string collectionId, decimal price, string customUrl);
+
         void RemoveHotWheelsCarItemFromCollection(string itemId);
+
+        void RemoveLegoMinifigureItemFromCollection(string itemId);
 
         void ChangePrivateOptionForHotWheelsCollection(string collectionId);
 
+        void ChangePrivateOptionForLegoCollection(string collectionId);
+
         void ChangeShowPricesOptionForHotWheelsCollection(string collectionId);
+
+        void ChangeShowPricesOptionForLegoCollection(string collectionId);
 
         string GetHotWheelsTypeName(string hotWheelsTypeId);
 
@@ -58,6 +72,8 @@
 
         string GetHotWheelsCollectionUserId(string collectionId);
 
+        string GetLegoCollectionUserId(string collectionId);
+
         int GetAllCollectionsCount();
 
         bool HotWheelsTypeExist(string typeId);
@@ -66,11 +82,17 @@
 
         bool HotWheelsCollectionExists(string collectionId);
 
+        bool LegoCollectionExists(string collectionId);
+
         bool HotWheelsCarExists(string carId);
+
+        bool LegoMinifigureExists(string minifigureId);
 
         bool CheckIfUserCanCreateHotWheelsCollection(string userId, string hotWheelsTypeId);
 
         bool CollectionIsPublic(string collectionId);
+
+        bool LegoCollectionIsPublic(string collectionId);
 
         bool HotWheelsCarIsFromHotWHeelCollection(string collectionId, string carId);
     }

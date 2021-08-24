@@ -105,6 +105,7 @@
                 {
                     Id = x.Id,
                     Title = x.Title,
+                    AuthorName = x.Author.UserName,
                     Content = x.Content,
                     ImageUrl = x.ImageUrl,
                     IsVerified = x.IsVerified,
@@ -114,6 +115,7 @@
                 .FirstOrDefault();
 
             model.Id = post.Id;
+            model.AuthorName = post.AuthorName;
             model.Title = post.Title;
             model.Content = post.Content;
             model.ImageUrl = post.ImageUrl;

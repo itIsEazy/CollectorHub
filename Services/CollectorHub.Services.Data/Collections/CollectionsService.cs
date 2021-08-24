@@ -31,6 +31,8 @@
         private readonly IDeletableEntityRepository<HotWheelsSerie> hotWheelsSeriesRepository;
         private readonly IDeletableEntityRepository<LegoCollection> legoCollectionsRepository;
         private readonly IDeletableEntityRepository<LegoType> legoTypesRepository;
+        private readonly IDeletableEntityRepository<LegoMinifigure> legoMinifiguresRepository;
+        private readonly IDeletableEntityRepository<LegoMinifigureItem> legoMinifigureItemsRepository;
 
         public CollectionsService(
             ICategoryService categoryService,
@@ -44,7 +46,9 @@
             IDeletableEntityRepository<HotWheelsCarItem> hotWheelsCarItemsRepository,
             IDeletableEntityRepository<HotWheelsSerie> hotWheelsSeriesRepository,
             IDeletableEntityRepository<LegoCollection> legoCollectionsRepository,
-            IDeletableEntityRepository<LegoType> legoTypesRepository)
+            IDeletableEntityRepository<LegoType> legoTypesRepository,
+            IDeletableEntityRepository<LegoMinifigure> legoMinifiguresRepository,
+            IDeletableEntityRepository<LegoMinifigureItem> legoMinifigureItemsRepository)
         {
             this.categoryService = categoryService;
             this.commonService = commonService;
@@ -58,6 +62,8 @@
             this.hotWheelsSeriesRepository = hotWheelsSeriesRepository;
             this.legoCollectionsRepository = legoCollectionsRepository;
             this.legoTypesRepository = legoTypesRepository;
+            this.legoMinifiguresRepository = legoMinifiguresRepository;
+            this.legoMinifigureItemsRepository = legoMinifigureItemsRepository;
         }
 
         public int GetAllCollectionsCount()
@@ -398,6 +404,68 @@
             return model;
         }
 
+        public LegoCollectionViewModel GetLegoCollectionViewModel(string collectionId)
+        {
+            var model = new LegoCollectionViewModel();
+
+            var collection = this.legoCollectionsRepository
+                .All()
+                .Where(x => x.Id == collectionId)
+                .FirstOrDefault();
+
+            model.Id = collection.Id;
+            model.UserName = collection.User.UserName;
+            model.Name = collection.Name;
+            model.ImageUrl = collection.ImageUrl;
+            model.Description = collection.Description;
+            model.IsPublic = collection.IsPublic;
+            model.ShowPrices = collection.ShowPrices;
+
+            return model;
+        }
+
+        public IEnumerable<LegoCollectionMinifigureItemViewModel> GetAllLegoItems(string collectionId)
+        {
+            const string pictureLinkBegining = "https://img.bricklink.com/ItemImage/MN/0/sw";
+            const string pictureLinkEnd = ".png";
+
+            var collectionItems = this.legoMinifigureItemsRepository
+                .All()
+                .Where(x => x.CollectionId == collectionId)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    PriceBoughted = x.PriceBoughted,
+                    MinifigureId = x.MinifigureId,
+                    SwNumber = x.Minifigure.SwNumber,
+                    Name = x.Minifigure.Name,
+                });
+
+            var allItems = new List<LegoCollectionMinifigureItemViewModel>();
+
+            foreach (var item in collectionItems)
+            {
+                var currItem = new LegoCollectionMinifigureItemViewModel
+                {
+                    Id = item.Id,
+                    PriceBoughted = item.PriceBoughted,
+                };
+
+                currItem.Minifigure = new LegoCollectionMinifigureViewModel
+                {
+                    Id = item.MinifigureId,
+                    SwNumber = item.SwNumber,
+                    Name = item.Name,
+                };
+
+                currItem.ImageUrl = pictureLinkBegining + item.SwNumber + pictureLinkEnd;
+
+                allItems.Add(currItem);
+            }
+
+            return allItems;
+        }
+
         public IEnumerable<CollectionType> GetAllCollectionTypes()
         {
             return this.collectionTypesRepository.All().ToList();
@@ -411,6 +479,31 @@
         public IEnumerable<LegoType> GetAllLegoTypes()
         {
             return this.legoTypesRepository.All().ToList();
+        }
+
+        public IEnumerable<LegoCollectionMinifigureViewModel> GetAllLegoMinifigure()
+        {
+            const string pictureLinkBegining = "https://img.bricklink.com/ItemImage/MN/0/sw";
+            const string pictureLinkEnd = ".png";
+
+            var minifigs = this.legoMinifiguresRepository.All();
+
+            var list = new List<LegoCollectionMinifigureViewModel>();
+
+            foreach (var fig in minifigs)
+            {
+                var currFig = new LegoCollectionMinifigureViewModel
+                {
+                    Id = fig.Id,
+                    Name = fig.Name,
+                    SwNumber = fig.SwNumber,
+                };
+
+                currFig.ImageUrl = pictureLinkBegining + fig.SwNumber + pictureLinkEnd;
+                list.Add(currFig);
+            }
+
+            return list;
         }
 
         public IEnumerable<CollectionIndexViewModel> GetAllTrendingCollections(string categoryId)
@@ -666,6 +759,38 @@
             this.hotWheelsCarItemsRepository.SaveChanges();
         }
 
+        public async Task AddLegoMinifigureItemToCollection(string minifigureId, string collectionId, decimal price, string customUrl)
+        {
+            const string pictureLinkBegining = "https://img.bricklink.com/ItemImage/MN/0/sw";
+            const string pictureLinkEnd = ".png";
+
+            var item = new LegoMinifigureItem();
+            var collection = this.legoCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
+
+            item.MinifigureId = minifigureId;
+            item.CollectionId = collectionId;
+            item.PriceBoughted = price;
+
+            string figSwNumber = this.legoMinifiguresRepository
+                .All()
+                .Where(x => x.Id == minifigureId)
+                .Select(x => x.SwNumber)
+                .FirstOrDefault();
+
+            if (customUrl == null)
+            {
+                item.OwnerPictureUrl = pictureLinkBegining + figSwNumber + pictureLinkEnd;
+            }
+            else
+            {
+                item.OwnerPictureUrl = customUrl;
+            }
+
+            Task.WaitAll(this.legoMinifigureItemsRepository.AddAsync(item));
+
+            this.legoMinifigureItemsRepository.SaveChanges();
+        }
+
         public void RemoveHotWheelsCarItemFromCollection(string itemId)
         {
             var item = this.hotWheelsCarItemsRepository.All().Where(x => x.Id == itemId).FirstOrDefault();
@@ -673,6 +798,15 @@
             this.hotWheelsCarItemsRepository.Delete(item);
 
             this.hotWheelsCarItemsRepository.SaveChanges();
+        }
+
+        public void RemoveLegoMinifigureItemFromCollection(string itemId)
+        {
+            var item = this.legoMinifigureItemsRepository.All().Where(x => x.Id == itemId).FirstOrDefault();
+
+            this.legoMinifigureItemsRepository.Delete(item);
+
+            this.legoMinifigureItemsRepository.SaveChanges();
         }
 
         public void ChangePrivateOptionForHotWheelsCollection(string collectionId)
@@ -691,6 +825,22 @@
             this.hotWheelsCollectionsRepository.SaveChanges();
         }
 
+        public void ChangePrivateOptionForLegoCollection(string collectionId)
+        {
+            var collection = this.legoCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
+
+            if (collection.IsPublic)
+            {
+                collection.IsPublic = false;
+            }
+            else
+            {
+                collection.IsPublic = true;
+            }
+
+            this.legoCollectionsRepository.SaveChanges();
+        }
+
         public void ChangeShowPricesOptionForHotWheelsCollection(string collectionId)
         {
             var collection = this.hotWheelsCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
@@ -705,6 +855,22 @@
             }
 
             this.hotWheelsCollectionsRepository.SaveChanges();
+        }
+
+        public void ChangeShowPricesOptionForLegoCollection(string collectionId)
+        {
+            var collection = this.legoCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
+
+            if (collection.ShowPrices)
+            {
+                collection.ShowPrices = false;
+            }
+            else
+            {
+                collection.ShowPrices = true;
+            }
+
+            this.legoCollectionsRepository.SaveChanges();
         }
 
         public string GetHotWheelsTypeName(string hotWheelsTypeId)
@@ -772,6 +938,15 @@
                 .FirstOrDefault();
         }
 
+        public string GetLegoCollectionUserId(string collectionId)
+        {
+            return this.legoCollectionsRepository
+                .All()
+                .Where(x => x.Id == collectionId)
+                .Select(x => x.UserId)
+                .FirstOrDefault();
+        }
+
         //---------------------------THESE ALL MUST BE ABSTRACTED_ WHEN U PASS THE CLASS NAME IT SEARCHES IN ITS REPOSITORY-----------------------------------
         public bool HotWheelsTypeExist(string typeId)
         {
@@ -815,11 +990,39 @@
             }
         }
 
+        public bool LegoCollectionExists(string collectionId)
+        {
+            var collection = this.legoCollectionsRepository.All().Where(x => x.Id == collectionId).FirstOrDefault();
+
+            if (collection == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         public bool HotWheelsCarExists(string carId)
         {
             var car = this.hotWheelsCarsRepository.All().Where(x => x.Id == carId).FirstOrDefault();
 
             if (car == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public bool LegoMinifigureExists(string minifigureId)
+        {
+            var fig = this.legoMinifiguresRepository.All().Where(x => x.Id == minifigureId).FirstOrDefault();
+
+            if (fig == null)
             {
                 return false;
             }
@@ -849,6 +1052,15 @@
         public bool CollectionIsPublic(string collectionId)
         {
             return this.hotWheelsCollectionsRepository
+                .All()
+                .Where(x => x.Id == collectionId)
+                .Select(x => x.IsPublic)
+                .FirstOrDefault();
+        }
+
+        public bool LegoCollectionIsPublic(string collectionId)
+        {
+            return this.legoCollectionsRepository
                 .All()
                 .Where(x => x.Id == collectionId)
                 .Select(x => x.IsPublic)

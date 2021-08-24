@@ -20,6 +20,11 @@
 
         @foreach (var type in Model.AllHotWheelsTypes)
         {
+            @if (type.Name == "Fast and Furious") // currently not available
+            {
+                continue;
+            }
+
             <div class="d-inline-block ">
                 <img class="border" style="height: 200px; width: 200px" src="@type.ImageUrl" alt="Hot Wheels logo" />
                 <p class="align-content-center text-center">@type.Name</p>
