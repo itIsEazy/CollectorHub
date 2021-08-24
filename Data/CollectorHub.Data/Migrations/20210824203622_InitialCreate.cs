@@ -43,24 +43,6 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FastAndFuriousPremiumSeries",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Year = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OrderOfApperance = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FastAndFuriousPremiumSeries", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ForumStars",
                 columns: table => new
                 {
@@ -93,24 +75,20 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LegoMinifigures",
+                name: "LegoTypes",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SwNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AvgPriceNew = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    AvgPriceUsed = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    ProductionYear = table.Column<int>(type: "int", nullable: false),
-                    WeightInGrams = table.Column<double>(type: "float", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LegoMinifigures", x => x.Id);
+                    table.PrimaryKey("PK_LegoTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,38 +149,6 @@ namespace CollectorHub.Data.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FastAndFuriousPremiumCars",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Col = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ToyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Tampos = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    WheelType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Movie = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhotoLooseLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhotoCardLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SerieId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FastAndFuriousPremiumCars", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumCars_FastAndFuriousPremiumSeries_SerieId",
-                        column: x => x.SerieId,
-                        principalTable: "FastAndFuriousPremiumSeries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -269,28 +215,29 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LegoMinifigureItems",
+                name: "LegoMinifigures",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MinifigureId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    SwNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AvgPriceNew = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    AvgPriceUsed = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    ProductionYear = table.Column<int>(type: "int", nullable: false),
+                    WeightInGrams = table.Column<double>(type: "float", nullable: false),
+                    LegoTypeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PriceNow = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    PriceBoughted = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    OwnerPictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConditionIsNew = table.Column<bool>(type: "bit", nullable: false),
-                    Profit = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LegoMinifigureItems", x => x.Id);
+                    table.PrimaryKey("PK_LegoMinifigures", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LegoMinifigureItems_LegoMinifigures_MinifigureId",
-                        column: x => x.MinifigureId,
-                        principalTable: "LegoMinifigures",
+                        name: "FK_LegoMinifigures_LegoTypes_LegoTypeId",
+                        column: x => x.LegoTypeId,
+                        principalTable: "LegoTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -442,41 +389,6 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FastAndFuriousPremiumCollections",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
-                    ViewsCount = table.Column<int>(type: "int", nullable: false),
-                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
-                    ShowPrices = table.Column<bool>(type: "bit", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FastAndFuriousPremiumCollections", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumCollections_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumCollections_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ForumPosts",
                 columns: table => new
                 {
@@ -518,7 +430,6 @@ namespace CollectorHub.Data.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HotWheelsTypeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CollectionTypeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -530,7 +441,8 @@ namespace CollectorHub.Data.Migrations
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     ShowPrices = table.Column<bool>(type: "bit", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CollectionTypeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -566,6 +478,7 @@ namespace CollectorHub.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LegoTypeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -577,7 +490,8 @@ namespace CollectorHub.Data.Migrations
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     ShowPrices = table.Column<bool>(type: "bit", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CollectionTypeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -594,38 +508,16 @@ namespace CollectorHub.Data.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FastAndFuriousPremiumItems",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CarId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CollectionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PriceNow = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    PriceBoughted = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    OwnerPictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConditionIsNew = table.Column<bool>(type: "bit", nullable: false),
-                    Profit = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FastAndFuriousPremiumItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumItems_FastAndFuriousPremiumCars_CarId",
-                        column: x => x.CarId,
-                        principalTable: "FastAndFuriousPremiumCars",
+                        name: "FK_LegoCollections_CollectionTypes_CollectionTypeId",
+                        column: x => x.CollectionTypeId,
+                        principalTable: "CollectionTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FastAndFuriousPremiumItems_FastAndFuriousPremiumCollections_CollectionId",
-                        column: x => x.CollectionId,
-                        principalTable: "FastAndFuriousPremiumCollections",
+                        name: "FK_LegoCollections_LegoTypes_LegoTypeId",
+                        column: x => x.LegoTypeId,
+                        principalTable: "LegoTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -727,25 +619,35 @@ namespace CollectorHub.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LegoCollectionLegoMinifigureItem",
+                name: "LegoMinifigureItems",
                 columns: table => new
                 {
-                    CollectionsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ItemsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MinifigureId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CollectionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PriceNow = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    PriceBoughted = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    OwnerPictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConditionIsNew = table.Column<bool>(type: "bit", nullable: false),
+                    Profit = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LegoCollectionLegoMinifigureItem", x => new { x.CollectionsId, x.ItemsId });
+                    table.PrimaryKey("PK_LegoMinifigureItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LegoCollectionLegoMinifigureItem_LegoCollections_CollectionsId",
-                        column: x => x.CollectionsId,
+                        name: "FK_LegoMinifigureItems_LegoCollections_CollectionId",
+                        column: x => x.CollectionId,
                         principalTable: "LegoCollections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_LegoCollectionLegoMinifigureItem_LegoMinifigureItems_ItemsId",
-                        column: x => x.ItemsId,
-                        principalTable: "LegoMinifigureItems",
+                        name: "FK_LegoMinifigureItems_LegoMinifigures_MinifigureId",
+                        column: x => x.MinifigureId,
+                        principalTable: "LegoMinifigures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -812,51 +714,6 @@ namespace CollectorHub.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_CollectionTypes_IsDeleted",
                 table: "CollectionTypes",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumCars_IsDeleted",
-                table: "FastAndFuriousPremiumCars",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumCars_SerieId",
-                table: "FastAndFuriousPremiumCars",
-                column: "SerieId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumCollections_CategoryId",
-                table: "FastAndFuriousPremiumCollections",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumCollections_IsDeleted",
-                table: "FastAndFuriousPremiumCollections",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumCollections_UserId",
-                table: "FastAndFuriousPremiumCollections",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumItems_CarId",
-                table: "FastAndFuriousPremiumItems",
-                column: "CarId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumItems_CollectionId",
-                table: "FastAndFuriousPremiumItems",
-                column: "CollectionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumItems_IsDeleted",
-                table: "FastAndFuriousPremiumItems",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FastAndFuriousPremiumSeries_IsDeleted",
-                table: "FastAndFuriousPremiumSeries",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
@@ -975,14 +832,14 @@ namespace CollectorHub.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LegoCollectionLegoMinifigureItem_ItemsId",
-                table: "LegoCollectionLegoMinifigureItem",
-                column: "ItemsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_LegoCollections_CategoryId",
                 table: "LegoCollections",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LegoCollections_CollectionTypeId",
+                table: "LegoCollections",
+                column: "CollectionTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LegoCollections_IsDeleted",
@@ -990,9 +847,19 @@ namespace CollectorHub.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LegoCollections_LegoTypeId",
+                table: "LegoCollections",
+                column: "LegoTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LegoCollections_UserId",
                 table: "LegoCollections",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LegoMinifigureItems_CollectionId",
+                table: "LegoMinifigureItems",
+                column: "CollectionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LegoMinifigureItems_IsDeleted",
@@ -1007,6 +874,16 @@ namespace CollectorHub.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_LegoMinifigures_IsDeleted",
                 table: "LegoMinifigures",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LegoMinifigures_LegoTypeId",
+                table: "LegoMinifigures",
+                column: "LegoTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LegoTypes_IsDeleted",
+                table: "LegoTypes",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
@@ -1043,9 +920,6 @@ namespace CollectorHub.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "FastAndFuriousPremiumItems");
-
-            migrationBuilder.DropTable(
                 name: "ForumPostComments");
 
             migrationBuilder.DropTable(
@@ -1055,19 +929,13 @@ namespace CollectorHub.Data.Migrations
                 name: "HotWheelsCarItems");
 
             migrationBuilder.DropTable(
-                name: "LegoCollectionLegoMinifigureItem");
+                name: "LegoMinifigureItems");
 
             migrationBuilder.DropTable(
                 name: "Sortings");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "FastAndFuriousPremiumCars");
-
-            migrationBuilder.DropTable(
-                name: "FastAndFuriousPremiumCollections");
 
             migrationBuilder.DropTable(
                 name: "ForumPosts");
@@ -1082,16 +950,10 @@ namespace CollectorHub.Data.Migrations
                 name: "LegoCollections");
 
             migrationBuilder.DropTable(
-                name: "LegoMinifigureItems");
-
-            migrationBuilder.DropTable(
-                name: "FastAndFuriousPremiumSeries");
+                name: "LegoMinifigures");
 
             migrationBuilder.DropTable(
                 name: "HotWheelsSeries");
-
-            migrationBuilder.DropTable(
-                name: "CollectionTypes");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
@@ -1100,7 +962,10 @@ namespace CollectorHub.Data.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "LegoMinifigures");
+                name: "CollectionTypes");
+
+            migrationBuilder.DropTable(
+                name: "LegoTypes");
 
             migrationBuilder.DropTable(
                 name: "HotWheelsTypes");

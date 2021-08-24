@@ -35,7 +35,7 @@
         {
             var type = new LegoType();
             type.Name = GlobalConstants.LegoStarWarsTypeName;
-            type.ImageUrl = "https://static.wikia.nocookie.net/hotwheels/images/5/5a/2014.jpg";
+            type.ImageUrl = "https://i.ytimg.com/vi/T8qoQZQnIMA/maxresdefault.jpg";
 
             db.LegoTypes.Add(type);
 
