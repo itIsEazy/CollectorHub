@@ -1,9 +1,11 @@
 ﻿namespace CollectorHub.Services.Data.Themes
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.Collections.HotWheels;
+    using CollectorHub.Data.Models.Collections.Lego;
     using CollectorHub.Services.Data.Collections;
     using CollectorHub.Web.ViewModels.Themes;
 
@@ -12,15 +14,18 @@
         private readonly ICollectionsService collectionsService;
         private readonly IDeletableEntityRepository<HotWheelsCar> hotWheelsCarsRepository;
         private readonly IDeletableEntityRepository<HotWheelsSerie> hotWheelsSeriesRepository;
+        private readonly IDeletableEntityRepository<LegoMinifigure> legoMinifiguresRepository;
 
         public ThemesService(
             ICollectionsService collectionsService,
             IDeletableEntityRepository<HotWheelsCar> hotWheelsCarsRepository,
-            IDeletableEntityRepository<HotWheelsSerie> hotWheelsSeriesRepository)
+            IDeletableEntityRepository<HotWheelsSerie> hotWheelsSeriesRepository,
+            IDeletableEntityRepository<LegoMinifigure> legoMinifiguresRepository)
         {
             this.collectionsService = collectionsService;
             this.hotWheelsCarsRepository = hotWheelsCarsRepository;
             this.hotWheelsSeriesRepository = hotWheelsSeriesRepository;
+            this.legoMinifiguresRepository = legoMinifiguresRepository;
         }
 
         public HotWheelsThemeViewModel GetAllHotWheelsInfo()
@@ -88,6 +93,31 @@
             }
 
             return model;
+        }
+
+        public IEnumerable<LegoThemeMinifigureModel> GetAllLegoFigures()
+        {
+            const string pictureLinkBegining = "https://img.bricklink.com/ItemImage/MN/0/sw";
+            const string pictureLinkEnd = ".png";
+
+            var list = new List<LegoThemeMinifigureModel>();
+
+            var allMinifigs = this.legoMinifiguresRepository.All();
+
+            foreach (var fig in allMinifigs)
+            {
+                var currFigure = new LegoThemeMinifigureModel
+                {
+                    Name = fig.Name,
+                    SwNumber = fig.SwNumber,
+                };
+
+                currFigure.ImageUrl = pictureLinkBegining + fig.SwNumber + pictureLinkEnd;
+
+                list.Add(currFigure);
+            }
+
+            return list;
         }
     }
 }

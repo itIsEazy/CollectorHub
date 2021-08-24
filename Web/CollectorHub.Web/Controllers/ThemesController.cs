@@ -1,6 +1,7 @@
 ﻿namespace CollectorHub.Web.Controllers
 {
     using CollectorHub.Services.Data.Themes;
+    using CollectorHub.Web.ViewModels.Themes;
     using Microsoft.AspNetCore.Mvc;
 
     public class ThemesController : Controller
@@ -26,7 +27,10 @@
 
         public IActionResult LegoAll()
         {
-            return this.View();
+            var model = new LegoThemeViewModel();
+            model.LegoFigures = this.themesService.GetAllLegoFigures();
+
+            return this.View(model);
         }
     }
 }
