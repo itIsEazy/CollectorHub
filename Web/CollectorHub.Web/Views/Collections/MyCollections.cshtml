@@ -72,6 +72,56 @@
             </div>
         }
 
+        <div class="text-center">
+            <h2 class="display-2">Lego</h2>
+        </div>
+
+        <hr />
+
+        @if (Model.LegoCollections == null || Model.LegoCollections.Count() <= 0)
+        {
+            <div class="col-lg-12">
+                <h2 class="text-center">No collections</h2>
+            </div>
+
+            <hr />
+        }
+        else
+        {
+            <div class="col-lg-12 text-center">
+                <button class="btn btn-outline-secondary text-center w-100" type="button" data-toggle="collapse" data-target="#hotWheelsCollections" aria-expanded="false" aria-controls="collapseExample">
+                    Show all (@Model.LegoCollections.Count()) Collections
+                </button>
+            </div>
+
+            <div class="collapse" id="hotWheelsCollections">
+
+                @foreach (var collection in Model.LegoCollections)
+                {
+                    <div class="col-lg-12 border">
+
+                        <div class="text-center">
+                            <p class="text-center">@collection.Name</p>
+                        </div>
+
+                        <div class="text-center">
+                            <img style="width: 450px; height:300px" src="@collection.ImageUrl" alt="Collection Image" />
+                        </div>
+
+                        <hr />
+
+                        <div class="text-center">
+                            <p>@collection.Description</p>
+                        </div>
+                        <div class="col-lg-12 text-center">
+                            <a asp-controller="Collections" asp-action="LegoCollection" asp-route-collectionId="@collection.Id" class="btn btn-outline-secondary text-center w-100" role="button">Check out collection</a>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        }
+
     </div>
 
 

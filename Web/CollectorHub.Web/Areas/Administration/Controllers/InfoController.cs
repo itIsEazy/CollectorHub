@@ -33,31 +33,6 @@
             return this.View(model);
         }
 
-        public IActionResult BecomeAdmin()
-        {
-            return this.View();
-        }
-
-        [HttpPost]
-        public IActionResult BecomeAdmin(BecomeAdminViewModel input)
-        {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(input);
-            }
-
-            if (this.administrationService.AddNewAdmin(userId, input.UniquePassword).Result)
-            {
-                return this.Redirect("https://localhost:5001/");
-            }
-            else
-            {
-                return this.View(input);
-            }
-        }
-
         public IActionResult EditForumPost(string postId)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;

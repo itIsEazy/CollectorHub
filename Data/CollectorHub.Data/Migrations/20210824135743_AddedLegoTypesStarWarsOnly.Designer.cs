@@ -4,14 +4,16 @@ using CollectorHub.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CollectorHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210824135743_AddedLegoTypesStarWarsOnly")]
+    partial class AddedLegoTypesStarWarsOnly
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,9 +119,6 @@ namespace CollectorHub.Data.Migrations
                     b.Property<string>("CategoryId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CollectionTypeId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -161,8 +160,6 @@ namespace CollectorHub.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("CollectionTypeId");
 
                     b.HasIndex("IsDeleted");
 
@@ -510,9 +507,6 @@ namespace CollectorHub.Data.Migrations
                     b.Property<string>("CategoryId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CollectionTypeId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -532,9 +526,6 @@ namespace CollectorHub.Data.Migrations
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
-
-                    b.Property<string>("LegoTypeId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
@@ -558,11 +549,7 @@ namespace CollectorHub.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CollectionTypeId");
-
                     b.HasIndex("IsDeleted");
-
-                    b.HasIndex("LegoTypeId");
 
                     b.HasIndex("UserId");
 
@@ -1192,10 +1179,6 @@ namespace CollectorHub.Data.Migrations
                         .WithMany("FastAndFuriousPremiumCollection")
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("CollectorHub.Data.Models.Collections.CollectionType", "CollectionType")
-                        .WithMany()
-                        .HasForeignKey("CollectionTypeId");
-
                     b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -1203,8 +1186,6 @@ namespace CollectorHub.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-
-                    b.Navigation("CollectionType");
 
                     b.Navigation("User");
                 });
@@ -1298,25 +1279,13 @@ namespace CollectorHub.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("CollectorHub.Data.Models.Collections.CollectionType", "CollectionType")
-                        .WithMany()
-                        .HasForeignKey("CollectionTypeId");
-
-                    b.HasOne("CollectorHub.Data.Models.Collections.Lego.LegoType", "LegoType")
-                        .WithMany()
-                        .HasForeignKey("LegoTypeId");
-
                     b.HasOne("CollectorHub.Data.Models.User.ApplicationUser", "User")
-                        .WithMany("LegoCollections")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
-
-                    b.Navigation("CollectionType");
-
-                    b.Navigation("LegoType");
 
                     b.Navigation("User");
                 });
@@ -1543,8 +1512,6 @@ namespace CollectorHub.Data.Migrations
                     b.Navigation("ForumPosts");
 
                     b.Navigation("HotWheelsCollections");
-
-                    b.Navigation("LegoCollections");
 
                     b.Navigation("Logins");
 

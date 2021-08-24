@@ -38,6 +38,8 @@
 
         public DbSet<LegoCollection> LegoCollections { get; set; }
 
+        public DbSet<LegoType> LegoTypes { get; set; }
+
         // ------------------------------HotWheels---------------------------------
         public DbSet<HotWheelsCar> HotWheelsCars { get; set; }
 

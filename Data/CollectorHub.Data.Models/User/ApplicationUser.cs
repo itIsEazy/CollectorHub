@@ -3,10 +3,10 @@ namespace CollectorHub.Data.Models.User
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     using CollectorHub.Data.Common.Models;
     using CollectorHub.Data.Models.Collections.HotWheels;
+    using CollectorHub.Data.Models.Collections.Lego;
     using CollectorHub.Data.Models.Forum;
 
     using Microsoft.AspNetCore.Identity;
@@ -24,10 +24,13 @@ namespace CollectorHub.Data.Models.User
             this.Logins = new HashSet<IdentityUserLogin<string>>();
 
             this.HotWheelsCollections = new HashSet<HotWheelsCollection>();
+            this.LegoCollections = new HashSet<LegoCollection>();
             this.ForumPosts = new HashSet<ForumPost>();
         }
 
         public virtual IEnumerable<HotWheelsCollection> HotWheelsCollections { get; set; }
+
+        public virtual IEnumerable<LegoCollection> LegoCollections { get; set; }
 
         public virtual ICollection<ForumPost> ForumPosts { get; set; }
 

@@ -5,10 +5,12 @@
 
     using CollectorHub.Data.Models.Collections;
     using CollectorHub.Data.Models.Collections.HotWheels;
+    using CollectorHub.Data.Models.Collections.Lego;
     using CollectorHub.Data.Models.User;
     using CollectorHub.Web.ViewModels.Collections;
     using CollectorHub.Web.ViewModels.Collections.Common;
     using CollectorHub.Web.ViewModels.Collections.Hot_Wheels;
+    using CollectorHub.Web.ViewModels.Collections.Lego;
 
     public interface ICollectionsService
     {
@@ -16,21 +18,29 @@
 
         CollectionsIndexViewModel GetIndexViewInformation(string categoryId, string searchInput, int sortingId);
 
+        List<TrendingCollectionViewModel> GetAllCollections();
+
         HotWheelsCollectionViewModel GetHotWheelsCollectionViewInformation(string collectionId);
 
         IEnumerable<CollectionType> GetAllCollectionTypes();
 
         IEnumerable<HotWheelsType> GetAllHotWheelsTypes();
 
+        IEnumerable<LegoType> GetAllLegoTypes();
+
         IEnumerable<CollectionIndexViewModel> GetAllTrendingCollections(string categoryId);
 
-        IEnumerable<HotWheelsCollectionViewModel> GetHotWheelsCollections(string userId);
+        IEnumerable<HotWheelsCollectionViewModel> GetHotWheelsCollections(string userId); 
 
         IEnumerable<MyCollectionHotWheelsCollectionViewModel> GetMyCollectionHotWheelsCollections(string userId);
+
+        IEnumerable<MyCollectionLegoCollectionViewModel> GetMyCollectionLegoCollections(string userId);
 
         IEnumerable<TrendingCollectionViewModel> GetTrendingCollections(string categoryId);
 
         Task CreateHotWheelsCollection(string userId, string hotWheelsTypeId, string description, bool isPublic, bool showPrices);
+
+        Task CreateLegoCollection(string userId, string legoTypeId, string description, bool isPublic, bool showPrices);
 
         Task AddHotWheelsCarItemToCollection(string carId, string collectionId, decimal price, string customUrl);
 
@@ -42,6 +52,8 @@
 
         string GetHotWheelsTypeName(string hotWheelsTypeId);
 
+        string GetLegoTypeName(string LegoTypeId);
+
         string GetHotWheelsTypeImageUrl(string hotWheelsTypeId);
 
         string GetHotWheelsCollectionUserId(string collectionId);
@@ -49,6 +61,8 @@
         int GetAllCollectionsCount();
 
         bool HotWheelsTypeExist(string typeId);
+
+        bool LegoTypeExists(string typeId);
 
         bool HotWheelsCollectionExists(string collectionId);
 

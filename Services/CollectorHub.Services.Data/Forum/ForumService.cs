@@ -39,11 +39,11 @@
             return this.forumPostsRepository.All().Count();
         }
 
-        public IndexViewModel GetIndexViewInformation(string categoryId, string searchInput, int sortingId)
+        public ForumIndexViewModel GetIndexViewInformation(string categoryId, string searchInput, int sortingId)
         {
             string defaultForumPostImageUrl = "https://cdn.pixabay.com/photo/2015/10/07/12/17/post-976115_960_720.png";
 
-            var model = new IndexViewModel();
+            var model = new ForumIndexViewModel();
 
             model.Categories = this.categoryService.GetAllCategories();
             model.Sortings = this.commonService.GetAllSortings();

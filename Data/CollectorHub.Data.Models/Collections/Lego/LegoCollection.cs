@@ -13,6 +13,10 @@
             this.Items = new HashSet<LegoMinifigureItem>();
         }
 
+        public string LegoTypeId { get; set; }
+
+        public virtual LegoType LegoType { get; set; }
+
         public virtual ICollection<LegoMinifigureItem> Items { get; set; }
     }
 }

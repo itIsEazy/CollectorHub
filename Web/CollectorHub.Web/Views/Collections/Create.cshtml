@@ -35,25 +35,20 @@
 <div class="border col-md-12">
     <h2 class="text-center">Lego</h2>
 
-    @if (1 == 1)
-    {
-        <div class="col-lg-12 text-center">
-            <h2>Will be available soon</h2>
-        </div>
-    }
-    else
-    {
-        <div class="border col-lg-12 ">
+    <div class="border col-lg-12 ">
+
+        @foreach (var type in Model.AllLegoTypes)
+        {
             <div class="d-inline-block ">
-                <img class="border" style="height: 200px; width: 200px" src="https://www.brickfanatics.com/wp-content/uploads/2019/04/LEGO-Star-Wars-logo-featured-800-445-1200x720.jpg" alt="Hot Wheels logo" />
-                <p class="align-content-center text-center">Star Wars</p>
+                <img class="border" style="height: 200px; width: 200px" src="@type.ImageUrl" alt="Hot Wheels logo" />
+                <p class="align-content-center text-center">@type.Name</p>
                 <div>
-                    <a class="btn btn-outline-secondary text-center w-100" asp-controller="Collections" asp-action="CreateLegoStarWars" role="button">Create</a>
+                    <a class="btn btn-outline-secondary text-center w-100" asp-controller="Collections" asp-action="CreateLegoCollection" asp-route-legoTypeId="@type.Id" role="button">Create</a>
                 </div>
             </div>
+        }
 
-        </div>
-    }
+    </div>
 </div>
 
 

@@ -7,7 +7,7 @@
     using CollectorHub.Data.Seeding.Category;
     using CollectorHub.Data.Seeding.Common;
     using CollectorHub.Data.Seeding.HotWheels;
-
+    using CollectorHub.Data.Seeding.LegoBricklink;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
@@ -33,6 +33,7 @@
                               new HotWheelsSeeder(),
                               new CategorySeeder(),
                               new CommonSeeder(),
+                              new LegoSeeder(),
                           };
 
             foreach (var seeder in seeders)

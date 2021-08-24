@@ -8,6 +8,7 @@
     using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Web.ViewModels.Collections;
     using CollectorHub.Web.ViewModels.Collections.Hot_Wheels;
+    using CollectorHub.Web.ViewModels.Collections.Lego;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -57,6 +58,7 @@
             var model = new CreateIndexViewModel();
             model.AllCollectionTypes = this.collectionsService.GetAllCollectionTypes();
             model.AllHotWheelsTypes = this.collectionsService.GetAllHotWheelsTypes();
+            model.AllLegoTypes = this.collectionsService.GetAllLegoTypes();
 
             return this.View(model);
         }
@@ -108,26 +110,30 @@
             return this.RedirectToAction(nameof(this.MyCollections));
         }
 
-        public IActionResult CreateHotWheelsFastAndFuriousPremium()
+        public IActionResult CreateLegoCollection(string legoTypeId)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (!this.hotWheelsInfoService.CheckIfUserCanCreateHWFFPremiumCollection(userId))
+            if (!this.collectionsService.LegoTypeExists(legoTypeId))
             {
-                return this.RedirectToAction(nameof(this.MyCollections));
+                return this.BadRequest();
             }
 
-            return this.View();
+            var model = new CreateLegoInputModel();
+            model.LegoTypeId = legoTypeId;
+            model.LegoTypeName = this.collectionsService.GetLegoTypeName(legoTypeId);
+
+            return this.View(model);
         }
 
         [HttpPost]
-        public IActionResult CreateHotWheelsFastAndFuriousPremium(CreateHotWheelsFastAndFuriousPremiumCollectionInputModel model)
+        public IActionResult CreateLegoCollection(CreateLegoInputModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (!this.hotWheelsInfoService.CheckIfUserCanCreateHWFFPremiumCollection(userId))
+            if (!this.collectionsService.LegoTypeExists(model.LegoTypeId))
             {
-                return this.RedirectToAction(nameof(this.MyCollections));
+                return this.BadRequest();
             }
 
             if (!this.ModelState.IsValid)
@@ -135,32 +141,10 @@
                 return this.View(model);
             }
 
-            this.hotWheelsInfoService.CreateHotWheelsFastAndFuriousPremium(userId, model.Description, model.IsPublic, model.ShowPrices);
+            // TODO : this should return bool if it is false means something went wrong in the service and show message to user 'Collection not created please try again later'
+            this.collectionsService.CreateLegoCollection(userId, model.LegoTypeId, model.Description, model.IsPublic, model.ShowPrices);
 
             return this.RedirectToAction(nameof(this.MyCollections));
-        }
-
-        public IActionResult HotWheelsFastAndFuriousPremium(string collectionId)
-        {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            this.ViewBag.BrowsingUserId = userId;
-
-            if (!this.hotWheelsInfoService.CollectionExists(collectionId))
-            {
-                return this.BadRequest();
-            }
-
-            var model = this.hotWheelsInfoService.GetHotWheelsFastAndFuriousPremiumFullCollection(collectionId);
-
-            if (userId != model.User.Id && model.IsPublic == false)
-            {
-                return this.RedirectToAction(nameof(this.Index));
-            }
-
-            model.AllSeries = this.hotWheelsInfoService.GetAllPremiumSeriesAndCars().ToList();
-
-            return this.View(model);
         }
 
         public IActionResult AddHotWheelsCarItemToCollection(HotWheelsCollectionViewModel model)
@@ -275,6 +259,7 @@
 
             var model = new MyCollectionIndexViewModel();
             model.HotWheelsCollections = this.collectionsService.GetMyCollectionHotWheelsCollections(userId);
+            model.LegoCollections = this.collectionsService.GetMyCollectionLegoCollections(userId);
 
             return this.View(model);
         }
@@ -304,6 +289,13 @@
             var model = this.collectionsService.GetHotWheelsCollectionViewInformation(collectionId);
 
             return this.View(model);
+        }
+
+        public IActionResult LegoCollection(string collectionId)
+        {
+
+
+            return this.View();
         }
     }
 }

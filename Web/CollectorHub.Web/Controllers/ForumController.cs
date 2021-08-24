@@ -23,7 +23,7 @@
         }
 
         [AllowAnonymous]
-        public IActionResult Index(string categoryId, IndexViewModel model)
+        public IActionResult Index(string categoryId, ForumIndexViewModel model)
         {
             var currCategoryId = categoryId;
             string searchInput = null;

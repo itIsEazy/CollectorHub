@@ -5,9 +5,9 @@
     using CollectorHub.Data.Models.Common;
     using CollectorHub.Web.ViewModels.Common;
 
-    public class IndexViewModel
+    public class ForumIndexViewModel
     {
-        public IndexViewModel()
+        public ForumIndexViewModel()
         {
             this.Categories = new HashSet<CategoryIndexViewModel>();
             this.Sortings = new HashSet<SortingIndexViewModel>();

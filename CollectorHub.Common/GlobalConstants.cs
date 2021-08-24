@@ -21,6 +21,8 @@
         public const string LegoCollectionTypeName = "Lego";
         public const string HotWheelsCollectionTypeName = "Hot Wheels";
 
+        public const string LegoStarWarsTypeName = "Star Wars";
+
         //----------------------------Categories-------------------------------//
         public const string LegoCategoryName = "Lego";
         public const string HotWheelsCategoryName = "Hot Wheels";

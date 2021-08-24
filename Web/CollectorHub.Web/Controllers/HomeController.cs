@@ -1,22 +1,23 @@
 ﻿namespace CollectorHub.Web.Controllers
 {
     using System.Diagnostics;
+    using System.Security.Claims;
 
     using CollectorHub.Services.Data.Administration;
     using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Collections;
     using CollectorHub.Services.Data.Common;
     using CollectorHub.Services.Data.Forum;
-    using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Services.Data.User;
     using CollectorHub.Web.ViewModels;
+    using CollectorHub.Web.ViewModels.Administration.Info;
     using CollectorHub.Web.ViewModels.Home;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize]
     public class HomeController : BaseController
     {
-        private readonly IGetHotWheelsInfoService hotWheelsInfoService;
         private readonly IAdministrationService administrationService;
         private readonly IUserService userService;
         private readonly ICollectionsService collectionsService;
@@ -25,7 +26,6 @@
         private readonly ICommonService commonService;
 
         public HomeController(
-            IGetHotWheelsInfoService hotWheelsInfoService,
             IAdministrationService administrationService,
             IUserService userService,
             ICollectionsService collectionsService,
@@ -33,7 +33,6 @@
             ICategoryService categoryService,
             ICommonService commonService)
         {
-            this.hotWheelsInfoService = hotWheelsInfoService;
             this.administrationService = administrationService;
             this.userService = userService;
             this.collectionsService = collectionsService;
@@ -42,6 +41,7 @@
             this.commonService = commonService;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var model = new MainPageIndexViewModel();
@@ -52,9 +52,34 @@
             model.Categories = this.categoryService.GetAllCategories();
             model.Sortings = this.commonService.GetAllSortings();
 
-            model.TrendingCollections = this.collectionsService.GetTrendingCollections(null);
+            model.TrendingCollections = this.collectionsService.GetAllCollections();
 
             return this.View(model);
+        }
+
+        public IActionResult BecomeAdmin()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public IActionResult BecomeAdmin(BecomeAdminViewModel input)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            if (this.administrationService.AddNewAdmin(userId, input.UniquePassword).Result)
+            {
+                return this.Redirect("https://localhost:5001/");
+            }
+            else
+            {
+                return this.View(input);
+            }
         }
 
         public IActionResult Privacy()
