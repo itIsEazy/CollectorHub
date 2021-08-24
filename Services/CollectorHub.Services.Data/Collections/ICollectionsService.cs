@@ -34,9 +34,7 @@
 
         IEnumerable<LegoCollectionMinifigureItemViewModel> GetAllLegoItems(string collectionId);
 
-        IEnumerable<CollectionIndexViewModel> GetAllTrendingCollections(string categoryId);
-
-        IEnumerable<HotWheelsCollectionViewModel> GetHotWheelsCollections(string userId); 
+        IEnumerable<HotWheelsCollectionViewModel> GetHotWheelsCollections(string userId);
 
         IEnumerable<MyCollectionHotWheelsCollectionViewModel> GetMyCollectionHotWheelsCollections(string userId);
 
@@ -66,7 +64,7 @@
 
         string GetHotWheelsTypeName(string hotWheelsTypeId);
 
-        string GetLegoTypeName(string LegoTypeId);
+        string GetLegoTypeName(string legoTypeId);
 
         string GetHotWheelsTypeImageUrl(string hotWheelsTypeId);
 

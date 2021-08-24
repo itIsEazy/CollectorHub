@@ -21,7 +21,6 @@
     {
         private readonly ICategoryService categoryService;
         private readonly ICommonService commonService;
-        private readonly IDeletableEntityRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository;
         private readonly IDeletableEntityRepository<CollectionType> collectionTypesRepository;
         private readonly IDeletableEntityRepository<HotWheelsType> hotWheelsTypesRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
@@ -37,7 +36,6 @@
         public CollectionsService(
             ICategoryService categoryService,
             ICommonService commonService,
-            IDeletableEntityRepository<FastAndFuriousPremiumCollection> ffpremiumCollectionsRepository,
             IDeletableEntityRepository<CollectionType> collectionTypesRepository,
             IDeletableEntityRepository<HotWheelsType> hotWheelsTypesRepository,
             IDeletableEntityRepository<ApplicationUser> usersRepository,
@@ -52,7 +50,6 @@
         {
             this.categoryService = categoryService;
             this.commonService = commonService;
-            this.ffpremiumCollectionsRepository = ffpremiumCollectionsRepository;
             this.collectionTypesRepository = collectionTypesRepository;
             this.hotWheelsTypesRepository = hotWheelsTypesRepository;
             this.usersRepository = usersRepository;
@@ -506,25 +503,6 @@
             return list;
         }
 
-        public IEnumerable<CollectionIndexViewModel> GetAllTrendingCollections(string categoryId)
-        {
-            // VERY IMPORTANT THIS MUST HAVE ALL THE STAR COUNT IN EVERY COLLECTION
-            //// GETS ALL COLLECTIONS ORDERS THEM BY STAR ? VIEW COUNT AND RETURNS ONLY 5 10 15 20 25 !
-
-            var list = new List<CollectionIndexViewModel>();
-
-            var allHWFFPremiumCollections = this.GetAllFFPremiumCollections(categoryId);
-
-            foreach (var collection in allHWFFPremiumCollections)
-            {
-                list.Add(collection);
-            }
-
-            list = list.OrderBy(x => x.ViewsCount).ToList();
-
-            return list;
-        }
-
         public IEnumerable<HotWheelsCollectionViewModel> GetHotWheelsCollections(string userId)
         {
             string defaultImageUrl = "http://hwcollectorsnews.com/wp-content/uploads/2019/09/Fat-original-Box-Set-1024x508.jpg";
@@ -535,47 +513,6 @@
                 .ToList();
 
             return null;
-        }
-
-        public List<CollectionIndexViewModel> GetAllFFPremiumCollections(string categoryId)
-        {
-            const string action = "HotWheelsFastAndFuriousPremium";
-
-            var list = new List<CollectionIndexViewModel>();
-
-            var allCollectionsAvailable = this.ffpremiumCollectionsRepository
-                .All()
-                .Where(x => x.IsPublic == true)
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Name,
-                    x.ImageUrl,
-                    x.User,
-                    x.ViewsCount,
-                    x.CategoryId,
-                })
-                .ToList();
-
-            if (categoryId != null)
-            {
-                allCollectionsAvailable = allCollectionsAvailable.Where(x => x.CategoryId == categoryId).ToList();
-            }
-
-            foreach (var collection in allCollectionsAvailable)
-            {
-                list.Add(new CollectionIndexViewModel
-                {
-                    Id = collection.Id,
-                    Name = collection.Name,
-                    ImageUrl = collection.ImageUrl,
-                    Owner = collection.User,
-                    ViewsCount = collection.ViewsCount,
-                    Action = action,
-                });
-            }
-
-            return list;
         }
 
         public IEnumerable<MyCollectionHotWheelsCollectionViewModel> GetMyCollectionHotWheelsCollections(string userId)
@@ -887,13 +824,13 @@
             return null;
         }
 
-        public string GetLegoTypeName(string LegoTypeId)
+        public string GetLegoTypeName(string legoTypeId)
         {
-            if (this.LegoTypeExists(LegoTypeId))
+            if (this.LegoTypeExists(legoTypeId))
             {
                 return this.legoTypesRepository
                     .All()
-                    .Where(x => x.Id == LegoTypeId)
+                    .Where(x => x.Id == legoTypeId)
                     .Select(x => x.Name)
                     .FirstOrDefault();
             }

@@ -51,14 +51,6 @@
 
         public DbSet<HotWheelsType> HotWheelsTypes { get; set; }
 
-        public DbSet<FastAndFuriousPremiumCar> FastAndFuriousPremiumCars { get; set; }
-
-        public DbSet<FastAndFuriousPremiumSerie> FastAndFuriousPremiumSeries { get; set; }
-
-        public DbSet<FastAndFuriousPremiumCollection> FastAndFuriousPremiumCollections { get; set; }
-
-        public DbSet<FastAndFuriousPremiumItem> FastAndFuriousPremiumItems { get; set; }
-
         // ------------------------------Forum---------------------------------
         public DbSet<ForumPost> ForumPosts { get; set; }
 

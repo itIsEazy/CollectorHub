@@ -5,7 +5,6 @@
 
     using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Collections;
-    using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Web.ViewModels.Collections;
     using CollectorHub.Web.ViewModels.Collections.Hot_Wheels;
     using CollectorHub.Web.ViewModels.Collections.Lego;
@@ -15,16 +14,13 @@
     [Authorize]
     public class CollectionsController : BaseController
     {
-        private readonly IGetHotWheelsInfoService hotWheelsInfoService;
         private readonly ICollectionsService collectionsService;
         private readonly ICategoryService categoryService;
 
         public CollectionsController(
-            IGetHotWheelsInfoService hotWheelsInfoService,
             ICollectionsService collectionsService,
             ICategoryService categoryService)
         {
-            this.hotWheelsInfoService = hotWheelsInfoService;
             this.collectionsService = collectionsService;
             this.categoryService = categoryService;
         }

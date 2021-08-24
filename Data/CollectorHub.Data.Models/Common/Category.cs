@@ -27,8 +27,6 @@
 
         public virtual ICollection<ForumPost> Posts { get; set; }
 
-        public virtual ICollection<FastAndFuriousPremiumCollection> FastAndFuriousPremiumCollection { get; set; }
-
         // DO NOT FORGET to add ICollectio<> every time when u connect Category to some Entity
         // MAYBE REMOVE ALL THIS COLLECTION
     }

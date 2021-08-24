@@ -13,7 +13,6 @@
     using CollectorHub.Services.Data.Collections;
     using CollectorHub.Services.Data.Common;
     using CollectorHub.Services.Data.Forum;
-    using CollectorHub.Services.Data.HotWheels;
     using CollectorHub.Services.Data.Themes;
     using CollectorHub.Services.Data.User;
     using CollectorHub.Services.Mapping;
@@ -72,7 +71,6 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<IGetHotWheelsInfoService, GetHotWheelsInfoService>();
             services.AddTransient<IAdministrationService, AdministrationService>();
             services.AddTransient<IForumService, ForumService>();
             services.AddTransient<ICategoryService, CategoryService>();
