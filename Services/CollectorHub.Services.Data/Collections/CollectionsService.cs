@@ -642,9 +642,9 @@
             collection.CollectionTypeId = this.GetHotWheelsCollectionTypeId();
             collection.HotWheelsTypeId = hotWheelsTypeId;
 
-            Task.WaitAll(this.hotWheelsCollectionsRepository.AddAsync(collection));
+            await this.hotWheelsCollectionsRepository.AddAsync(collection);
 
-            this.hotWheelsCollectionsRepository.SaveChanges();
+            await this.hotWheelsCollectionsRepository.SaveChangesAsync();
         }
 
         public async Task CreateLegoCollection(string userId, string legoTypeId, string description, bool isPublic, bool showPrices)

@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using System.Security.Claims;
-
+    using System.Threading.Tasks;
     using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Collections;
     using CollectorHub.Web.ViewModels.Collections;
@@ -101,7 +101,10 @@
             }
 
             // TODO : this returns bool if it is false means something went wrong in the service and show message to user 'Collection not created please try again later'
-            this.collectionsService.CreateHotWheelsCollection(userId, model.HotWheelsTypeId, model.Description, model.IsPublic, model.ShowPrices);
+            Task.Run(async () =>
+            {
+                await this.collectionsService.CreateHotWheelsCollection(userId, model.HotWheelsTypeId, model.Description, model.IsPublic, model.ShowPrices);
+            });
 
             return this.RedirectToAction(nameof(this.MyCollections));
         }
