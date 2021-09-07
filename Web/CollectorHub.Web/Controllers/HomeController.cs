@@ -1,8 +1,9 @@
 ﻿namespace CollectorHub.Web.Controllers
 {
+    using System;
     using System.Diagnostics;
     using System.Security.Claims;
-
+    using System.Threading.Tasks;
     using CollectorHub.Services.Data.Administration;
     using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Collections;
@@ -42,7 +43,7 @@
         }
 
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var model = new MainPageIndexViewModel();
             model.TotalUsersCount = this.userService.TotalUsersCount();
