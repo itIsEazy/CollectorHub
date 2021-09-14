@@ -10,6 +10,7 @@
     using CollectorHub.Data.Models.User;
     using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Common;
+    using CollectorHub.Services.Models.Forum;
     using CollectorHub.Web.ViewModels.Forum;
 
     public class ForumService : IForumService
@@ -159,6 +160,36 @@
                     model.TrendingPosts.Add(post);
                 }
             }
+
+            return model;
+        }
+
+        public ForumPostServiceModel GetForumPostServiceModel(string postId)
+        {
+            var model = new ForumPostServiceModel();
+
+            var postFromDatabase = this.forumPostsRepository.All().Where(x => x.Id == postId).FirstOrDefault();
+
+            if (postFromDatabase == null)
+            {
+                return null;
+            }
+
+            var postAuthour = this.allUsers.All().Where(x => x.Id == postFromDatabase.AuthorId).FirstOrDefault();
+
+            model.Id = postFromDatabase.Id;
+            model.AuthorId = postFromDatabase.AuthorId;
+            model.AuthorUserName = postAuthour.UserName;
+            model.Title = postFromDatabase.Title;
+            model.Content = postFromDatabase.Content;
+            model.ImageUrl = postFromDatabase.ImageUrl;
+            model.IsVerified = postFromDatabase.IsVerified;
+            model.CategoryName = postFromDatabase.Category.Name;
+            model.DateCreated = postFromDatabase.CreatedOn.ToString("MM/dd/yyyy H:mm");
+
+            model.LikesCount = postFromDatabase.LikesCount;
+            model.StarsCount = postFromDatabase.StarsCount;
+            model.ViewsCount = postFromDatabase.ViewsCount;
 
             return model;
         }

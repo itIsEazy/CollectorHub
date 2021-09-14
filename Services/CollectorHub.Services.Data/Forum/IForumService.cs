@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
+    using CollectorHub.Services.Models.Forum;
     using CollectorHub.Web.ViewModels.Forum;
 
     public interface IForumService
@@ -10,6 +10,8 @@
         int TotalForumPostsCount();
 
         ForumIndexViewModel GetIndexViewInformation(string categoryId, string searchInput, int sortingId);
+
+        ForumPostServiceModel GetForumPostServiceModel(string postId);
 
         ForumPostViewModel GetForumPostViewModel(string postId);
 

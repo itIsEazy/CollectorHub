@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
 
-    using CollectorHub.Data.Models.Common;
     using CollectorHub.Web.ViewModels.Common;
 
     public class ForumIndexViewModel

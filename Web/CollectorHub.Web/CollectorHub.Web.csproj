@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\CollectorHub.Common\CollectorHub.Common.csproj" />
+    <ProjectReference Include="..\..\CollectorHub.Services.Models\CollectorHub.Services.Models.csproj" />
     <ProjectReference Include="..\..\Data\CollectorHub.Data.Models\CollectorHub.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\CollectorHub.Data\CollectorHub.Data.csproj" />
     <ProjectReference Include="..\..\Services\CollectorHub.Services.Data\CollectorHub.Services.Data.csproj" />
