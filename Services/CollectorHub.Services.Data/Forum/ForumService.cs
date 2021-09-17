@@ -264,6 +264,56 @@
             return post.Id;
         }
 
+        public async Task<IEnumerable<ForumPostServiceModel>> GetUserPosts(string userName)
+        {
+            var postsQuery = this.forumPostsRepository
+                .All()
+                .Where(x => x.Author.UserName == userName)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    AuthorId = x.AuthorId,
+                    AuthorUserName = userName,
+                    Title = x.Title,
+                    Content = x.Content,
+                    ImageUrl = x.ImageUrl,
+                    IsVerified = x.IsVerified,
+                    CategoryName = x.Category.Name,
+                    DateCreated = x.CreatedOn,
+                    ViewsCount = x.ViewsCount,
+                    LikesCount = x.LikesCount,
+                });
+
+            var posts = new List<ForumPostServiceModel>();
+
+            foreach (var x in postsQuery)
+            {
+                posts.Add(new ForumPostServiceModel
+                {
+                    Id = x.Id,
+                    AuthorId = x.AuthorId,
+                    AuthorUserName = userName,
+                    Title = x.Title,
+                    Content = x.Content,
+                    ImageUrl = x.ImageUrl,
+                    IsVerified = x.IsVerified,
+                    CategoryName = x.CategoryName,
+                    DateCreated = x.DateCreated.ToString(),
+                    ViewsCount = x.ViewsCount,
+                    LikesCount = x.LikesCount,
+                });
+            }
+
+            if (posts.Any())
+            {
+                return posts;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public void EditForumPost(string postId, string title, string content, string imageUrl, string categoryId)
         {
             var post = this.forumPostsRepository

@@ -17,6 +17,8 @@
 
         Task<string> CreateForumPost(string userId, string title, string content, string imageUrl, string categoryId);
 
+        Task<IEnumerable<ForumPostServiceModel>> GetUserPosts(string userName);
+
         void EditForumPost(string postId, string title, string content, string imageUrl, string categoryId);
 
         IEnumerable<ForumPostViewModel> GetMyPostsAllPosts(string userId);

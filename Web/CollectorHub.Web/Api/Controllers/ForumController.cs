@@ -7,13 +7,13 @@
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
-    [Route("api/forum")]
-    public class ForumApiController : ControllerBase
+    [Route("api/[controller]")]
+    public class ForumController : ControllerBase
     {
         private readonly IForumService forumService;
         private readonly ICategoryService categoryService;
 
-        public ForumApiController(
+        public ForumController(
             IForumService forumService,
             ICategoryService categoryService)
         {
@@ -21,11 +21,20 @@
             this.categoryService = categoryService;
         }
 
-        public ForumPostServiceModel GetForumPost()
+        // /api/forum/GetAllPosts
+        [Route(nameof(GetAllPosts))]
+        [HttpGet]
+        public ForumPostServiceModel GetAllPosts()
         {
             string id = "65a92dea-f14f-4b22-aa8c-9d262677bacf";
             return this.forumService.GetForumPostServiceModel(id);
         }
 
+        [HttpPut]
+        public ForumPostServiceModel GetAllPosts2()
+        {
+            string id = "65a92dea-f14f-4b22-aa8c-9d262677bacf";
+            return this.forumService.GetForumPostServiceModel(id);
+        }
     }
 }
