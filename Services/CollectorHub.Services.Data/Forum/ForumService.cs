@@ -256,8 +256,8 @@
 
             user.ForumPosts.Add(post);
 
-            Task.WaitAll(this.forumPostsRepository.AddAsync(post));
-            Task.WaitAll(this.allUsers.SaveChangesAsync());
+            await this.forumPostsRepository.AddAsync(post);
+            await this.allUsers.SaveChangesAsync();
 
             await this.forumPostsRepository.SaveChangesAsync();
 

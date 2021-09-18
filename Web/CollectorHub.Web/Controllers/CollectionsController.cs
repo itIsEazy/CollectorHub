@@ -26,7 +26,7 @@
         }
 
         [AllowAnonymous]
-        public IActionResult Index(string categoryId, CollectionsIndexViewModel model)
+        public async Task<IActionResult> Index(string categoryId, CollectionsIndexViewModel model)
         {
             var currCategoryId = categoryId;
             string searchInput = null;
@@ -39,7 +39,7 @@
                 sortingid = model.SearchModel.SortingId;
             }
 
-            if (currCategoryId != null && !this.categoryService.CategoryExists(currCategoryId))
+            if (currCategoryId != null && !await this.categoryService.CategoryExists(currCategoryId))
             {
                 return this.BadRequest();
             }

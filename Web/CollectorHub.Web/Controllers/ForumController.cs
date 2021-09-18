@@ -1,7 +1,7 @@
 ﻿namespace CollectorHub.Web.Controllers
 {
     using System.Security.Claims;
-
+    using System.Threading.Tasks;
     using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Forum;
     using CollectorHub.Web.ViewModels.Forum;
@@ -23,7 +23,7 @@
         }
 
         [AllowAnonymous]
-        public IActionResult Index(string categoryId, ForumIndexViewModel model)
+        public async Task<IActionResult> Index(string categoryId, ForumIndexViewModel model)
         {
             var currCategoryId = categoryId;
             string searchInput = null;
@@ -36,7 +36,7 @@
                 sortingid = model.SearchModel.SortingId;
             }
 
-            if (currCategoryId != null && !this.categoryService.CategoryExists(currCategoryId))
+            if (currCategoryId != null && !await this.categoryService.CategoryExists(currCategoryId))
             {
                 return this.BadRequest();
             }
@@ -55,11 +55,11 @@
         }
 
         [HttpPost]
-        public IActionResult Create(CreateForumPostInputModel model)
+        public async Task<IActionResult> Create(CreateForumPostInputModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (!this.categoryService.CategoryExists(model.CategoryId))
+            if (!await this.categoryService.CategoryExists(model.CategoryId))
             {
                 return this.BadRequest();
             }
@@ -138,7 +138,7 @@
         }
 
         [HttpPost]
-        public IActionResult EditPost(EditForumPostViewModel model)
+        public async Task<IActionResult> EditPost(EditForumPostViewModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -147,7 +147,7 @@
                 return this.BadRequest();
             }
 
-            if (!this.categoryService.CategoryExists(model.CategoryId))
+            if (!await this.categoryService.CategoryExists(model.CategoryId))
             {
                 return this.BadRequest();
             }

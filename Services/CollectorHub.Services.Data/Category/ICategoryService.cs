@@ -1,6 +1,7 @@
 ﻿namespace CollectorHub.Services.Data.Category
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     using CollectorHub.Web.ViewModels.Common;
 
@@ -8,6 +9,6 @@
     {
         IEnumerable<CategoryIndexViewModel> GetAllCategories();
 
-        bool CategoryExists(string categoryId);
+        Task<bool> CategoryExists(string categoryId);
     }
 }

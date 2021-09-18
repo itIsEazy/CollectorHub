@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using CollectorHub.Data.Common.Repositories;
     using CollectorHub.Data.Models.Common;
@@ -33,7 +34,7 @@
             return list;
         }
 
-        public bool CategoryExists(string categoryId)
+        public async Task<bool> CategoryExists(string categoryId)
         {
             var category = this.categoriesRepository
                 .All()

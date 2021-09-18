@@ -1,7 +1,7 @@
 ﻿namespace CollectorHub.Web.Areas.Administration.Controllers
 {
     using System.Security.Claims;
-
+    using System.Threading.Tasks;
     using CollectorHub.Services.Data.Administration;
     using CollectorHub.Services.Data.Category;
     using CollectorHub.Services.Data.Collections;
@@ -48,7 +48,7 @@
         }
 
         [HttpPost]
-        public IActionResult EditForumPost(EditForumPostModel model)
+        public async Task<IActionResult> EditForumPost(EditForumPostModel model)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -57,7 +57,7 @@
                 return this.BadRequest();
             }
 
-            if (!this.categoryService.CategoryExists(model.CategoryId))
+            if (!await this.categoryService.CategoryExists(model.CategoryId))
             {
                 return this.BadRequest();
             }
