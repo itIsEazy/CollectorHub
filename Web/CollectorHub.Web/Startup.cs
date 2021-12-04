@@ -58,7 +58,12 @@
                 options =>
                     {
                         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                    }).AddRazorRuntimeCompilation();
+                    })
+                .AddRazorRuntimeCompilation()
+                .ConfigureApiBehaviorOptions(options =>
+                { 
+                   
+                });
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
 

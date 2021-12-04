@@ -36,5 +36,11 @@
             string id = "65a92dea-f14f-4b22-aa8c-9d262677bacf";
             return this.forumService.GetForumPostServiceModel(id);
         }
+
+        [HttpPost]
+        public ForumPostServiceModel GetAllPosts22(ForumPostServiceModel model)
+        {
+            return model;
+        }
     }
 }

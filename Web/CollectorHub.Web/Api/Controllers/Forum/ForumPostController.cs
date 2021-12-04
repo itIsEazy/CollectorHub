@@ -13,7 +13,7 @@
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/forumpost")]
     public class ForumPostController : ControllerBase
     {
         private readonly IForumService forumService;
@@ -28,6 +28,18 @@
             this.forumService = forumService;
             this.userService = userService;
             this.categoryService = categoryService;
+        }
+
+        [HttpGet]
+        public IndexSearchModel Post2()
+        {
+            var model = new IndexSearchModel();
+
+            model.CategoryId = "fsfs";
+            model.SearchInput = "fsfs";
+            model.SortingId = 2;
+
+            return model;
         }
 
         [HttpGet("{username}")]
@@ -50,19 +62,10 @@
             }
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> Post(CreateForumPostInputModel model)
+        [HttpPost]
+        public IActionResult Post(IndexSearchModel model)
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            if (!await this.categoryService.CategoryExists(model.CategoryId))
-            {
-                return this.BadRequest();
-            }
-
-            string currCreatedPostId = await this.forumService.CreateForumPost(userId, model.Title, model.Content, model.ImageUrl, model.CategoryId);
-
-            return this.CreatedAtAction("Post", new { id = currCreatedPostId }, model);
+            return this.CreatedAtAction("Get", new { id = 12 }, model);
         }
     }
 }
